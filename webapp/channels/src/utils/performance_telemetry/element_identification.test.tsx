@@ -26,7 +26,6 @@ describe('identifyElementRegion', () => {
             id: 'test-channel-id',
             team_id: team.id,
             display_name: 'Test Channel',
-            header: 'This is the channel header',
             name: 'test-channel',
         });
         const channelsCategory = TestHelper.getCategoryMock({
@@ -137,7 +136,6 @@ describe('identifyElementRegion', () => {
         );
 
         const lhsChannel = await screen.findByLabelText(`${channel.display_name.toLowerCase()} public channel`);
-        const channelHeaderText = await screen.findByText(channel.header);
         const postTextbox = await screen.findByPlaceholderText('Write to ' + channel.display_name);
         const postText = await screen.findByText(post.message);
 
@@ -146,9 +144,7 @@ describe('identifyElementRegion', () => {
 
         const channelHeaderTitle = document.getElementById('channelHeaderTitle');
         expect(channelHeaderTitle).toBeInTheDocument();
-
-        expect(channelHeaderText).toBeInTheDocument();
-        expect(identifyElementRegion(channelHeaderText)).toEqual('channel_header');
+        expect(identifyElementRegion(channelHeaderTitle!)).toEqual('channel_header');
 
         expect(postText).toBeInTheDocument();
         expect(identifyElementRegion(postText)).toEqual('post');

@@ -210,8 +210,6 @@ components:
           type: string
         name:
           type: string
-        header:
-          type: string
         purpose:
           type: string
         last_post_at:
@@ -4147,8 +4145,6 @@ components:
           description: Channel display name as it appears locally
           type: string
         purpose:
-          type: string
-        header:
           type: string
         creator_id:
           description: Id of the user that shared the channel

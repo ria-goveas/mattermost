@@ -412,22 +412,6 @@
     "translation": "[tekst]"
   },
   {
-    "id": "api.command_channel_header.name",
-    "translation": "zaglavlje"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Tekst se mora navesti s naredbom /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[tekst]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Uredi zaglavlje kanala"
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Sada si odsutan/na"
   },
@@ -478,22 +462,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Neuspjela objava poruke o pridruživanju/napuštanju"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s je aktualizirao/la zaglavlje kanala u: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s je aktualizirao/la zaglavlje kanala iz: %s u: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s je uklonio/la zaglavlje kanala (bilo je: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Neuspjela objava poruke o aktualiziranju zaglavlja kanala"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

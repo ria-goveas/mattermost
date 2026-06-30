@@ -134,17 +134,6 @@ describe('components/MarkdownImage', () => {
         expect(img).toHaveClass('markdown-inline-img--loading');
     });
 
-    test('should handle not loaded state properly in case of a header change system message', () => {
-        const props = {...baseProps, src: 'https://example.com/image.png', postType: 'system_header_change'};
-        const {container} = renderWithContext(
-            <MarkdownImage {...props}/>,
-        );
-
-        // For header change system message, should have scaled-down-loading class
-        const img = container.querySelector('img');
-        expect(img).toHaveClass('markdown-inline-img--scaled-down-loading');
-    });
-
     test('should set loaded state when img loads and call onImageLoaded prop', () => {
         const props = {...baseProps, src: 'https://example.com/image.png'};
         const {container} = renderWithContext(
@@ -250,25 +239,6 @@ describe('components/MarkdownImage', () => {
         await userEvent.click(img!);
 
         expect(props.actions.openModal).toHaveBeenCalledTimes(1);
-    });
-
-    test('should properly scale down the image in case of a header change system message', () => {
-        const props = {...baseProps, src: 'https://example.com/image.png', postType: 'system_header_change'};
-        const {container} = renderWithContext(
-            <MarkdownImage {...props}/>,
-        );
-
-        const img = container.querySelector('img');
-
-        // Mock naturalHeight/naturalWidth for SizeAwareImage's onImageLoaded callback
-        Object.defineProperty(img, 'naturalHeight', {value: 90, configurable: true});
-        Object.defineProperty(img, 'naturalWidth', {value: 1041, configurable: true});
-
-        fireEvent.load(img!);
-
-        // After load, should have scaled-down class
-        expect(img).toHaveClass('markdown-inline-img--scaled-down');
-        expect(img).not.toHaveClass('markdown-inline-img--scaled-down-loading');
     });
 
     test('should render image with title, height, width', () => {

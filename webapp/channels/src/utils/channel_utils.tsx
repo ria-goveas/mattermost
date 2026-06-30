@@ -242,7 +242,6 @@ export function makeNewEmptyChannel(displayName: string, teamId: string): Channe
         name: cleanUpUrlable(displayName),
         display_name: displayName,
         purpose: '',
-        header: '',
         type: Constants.OPEN_CHANNEL as ChannelType,
         create_at: 0,
         creator_id: '',

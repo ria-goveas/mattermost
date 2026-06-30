@@ -6439,34 +6439,6 @@
     "translation": "Hiba történt az aktuális csatorna lekérésekor."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Hiba történt a csatorna fejlécének frissítésekor."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Nincs megfelelő jogosultsága a csatorna fejlécének módosításához."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "header"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "A szöveget el kell látni a /header paranccsal."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[szöveg]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Csatorna fejléc szerkesztése"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Hiba történt az aktuális csatorna lekérésekor."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Ön mostantól nincs a gépnél"
   },
@@ -6665,26 +6637,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "A csatlakozási/kilépési üzenet elküldése sikertelen"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s frissítette a csatorna fejlécét %s -re"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s frissítette a csatorna fejlécét %s -ről %s -re"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Nem sikerült lekérdezni a felhasználót amikor a csatorna fejléce frissítésre került"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s eltávolította a csatorna fejlécét (ez volt: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Nem sikerült frissíteni a csatorna fejléc üzenetet"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
@@ -7833,10 +7785,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "A beírt szöveg meghaladja a karakterkorlátot. A csatorna célja legfeljebb {{.MaxLength}} karakter lehet."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "A beírt szöveg meghaladja a karakterkorlátot. A csatorna fejléce legfeljebb {{.MaxLength}} karakter lehet."
   },
   {
     "id": "api.oauth.click_redirect",

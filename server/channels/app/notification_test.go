@@ -1528,12 +1528,6 @@ func TestAllowChannelMentions(t *testing.T) {
 		assert.True(t, allowChannelMentions)
 	})
 
-	t.Run("should return false for a channel header post", func(t *testing.T) {
-		headerChangePost := &model.Post{ChannelId: th.BasicChannel.Id, UserId: th.BasicUser.Id, Type: model.PostTypeHeaderChange}
-		allowChannelMentions := th.App.allowChannelMentions(th.Context, headerChangePost, 5)
-		assert.False(t, allowChannelMentions)
-	})
-
 	t.Run("should return false for a channel purpose post", func(t *testing.T) {
 		purposeChangePost := &model.Post{ChannelId: th.BasicChannel.Id, UserId: th.BasicUser.Id, Type: model.PostTypePurposeChange}
 		allowChannelMentions := th.App.allowChannelMentions(th.Context, purposeChangePost, 5)
@@ -1587,12 +1581,6 @@ func TestAllowGroupMentions(t *testing.T) {
 	t.Run("should return true for a regular post with few channel members", func(t *testing.T) {
 		allowGroupMentions := th.App.allowGroupMentions(th.Context, post)
 		assert.True(t, allowGroupMentions)
-	})
-
-	t.Run("should return false for a channel header post", func(t *testing.T) {
-		headerChangePost := &model.Post{ChannelId: th.BasicChannel.Id, UserId: th.BasicUser.Id, Type: model.PostTypeHeaderChange}
-		allowGroupMentions := th.App.allowGroupMentions(th.Context, headerChangePost)
-		assert.False(t, allowGroupMentions)
 	})
 
 	t.Run("should return false for a channel purpose post", func(t *testing.T) {

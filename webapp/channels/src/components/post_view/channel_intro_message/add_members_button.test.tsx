@@ -18,7 +18,6 @@ describe('components/post_view/AddMembersButton', () => {
         creator_id: 'creator_id',
         delete_at: 0,
         display_name: 'test channel',
-        header: 'test',
         id: 'channel_id',
         last_post_at: 1508265709635,
         name: 'testing',

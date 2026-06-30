@@ -55,7 +55,6 @@ describe('components/threading/ThreadViewer', () => {
     const channel: Channel = TestHelper.getChannelMock({
         display_name: '',
         name: '',
-        header: '',
         purpose: '',
         creator_id: '',
         scheme_id: '',

@@ -248,24 +248,6 @@ describe('Actions.Channels', () => {
         expect(profilesInChannel[created.id].has(user2.id)).toBeTruthy();
     });
 
-    it('patchChannel', async () => {
-        const channel = {
-            header: 'MM with Redux2',
-        };
-
-        nock(Client4.getBaseRoute()).
-            put(`/channels/${TestHelper.basicChannel!.id}/patch`).
-            reply(200, {...TestHelper.basicChannel, ...channel});
-
-        await store.dispatch(Actions.patchChannel(TestHelper.basicChannel!.id, channel));
-
-        const {channels} = store.getState().entities.channels;
-        const channelId = Object.keys(channels)[0];
-        expect(channelId).toBeTruthy();
-        expect(channels[channelId]).toBeTruthy();
-        expect(channels[channelId].header).toEqual('MM with Redux2');
-    });
-
     it('updateChannelPrivacy', async () => {
         const publicChannel = TestHelper.basicChannel!;
         nock(Client4.getChannelRoute(publicChannel.id)).

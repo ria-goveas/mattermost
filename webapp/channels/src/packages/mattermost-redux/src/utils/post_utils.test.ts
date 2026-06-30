@@ -31,7 +31,6 @@ describe('PostUtils', () => {
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.DISPLAYNAME_CHANGE}), showJoinLeave, '')).toBe(false);
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.CONVERT_CHANNEL}), showJoinLeave, '')).toBe(false);
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.EPHEMERAL}), showJoinLeave, '')).toBe(false);
-            expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.HEADER_CHANGE}), showJoinLeave, '')).toBe(false);
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.PURPOSE_CHANGE}), showJoinLeave, '')).toBe(false);
 
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.JOIN_LEAVE}), showJoinLeave, '')).toBe(false);
@@ -55,7 +54,6 @@ describe('PostUtils', () => {
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.DISPLAYNAME_CHANGE}), showJoinLeave, '')).toBe(false);
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.CONVERT_CHANNEL}), showJoinLeave, '')).toBe(false);
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.EPHEMERAL}), showJoinLeave, '')).toBe(false);
-            expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.HEADER_CHANGE}), showJoinLeave, '')).toBe(false);
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.PURPOSE_CHANGE}), showJoinLeave, '')).toBe(false);
 
             expect(shouldFilterJoinLeavePost(TestHelper.getPostMock({type: PostTypes.JOIN_LEAVE}), showJoinLeave, '')).toBe(true);
@@ -311,7 +309,6 @@ describe('PostUtils', () => {
             {input: TestHelper.getPostMock({type: PostTypes.CONVERT_CHANNEL}), output: true},
             {input: TestHelper.getPostMock({type: PostTypes.EPHEMERAL}), output: true},
             {input: TestHelper.getPostMock({type: PostTypes.EPHEMERAL_ADD_TO_CHANNEL}), output: true},
-            {input: TestHelper.getPostMock({type: PostTypes.HEADER_CHANGE}), output: true},
             {input: TestHelper.getPostMock({type: PostTypes.PURPOSE_CHANGE}), output: true},
 
             {input: TestHelper.getPostMock({type: PostTypes.JOIN_LEAVE}), output: true}, // deprecated system type
@@ -372,7 +369,6 @@ describe('PostUtils', () => {
             {input: PostTypes.CONVERT_CHANNEL, output: false},
             {input: PostTypes.EPHEMERAL, output: false},
             {input: PostTypes.EPHEMERAL_ADD_TO_CHANNEL, output: false},
-            {input: PostTypes.HEADER_CHANGE, output: false},
             {input: PostTypes.PURPOSE_CHANGE, output: false},
 
             {input: PostTypes.JOIN_LEAVE, output: false}, // deprecated system type

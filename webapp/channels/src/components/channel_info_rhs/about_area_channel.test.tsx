@@ -113,7 +113,6 @@ describe('channel_info_rhs/about_area_channel', () => {
         channel: {
             id: 'test-c-id',
             name: 'my-channel',
-            header: 'my channel header',
             purpose: 'my channel purpose',
             display_name: 'My Channel',
         } as Channel,
@@ -122,7 +121,6 @@ describe('channel_info_rhs/about_area_channel', () => {
         actions: {
             editChannelName: jest.fn(),
             editChannelPurpose: jest.fn(),
-            editChannelHeader: jest.fn(),
         },
     };
 
@@ -135,17 +133,6 @@ describe('channel_info_rhs/about_area_channel', () => {
         );
 
         expect(screen.getByText('my channel purpose')).toBeInTheDocument();
-    });
-
-    test('should display channel header', () => {
-        renderWithContext(
-            <AboutAreaChannel
-                {...defaultProps}
-            />,
-            initialState,
-        );
-
-        expect(screen.getByText('my channel header')).toBeInTheDocument();
     });
 
     test('should trigger editChannelName when clicking channel display name', () => {

@@ -1478,7 +1478,7 @@ func (a *App) allowChannelMentions(rctx request.CTX, post *model.Post, numProfil
 		return false
 	}
 
-	if post.Type == model.PostTypeHeaderChange || post.Type == model.PostTypePurposeChange {
+	if post.Type == model.PostTypePurposeChange {
 		return false
 	}
 
@@ -1499,7 +1499,7 @@ func (a *App) allowGroupMentions(rctx request.CTX, post *model.Post) bool {
 		return false
 	}
 
-	if post.Type == model.PostTypeHeaderChange || post.Type == model.PostTypePurposeChange {
+	if post.Type == model.PostTypePurposeChange {
 		return false
 	}
 

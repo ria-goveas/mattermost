@@ -756,30 +756,6 @@
     "translation": "Грешка при добављању тренутног канала."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Грешка при ажурирању заглавља канала."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "заглавље"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Потребно је доставити текст преко наредбе /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[текст]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Уреди заглавље канала"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Грешка при добављању тренутног канала."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Сада сте одсутни"
   },
@@ -858,26 +834,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Нисам успео да објавим поруку приступања или одласка"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "Корисник %s је изменио заглавље канала у %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "Корисник %s jе изменио заглавље канала из %s у %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Нисам успео да добавим корисника приликом ажурирања заглавља канала"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "Корисник %s је уклонио заглавље канала (било је: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Нисам успео да објавим поруку о промени заглавља канала"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

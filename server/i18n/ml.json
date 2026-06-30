@@ -96,26 +96,6 @@
     "translation": "ചേർന്നു/പിന്മാറി വിവരങ്ങൾ പോസ്റ്റ് ചെയ്യുവാൻ സാധിച്ചില്ല"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s ചാനലിന്റെ തലക്കെട്ടു വിവരങ്ങൾ %s ലേക്ക് പുതുക്കിയിരിക്കുന്നു"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s ചാനലിന്റെ തലക്കെട്ടു വിവരങ്ങൾ %s ൽ നിന്ന് %s ലേക്ക് മാറ്റിയിരിക്കുന്നു"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "ചാനലിന്റെ തലക്കെട്ടു വിവരങ്ങൾ പുതുക്കുന്നതിനിടക്ക് യുസർ വിവരങ്ങൾ കണ്ടെടുക്കുവാൻ സാധിച്ചില്ല"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s ചാനലിന്റെ തലക്കെട്ടു വിവരങ്ങൾ നീക്കം ചെയ്തിരിക്കുന്നു (മുൻപ് %s എന്ന് ആയിരുന്നു)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "ചാനലിന്റെ പുതുക്കിയ തലക്കെട്ടു വിവരങ്ങൾ പോസ്റ്റ് ചെയ്യുവാൻ സാധിച്ചില്ല"
-  },
-  {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
     "translation": "%s ചാനലിന്റെ ഡിസ്പ്ലേ നെയിം %s ൽ നിന്ന് %s ലേക്ക് മാറ്റിയിരിക്കുന്നു"
   },
@@ -480,14 +460,6 @@
     "translation": "നിങ്ങളുടെ സ്റ്റാറ്റസ് ക്രമീകരിക്കുക"
   },
   {
-    "id": "api.command_channel_header.desc",
-    "translation": "ചാനൽ തലക്കെട്ട് എഡിറ്റ് ചെയ്യുക"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "നിലവിലെ ചാനൽ വീണ്ടെടുക്കുന്നതിൽ പിശക്."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "നിങ്ങൾ ഇപ്പോൾ അകലെയാണ്"
   },
@@ -582,30 +554,6 @@
   {
     "id": "api.command_channel_purpose.channel.app_error",
     "translation": "നിലവിലെ ചാനൽ വീണ്ടെടുക്കുന്നതിൽ പിശക്."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "നൽകിയ വാചകം പ്രതീക പരിധി കവിയുന്നു. ചാനൽ തലക്കെട്ട് {{.MaxLength}} പ്രതീകങ്ങളായി പരിമിതപ്പെടുത്തിയിരിക്കുന്നു."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "ചാനൽ തലക്കെട്ട് അപ്ഡേറ്റ് ചെയ്യുന്നതിൽ പിശക്."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "ചാനൽ തലക്കെട്ട് എഡിറ്റ് ചെയ്യാൻ നിങ്ങൾക്ക് ഉചിതമായ അനുമതികൾ ഇല്ല."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "തലക്കെട്ട്"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "/ഹെഡർ കമാൻഡ് ഉപയോഗിച്ച് ടെക്സ്റ്റ് നൽകണം."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[വാചകം]"
   },
   {
     "id": "api.command.team_mismatch.app_error",

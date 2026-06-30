@@ -30,7 +30,6 @@ describe('components/post_view/ChannelIntroMessages', () => {
         creator_id: 'creator_id',
         delete_at: 0,
         display_name: 'test channel',
-        header: 'test',
         id: 'channel_id',
         last_post_at: 1508265709635,
         name: 'testing',
@@ -153,11 +152,6 @@ describe('components/post_view/ChannelIntroMessages', () => {
 
             expect(screen.getByText('This is the start of your group message history with these teammates. ', {exact: false})).toBeInTheDocument();
 
-            const headerDialog = screen.getByLabelText('Set header');
-            expect(headerDialog).toBeInTheDocument();
-            expect(headerDialog).toHaveTextContent('Set header');
-            expect(headerDialog).toHaveClass('action-button');
-
             // one for user1 and one for guest
 
             const image = screen.getAllByAltText('user profile image');
@@ -216,12 +210,6 @@ describe('components/post_view/ChannelIntroMessages', () => {
             expect(image).toBeInTheDocument();
             expect(image).toHaveAttribute('src', '/api/v4/users/user1/image?_=0');
             expect(image).toHaveAttribute('loading', 'lazy');
-
-            const headerDialog = screen.getByLabelText('Set header');
-
-            expect(headerDialog).toBeInTheDocument();
-            expect(headerDialog).toHaveTextContent('Set header');
-            expect(headerDialog).toHaveClass('action-button');
         });
     });
 

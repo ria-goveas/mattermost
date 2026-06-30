@@ -72,10 +72,9 @@ describe('components/ChannelHeaderMenu/ChannelHeaderDirectMenu', () => {
         );
 
         expect(screen.getByText('Channel Settings')).toBeInTheDocument();
-        expect(screen.queryByText('Edit Header')).not.toBeInTheDocument();
     });
 
-    it('shows Edit Header when RestrictDMAndGMAutotranslation is enabled', () => {
+    it('does not show channel property settings when RestrictDMAndGMAutotranslation is enabled', () => {
         renderWithContext(
             <WithTestMenuContext>
                 <ChannelHeaderDirectMenu {...defaultProps}/>
@@ -83,7 +82,6 @@ describe('components/ChannelHeaderMenu/ChannelHeaderDirectMenu', () => {
             getStateWithRestrictedDMAndGM(),
         );
 
-        expect(screen.getByText('Edit Header')).toBeInTheDocument();
         expect(screen.queryByText('Channel Settings')).not.toBeInTheDocument();
     });
 

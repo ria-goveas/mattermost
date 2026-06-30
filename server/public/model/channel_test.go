@@ -18,10 +18,9 @@ func TestChannelCopy(t *testing.T) {
 }
 
 func TestChannelPatch(t *testing.T) {
-	p := &ChannelPatch{Name: new(string), DisplayName: new(string), Header: new(string), Purpose: new(string), GroupConstrained: new(bool)}
+	p := &ChannelPatch{Name: new(string), DisplayName: new(string), Purpose: new(string), GroupConstrained: new(bool)}
 	*p.Name = NewId()
 	*p.DisplayName = NewId()
-	*p.Header = NewId()
 	*p.Purpose = NewId()
 	*p.GroupConstrained = true
 
@@ -30,7 +29,6 @@ func TestChannelPatch(t *testing.T) {
 
 	require.Equal(t, *p.Name, o.Name)
 	require.Equal(t, *p.DisplayName, o.DisplayName)
-	require.Equal(t, *p.Header, o.Header)
 	require.Equal(t, *p.Purpose, o.Purpose)
 	require.Equal(t, *p.GroupConstrained, *o.GroupConstrained)
 }

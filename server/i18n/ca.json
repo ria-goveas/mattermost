@@ -3856,34 +3856,6 @@
     "translation": "S'ha produït un error en recuperar el canal actual."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "S'ha produït un error en actualitzar el canal actual."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "No tens els permisos adequats per editar la capçalera del canal."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "header"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "S'ha de proporcionar el text amb la comanda /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Edita la capçalera del canal"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "S'ha produït un error en recuperar el canal actual."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Ara esteu absent"
   },
@@ -4062,26 +4034,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "No s'ha pogut publicar el missatge d'unir/deixar"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s ha actualitzat la capçalera del canal a: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s ha actualitzat la capçalera del canal de: %s a: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "No s'ha pogut recuperar l'usuari durant l'actualització de la capçalera del canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s ha eliminat la capçalera del canal (era: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "No s'ha pogut publicar el missatge d'actualització de la capçalera del canal"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

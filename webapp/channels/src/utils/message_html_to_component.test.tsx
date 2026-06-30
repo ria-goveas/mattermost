@@ -5,7 +5,6 @@ import React from 'react';
 import type {AnchorHTMLAttributes} from 'react';
 
 import {renderWithContext, screen} from 'tests/react_testing_utils';
-import Constants from 'utils/constants';
 import EmojiMap from 'utils/emoji_map';
 import messageHtmlToComponent, {convertPropsToReactStandard} from 'utils/message_html_to_component';
 import * as TextFormatting from 'utils/text_formatting';
@@ -76,40 +75,6 @@ const myFunction = () => {
 
         const {container} = renderWithContext(<>{messageHtmlToComponent(html, {hasPluginTooltips: true})}</>);
         expect(container).toMatchSnapshot();
-    });
-
-    test('Inline markdown image', () => {
-        const options = {markdown: true};
-        const html = TextFormatting.formatText('![Mattermost](/images/icon.png) and a [link](link)', options, emptyEmojiMap);
-
-        const component = messageHtmlToComponent(html, {
-            hasPluginTooltips: false,
-            postId: 'post_id',
-            postType: Constants.PostTypes.HEADER_CHANGE,
-        });
-        const {container} = renderWithContext(<>{component}</>);
-        expect(container).toMatchSnapshot();
-
-        // imageIsLink=false means the img is NOT wrapped in an <a> tag
-        const img = container.querySelector('img');
-        expect(img?.closest('a')).toBeNull();
-    });
-
-    test('Inline markdown image where image is link', () => {
-        const options = {markdown: true};
-        const html = TextFormatting.formatText('[![Mattermost](images/icon.png)](images/icon.png)', options, emptyEmojiMap);
-
-        const component = messageHtmlToComponent(html, {
-            hasPluginTooltips: false,
-            postId: 'post_id',
-            postType: Constants.PostTypes.HEADER_CHANGE,
-        });
-        const {container} = renderWithContext(<>{component}</>);
-        expect(container).toMatchSnapshot();
-
-        // imageIsLink=true means the img IS wrapped in an <a> tag
-        const img = container.querySelector('img');
-        expect(img?.closest('a')).not.toBeNull();
     });
 
     test('At mention', () => {

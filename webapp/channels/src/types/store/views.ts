@@ -223,9 +223,7 @@ export type ViewsState = {
     textbox: {
         shouldShowPreviewOnCreateComment: boolean;
         shouldShowPreviewOnCreatePost: boolean;
-        shouldShowPreviewOnEditChannelHeaderModal: boolean;
         shouldShowPreviewOnEditPostModal: boolean;
-        shouldShowPreviewOnChannelSettingsHeaderModal: boolean;
         shouldShowPreviewOnChannelSettingsPurposeModal: boolean;
     };
 };

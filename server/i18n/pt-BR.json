@@ -232,26 +232,6 @@
     "translation": "%s atualizou o nome de exibição do canal de: %s para: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Falha ao publicar a mensagem para atualização do cabeçalho do canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s removido do cabeçalho do canal (foi: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Não foi possível recuperar o usuário ao tentar atualizar a mensagem do cabeçalho do canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s atualizou o cabeçalho do canal de: %s para: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s atualizou o cabeçalho do canal para: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Erro ao publicar mensagem de entrar/sair"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Você está agora ausente"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Error ao obter o canal atual."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Editar o cabeçalho do canal"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[texto]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "O texto deve ser fornecido com o comando /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "cabeçalho"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Você não tem a permissão apropriada para editar o cabeçalho do canal."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Erro ao atualizar o cabeçalho do canal."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7778,10 +7730,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "O texto inserido excede o limite de caracteres. O propósito do canal é limitado a {{.MaxLength}} caracteres."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "O texto inserido excede o limite de caracteres. O cabeçalho do canal é limitado a {{.MaxLength}} caracteres."
   },
   {
     "id": "api.channel.create_channel.direct_channel.team_restricted_error",

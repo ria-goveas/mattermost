@@ -462,59 +462,6 @@ function getCurrentChannelId(): ChainableT<string> {
 }
 Cypress.Commands.add('getCurrentChannelId', getCurrentChannelId);
 
-function updateChannelHeader(text: string) {
-    // # Open channel header dropdown
-    cy.get('#channelHeaderDropdownButton').click();
-
-    // # Click on Channel Settings
-    cy.findByText('Channel Settings').should('be.visible').click();
-
-    // * Verify Channel Settings modal opens
-    cy.get('.ChannelSettingsModal').should('be.visible');
-
-    // # Edit channel header in the modal
-    cy.get('#channel_settings_header_textbox').
-        scrollIntoView().
-        should('be.visible').
-        clear().
-        type(text);
-
-    // # Save changes
-    cy.get('[data-testid="SaveChangesPanel__save-btn"]').click();
-
-    // * Verify changes are saved
-    cy.get('.SaveChangesPanel').should('contain', 'Settings saved');
-
-    // # Close the modal
-    cy.get('.GenericModal .modal-header button[aria-label="Close"]').click();
-
-    // * Verify modal is closed
-    cy.get('.ChannelSettingsModal').should('not.exist');
-
-    // Wait for UI to stabilize
-    cy.wait(TIMEOUTS.HALF_SEC);
-}
-
-Cypress.Commands.add('updateChannelHeader', updateChannelHeader);
-
-function updateDMGMChannelHeader(text: string) {
-    cy.get('#channelHeaderTitle').
-        should('be.visible').
-        click();
-    cy.get('#channelHeaderDropdownMenu').
-        should('be.visible');
-
-    // * Channel Settings menu option should be visible
-    cy.findByText('Edit Header').click();
-    cy.get('#edit_textbox').
-        clear().
-        type(text).
-        type('{enter}').
-        wait(TIMEOUTS.HALF_SEC);
-}
-
-Cypress.Commands.add('updateDMGMChannelHeader', updateDMGMChannelHeader);
-
 function checkRunLDAPSync() {
     return cy.apiGetLDAPSync().then((response) => {
         const jobs = response.body;
@@ -817,18 +764,6 @@ declare global {
             userStatus(statusInt: number): ChainableT<void>;
 
             getCurrentChannelId: typeof getCurrentChannelId;
-
-            /**
-             * Update channel header
-             * @param {String} text - Text to set the header to
-             */
-            updateChannelHeader(text: string): ChainableT<void>;
-
-            /**
-             * Update DM or GM channel header
-             * @param {String} text - Text to set the header to
-             */
-            updateDMGMChannelHeader(text: string): ChainableT<void>;
 
             /**
              * Navigate to system console-PluginManagement from profile settings

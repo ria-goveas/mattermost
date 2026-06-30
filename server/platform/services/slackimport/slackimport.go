@@ -495,7 +495,7 @@ func (si *SlackImporter) slackAddPosts(rctx request.CTX, teamId string, channel 
 				ChannelId: channel.Id,
 				Message:   sPost.Text,
 				CreateAt:  slackConvertTimeStamp(sPost.TimeStamp),
-				Type:      model.PostTypeHeaderChange,
+				Type:      model.PostTypeDefault,
 			}
 			si.oldImportPost(rctx, &newPost)
 		case sPost.Type == "message" && sPost.SubType == "channel_purpose":

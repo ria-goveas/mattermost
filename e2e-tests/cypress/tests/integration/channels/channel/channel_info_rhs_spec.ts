@@ -212,19 +212,6 @@ describe('Channel Info RHS', () => {
                     cy.uiGetRHS().findByText('purpose for the tests').should('be.visible');
                 });
             });
-            it('should display header', () => {
-                // # Go to test channel
-                cy.visit(`/${testTeam.name}/channels/${testChannel.name}`);
-
-                // # Click on the channel info button
-                cy.get('#channel-info-btn').click();
-
-                cy.apiPatchChannel(testChannel.id, {
-                    header: 'header for the tests',
-                }).then(() => {
-                    cy.uiGetRHS().findByText('header for the tests').should('be.visible');
-                });
-            });
             it('should be able to rename channel from About area', () => {
                 // # Create a dedicated channel for renaming to avoid affecting other tests
                 cy.apiCreateChannel(testTeam.id, 'channel-to-rename', 'Channel To Rename', 'O').then(({channel}) => {
@@ -423,19 +410,6 @@ describe('Channel Info RHS', () => {
                     cy.uiGetRHS().contains(otherUser.username);
                 });
             });
-            it('should display header', () => {
-                // # Go to test channel
-                cy.visit(`/${testTeam.name}/messages/${groupChannel.name}`);
-
-                // # Click on the channel info button
-                cy.get('#channel-info-btn').click();
-
-                cy.apiPatchChannel(groupChannel.id, {
-                    header: 'header for the tests',
-                }).then(() => {
-                    cy.uiGetRHS().findByText('header for the tests').should('be.visible');
-                });
-            });
         });
 
         describe('bottom menu', () => {
@@ -515,19 +489,6 @@ describe('Channel Info RHS', () => {
 
                 cy.uiGetRHS().contains(directUser.username);
                 cy.uiGetRHS().contains(directUser.position);
-            });
-            it('should display header', () => {
-                // # Go to test channel
-                cy.visit(`/${testTeam.name}/messages/@${directUser.username}`);
-
-                // # Click on the channel info button
-                cy.get('#channel-info-btn').click();
-
-                cy.apiPatchChannel(directChannel.id, {
-                    header: 'header for the tests',
-                }).then(() => {
-                    cy.uiGetRHS().findByText('header for the tests').should('be.visible');
-                });
             });
         });
     });

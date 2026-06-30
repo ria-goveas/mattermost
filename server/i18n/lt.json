@@ -364,22 +364,6 @@
     "translation": "%s atnaujino kanalo rodomą pavadinimą iš: %s į: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Nepavyko paskelbti atnaujinimo kanalo antraštės pranešimo"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s pašalino kanalo antraštę (buvo: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Nepavyko gauti naudotojo atnaujinant kanalo antraštę"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s atnaujino kanalo antraštę iš %s į %s"
-  },
-  {
     "id": "api.cloud.license_error",
     "translation": "Jūsų licencija nepalaiko debesų užklausų."
   },
@@ -402,10 +386,6 @@
   {
     "id": "api.command.invite_people.invite_off",
     "translation": "Vartotojo kūrimas šiame serveryje buvo išjungtas, kvietimai nebuvo išsiųsti"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s atnaujino kanalo antraštę į: %s"
   },
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
@@ -610,38 +590,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Esate ne prie kompiuterio"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Klaida gaunant dabartinį kanalą."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Redaguoti kanalo antraštę"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[tekstas]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Tekstas turi būti pateiktas su komanda /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "antraštė"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Neturite leidimų redaguoti kanalo antraštę."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Klaida atnaujinant kanalo antraštę."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Įvestas tekstas viršija simbolių limitą. Kanalo antraštėje galima įrašyti ne daugiau kaip {{.MaxLength}} simbolių."
   },
   {
     "id": "api.command_channel_purpose.desc",

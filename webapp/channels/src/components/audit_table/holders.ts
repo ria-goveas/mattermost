@@ -20,10 +20,6 @@ const holders = defineMessages({
         id: 'audit_table.nameUpdated',
         defaultMessage: 'Updated the {channelName} channel name',
     },
-    headerUpdated: {
-        id: 'audit_table.headerUpdated',
-        defaultMessage: 'Updated the {channelName} channel header',
-    },
     channelDeleted: {
         id: 'audit_table.channelDeleted',
         defaultMessage: 'Archived the channel with the URL {url}',

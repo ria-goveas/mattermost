@@ -75,16 +75,6 @@ export default function ChannelRow({
                 {...props}
             />
         );
-    case '/channels/update_desc': // support the old path
-    case '/channels/update_header':
-        return (
-            <AuditRow
-                audit={audit}
-                actionURL={actionURL}
-                desc={intl.formatMessage(holders.headerUpdated, {channelName})}
-                {...props}
-            />
-        );
     default: {
         return (
             <ChannelDefaultRow

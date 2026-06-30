@@ -2744,7 +2744,7 @@ func (s *MmctlUnitTestSuite) TestCreateChannelCmd() {
 		s.Require().Equal(printer.GetLines()[0], foundChannel)
 	})
 
-	s.Run("should create channel with header and purpose", func() {
+	s.Run("should create channel with purpose", func() {
 		printer.Clean()
 
 		cmd := &cobra.Command{}
@@ -2752,7 +2752,6 @@ func (s *MmctlUnitTestSuite) TestCreateChannelCmd() {
 		teamName := "teamName"
 		channelName := "channelName"
 		channelDisplayName := "channelDisplayName"
-		header := "someHeader"
 		purpose := "somePurpose"
 		argsTeamChannel := teamName + ":" + channelName + ":" + channelDisplayName
 		args := []string{argsTeamChannel}
@@ -2760,7 +2759,6 @@ func (s *MmctlUnitTestSuite) TestCreateChannelCmd() {
 		cmd.Flags().String("team", teamName, "Team Name")
 		cmd.Flags().String("name", channelName, "Channel Name")
 		cmd.Flags().String("display-name", channelDisplayName, "Channel Display Name")
-		cmd.Flags().String("header", header, "Channel header")
 		cmd.Flags().String("purpose", purpose, "Channel purpose")
 		cmd.Flags().Bool("private", true, "Create a private channel")
 
@@ -2774,7 +2772,6 @@ func (s *MmctlUnitTestSuite) TestCreateChannelCmd() {
 			TeamId:      "teamId",
 			Name:        channelName,
 			DisplayName: channelDisplayName,
-			Header:      header,
 			Purpose:     purpose,
 			Type:        model.ChannelTypePrivate,
 		}

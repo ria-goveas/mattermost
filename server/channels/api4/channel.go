@@ -227,7 +227,7 @@ func updateChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		}
 
 	case model.ChannelTypeGroup, model.ChannelTypeDirect:
-		// Modifying the header is not linked to any specific permission for group/dm channels, so just check for membership.
+		// Updates to group and direct channels require membership.
 		if _, errGet := c.App.GetChannelMember(c.AppContext, channel.Id, c.AppContext.Session().UserId); errGet != nil {
 			c.Err = model.NewAppError("updateChannel", "api.channel.patch_update_channel.forbidden.app_error", nil, "", http.StatusForbidden)
 			return
@@ -259,7 +259,6 @@ func updateChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	oldChannel.Header = channel.Header
 	oldChannel.Purpose = channel.Purpose
 
 	oldChannelDisplayName := oldChannel.DisplayName
@@ -394,7 +393,7 @@ func patchChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 	model.AddEventParameterAuditableToAuditRec(auditRec, "channel", patch)
 	auditRec.AddEventPriorState(oldChannel)
 
-	updatingProperties := patch.DisplayName != nil || patch.Name != nil || patch.Header != nil || patch.Purpose != nil || patch.GroupConstrained != nil || patch.DefaultCategoryName != nil
+	updatingProperties := patch.DisplayName != nil || patch.Name != nil || patch.Purpose != nil || patch.GroupConstrained != nil || patch.DefaultCategoryName != nil
 	updatingAutoTranslation := patch.AutoTranslation != nil
 	updatingManagedCategory := patch.ManagedCategoryName != nil
 	updatingDiscoverable := patch.Discoverable != nil
@@ -467,7 +466,7 @@ func patchChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		}
 
 	case model.ChannelTypeGroup, model.ChannelTypeDirect:
-		// Modifying the header is not linked to any specific permission for group/dm channels, so just check for membership.
+		// Updates to group and direct channels require membership.
 		if _, appErr = c.App.GetChannelMember(c.AppContext, c.Params.ChannelId, c.AppContext.Session().UserId); appErr != nil {
 			c.Err = model.NewAppError("patchChannel", "api.channel.patch_update_channel.forbidden.app_error", nil, "", http.StatusForbidden)
 			return

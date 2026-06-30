@@ -232,26 +232,6 @@
     "translation": "%s kanalın görüntülenecek adını %s yerine %s olarak değiştirdi"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Kanal başlığı güncelleme iletisi gönderilemedi"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s kanal başlığını kaldırdı (önceki: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Kanal başlığı güncellenirken kullanıcı alınamadı"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s kanal başlığını %s yerine %s olarak güncelledi"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s kanal başlığını %s olarak güncelledi"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Katılma/ayrılma iletisi gönderilemedi"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Durumunuz: Uzakta"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Geçerli kanal alınırken sorun çıktı."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Kanal başlığını düzenler"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[yazı]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "/header komutunun yanında yazı da yazılmalıdır."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "header"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Kanal başlığını düzenleme izniniz yok."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Kanal başlığı güncellenirken sorun çıktı."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7821,10 +7773,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Yazılmış yazı karakter sayısı sınırını aşıyor. Kanal amacı en fazla {{.MaxLength}} karakter uzunluğunda olabilir."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Yazılmış yazı karakter sayısı sınırını aşıyor. Kanal başlığı en fazla {{.MaxLength}} karakter uzunluğunda olabilir."
   },
   {
     "id": "app.notification.footer.title",

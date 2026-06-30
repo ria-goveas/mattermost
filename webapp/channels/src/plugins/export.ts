@@ -16,7 +16,6 @@ import ChannelInviteModal from 'components/channel_invite_modal';
 import ChannelMembersModal from 'components/channel_members_modal';
 import ChannelNotificationsModal from 'components/channel_notifications_modal';
 import DatePicker from 'components/date_picker/date_picker';
-import EditChannelHeaderModal from 'components/edit_channel_header_modal';
 import * as Menu from 'components/menu';
 import {useNotifyAdmin} from 'components/notify_admin_cta/notify_admin_cta';
 import PostMessagePreview from 'components/post_view/post_message_preview';
@@ -96,7 +95,6 @@ interface WindowWithLibraries {
         ChannelInviteModal: typeof ChannelInviteModal;
         ChannelMembersModal: typeof ChannelMembersModal;
         ChannelNotificationsModal: typeof ChannelNotificationsModal;
-        EditChannelHeaderModal: typeof EditChannelHeaderModal;
         Avatar: typeof Avatar;
         imageURLForUser: typeof imageURLForUser;
         BotBadge: typeof BotTag;
@@ -187,7 +185,6 @@ window.Components = {
     ChannelInviteModal,
     ChannelMembersModal,
     ChannelNotificationsModal,
-    EditChannelHeaderModal,
     Avatar,
     imageURLForUser,
     BotBadge: BotTag,

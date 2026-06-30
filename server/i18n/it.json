@@ -232,26 +232,6 @@
     "translation": "%s ha aggiornato il titolo del canale, da: %s a %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Spedizione fallita: messaggio di aggiornamento dell'intestazione canale"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s ha eliminato il titolo del canale (era: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Impossibile trovare l'utente durante l'aggiornamento dell'intestazione canale"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s ha aggiornato il titolo del canale, da: %s a %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s ha aggiornato il titolo del canale a: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Errore nell'invio del messaggio di entrata/uscita"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Ora sei assente"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Errore nel caricamento del canale."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Modifica l'intestazione del canale"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Il testo deve essere specificato per il comando /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "intestazione"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Non si dispone dei permessi necessari per modificare l'intestazione del canale."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Errore nell'aggiornamento del canale."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7790,10 +7742,6 @@
   {
     "id": "model.config.is_valid.image_decoder_concurrency.app_error",
     "translation": " "
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Il testo immesso supera il limite di caratteri. L'intestazione del canale è limitata a {{.MaxLength}} caratteri."
   },
   {
     "id": "api.templates.welcome_body.info1",

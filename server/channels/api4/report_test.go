@@ -683,7 +683,6 @@ func TestGetPostsForReporting(t *testing.T) {
 
 		// Create various types of system posts with controlled timestamps
 		systemPostTypes := []string{
-			model.PostTypeHeaderChange,
 			model.PostTypeJoinChannel,
 			model.PostTypeLeaveChannel,
 			model.PostTypeAddToChannel,

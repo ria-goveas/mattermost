@@ -4355,34 +4355,6 @@
     "translation": "Virhe noudettaessa nykyistä kanavaa."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Virhe päivitettäessä kanavan ylätunnistetta."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Sinulla ei ole tarvittavia oikeuksia kanavan ylätunnisteen muokkaamiseksi."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "ylätunniste"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Teksti tulee toimittaa /header-komennolla."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[teksti]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Muokkaa kanavan otsikkoa"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Virhe noudettaessa nykyistä kanavaa."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Olet nyt poissaoleva"
   },
@@ -4525,26 +4497,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Liittymis-/poistumisviestin lähettäminen epäonnistui"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s päivitti kanavan otsikon %s:ksi"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s päivitti kanavan otsikon %s:sta %s:ksi"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Käyttäjän noutaminen epäonnistui kanavan otsikkoa päivitettäessä"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s poisti kanavaotsikon (oli: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Päivityskanavan otsikkoviestin lähettäminen epäonnistui"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

@@ -514,7 +514,7 @@ func TestShouldProcessMessage(t *testing.T) {
 		client := pluginapi.NewClient(api, &plugintest.Driver{})
 
 		shouldProcessMessage, err := client.Post.ShouldProcessMessage(
-			&model.Post{Type: model.PostTypeHeaderChange, UserId: expectedBotID},
+			&model.Post{Type: model.PostTypePurposeChange, UserId: expectedBotID},
 			pluginapi.AllowSystemMessages(),
 			pluginapi.AllowBots(),
 		)
@@ -529,7 +529,7 @@ func TestShouldProcessMessage(t *testing.T) {
 		client := pluginapi.NewClient(api, &plugintest.Driver{})
 
 		shouldProcessMessage, err := client.Post.ShouldProcessMessage(
-			&model.Post{Type: model.PostTypeHeaderChange},
+			&model.Post{Type: model.PostTypePurposeChange},
 		)
 
 		assert.NoError(t, err)
@@ -601,7 +601,7 @@ func TestShouldProcessMessage(t *testing.T) {
 		client := pluginapi.NewClient(api, &plugintest.Driver{})
 
 		shouldProcessMessage, err := client.Post.ShouldProcessMessage(
-			&model.Post{UserId: "1", Type: model.PostTypeHeaderChange, ChannelId: channelID},
+			&model.Post{UserId: "1", Type: model.PostTypePurposeChange, ChannelId: channelID},
 			pluginapi.AllowSystemMessages(),
 			pluginapi.FilterChannelIDs([]string{channelID}),
 			pluginapi.AllowBots(),
@@ -619,7 +619,7 @@ func TestShouldProcessMessage(t *testing.T) {
 		client := pluginapi.NewClient(api, &plugintest.Driver{})
 
 		shouldProcessMessage, err := client.Post.ShouldProcessMessage(
-			&model.Post{UserId: "1", Type: model.PostTypeHeaderChange, ChannelId: channelID},
+			&model.Post{UserId: "1", Type: model.PostTypePurposeChange, ChannelId: channelID},
 			pluginapi.AllowSystemMessages(),
 			pluginapi.FilterChannelIDs([]string{channelID}),
 			pluginapi.AllowBots(),
@@ -642,7 +642,7 @@ func TestShouldProcessMessage(t *testing.T) {
 		client := pluginapi.NewClient(api, &plugintest.Driver{})
 
 		shouldProcessMessage, err := client.Post.ShouldProcessMessage(
-			&model.Post{UserId: "1", Type: model.PostTypeHeaderChange, ChannelId: channelID},
+			&model.Post{UserId: "1", Type: model.PostTypePurposeChange, ChannelId: channelID},
 			pluginapi.AllowSystemMessages(),
 			pluginapi.AllowBots(),
 		)

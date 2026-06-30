@@ -232,26 +232,6 @@
     "translation": "%s zaktualizował wyświetlaną nazwę kanału z: %s na: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Nie udało się wysłać wiadomości o zmianie nagłówka kanału"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s usunął nagłówek kanału (był: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Nie udało się pobrać użytkownika podczas aktualizacji nagłówka kanału"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s zaktualizował nagłówek kanału z: %s na: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s zmienił nagłówek kanału na: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Nie udało się opublikować wiadomości dołączania/opuszczania"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Jesteś teraz nieobecny"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Błąd pobierania aktualnego kanału."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Edytuj nagłówek kanału"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[tekst]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Tekst powinien być dostarczony za pomocą polecenia /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "nagłówek"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Nie posiadasz odpowiednich uprawnień do edycji nagłówka kanału."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Błąd aktualizacji nagłówka kanału."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -6370,10 +6322,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Wprowadzony tekst przekracza limit znaków. Cel kanału jest ograniczony do {{.MaxLength}} znaków."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Wprowadzony tekst przekracza limit znaków. Nagłówek kanału jest ograniczony do {{.MaxLength}} znaków."
   },
   {
     "id": "api.cloud.request_error",

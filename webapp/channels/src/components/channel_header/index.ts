@@ -9,7 +9,6 @@ import type {Dispatch} from 'redux';
 import {
     updateChannelNotifyProps,
 } from 'mattermost-redux/actions/channels';
-import {getCustomEmojisInText} from 'mattermost-redux/actions/emojis';
 import {fetchChannelRemotes} from 'mattermost-redux/actions/shared_channels';
 import {General} from 'mattermost-redux/constants';
 import {
@@ -117,7 +116,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         showPinnedPosts,
         showChannelFiles,
         closeRightHandSide,
-        getCustomEmojisInText,
         updateChannelNotifyProps,
         showChannelMembers,
         fetchChannelRemotes,

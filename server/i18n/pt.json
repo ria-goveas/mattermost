@@ -200,10 +200,6 @@
     "translation": "[name@domain.com ...]"
   },
   {
-    "id": "api.command_channel_header.name",
-    "translation": "cabeçalho"
-  },
-  {
     "id": "api.command_channel_purpose.hint",
     "translation": "[texto]"
   },
@@ -220,24 +216,12 @@
     "translation": "A sua licença não suporta a moderação de canais"
   },
   {
-    "id": "api.command_channel_header.hint",
-    "translation": "[texto]"
-  },
-  {
     "id": "api.command.invite_people.no_email",
     "translation": "Por favor, especifique um ou mais endereços de correio eletrónico válido"
   },
   {
     "id": "api.command_away.name",
     "translation": "ausente"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s atualizou o cabeçalho do canal de: %s para: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s atualizou o cabeçalho do canal para: %s"
   },
   {
     "id": "api.channel.remove_member.removed",
@@ -270,10 +254,6 @@
   {
     "id": "api.channel.patch_update_channel.update_direct_or_group_messages_not_allowed.app_error",
     "translation": "Não tem permissão para atualizar o nome, nome a exibir, e a finalidade das mensagens diretas ou grupo."
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s removeu o cabeçalho do canal (era: %s)"
   },
   {
     "id": "api.command_channel_remove.channel.app_error",

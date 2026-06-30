@@ -128,38 +128,6 @@ describe('Direct Message', () => {
         cy.get('@withNotification').should('not.have.been.called');
     });
 
-    it('MM-T458 - Edit direct message channel header', () => {
-        // # Create a DM channel
-        cy.apiCreateDirectChannel([testUser.id, otherUser.id]).then(({channel}) => {
-            // Have another user send you a DM.
-            cy.postMessageAs({sender: otherUser, message: 'Hello', channelId: channel.id}).wait(TIMEOUTS.HALF_SEC);
-        });
-
-        // # Visit the DM channel
-        cy.visit(`/${testTeam.name}/messages/@${otherUser.username}`);
-
-        // # Click on the channel header
-        cy.get('#channelHeaderTitle').click().wait(TIMEOUTS.HALF_SEC);
-
-        // # Click on 'Edit Channel Header'
-        cy.get('#channelEditHeader').click().wait(TIMEOUTS.HALF_SEC);
-
-        // # Fill and save channel header changes
-        const message = 'This is a line{shift}{enter}{shift}{enter}This is another line';
-        const expectedMessage = 'This is a line\n\nThis is another line';
-        cy.get('#edit_textbox').type(message).type('{enter}').wait(TIMEOUTS.HALF_SEC);
-
-        // # Hover on channel header
-        cy.get('#channelHeaderDescription .header-description__text').trigger('mouseenter');
-
-        // * Verify changes have been applied on header
-        cy.wait(TIMEOUTS.HALF_SEC);
-        cy.get('.channel-header-text-popover').should('be.visible');
-        cy.get('.channel-header-text-popover').should(($el) => {
-            expect($el.get(0).innerText).to.eq(expectedMessage);
-        });
-    });
-
     it('MM-T1536 - Mute & Unmute', () => {
         // # Create a DM channel
         cy.apiCreateDirectChannel([testUser.id, otherUser.id]).then(({channel}) => {

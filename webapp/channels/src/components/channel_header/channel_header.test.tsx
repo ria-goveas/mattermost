@@ -90,14 +90,6 @@ describe('components/ChannelHeader', () => {
                 id: 'channel_id',
                 team_id: 'team_id',
                 name: 'Test',
-                header: 'See ~test',
-                props: {
-                    channel_mentions: {
-                        test: {
-                            display_name: 'Test',
-                        },
-                    },
-                },
             }),
             channelMember: TestHelper.getChannelMembershipMock({
                 channel_id: 'channel_id',
@@ -248,7 +240,6 @@ describe('components/ChannelHeader', () => {
         const props = {
             ...populatedProps,
             channel: TestHelper.getChannelMock({
-                header: 'not the bot description',
                 type: Constants.DM_CHANNEL as ChannelType,
                 status: 'offline',
             }),
@@ -273,7 +264,6 @@ describe('components/ChannelHeader', () => {
         const props = {
             ...populatedProps,
             channel: TestHelper.getChannelMock({
-                header: 'not the bot description',
                 type: Constants.DM_CHANNEL as ChannelType,
                 status: 'offline',
             }),
@@ -309,7 +299,6 @@ describe('components/ChannelHeader', () => {
         const props = {
             ...populatedProps,
             channel: TestHelper.getChannelMock({
-                header: 'not the bot description',
                 type: Constants.DM_CHANNEL as ChannelType,
                 status: 'offline',
             }),
@@ -333,7 +322,6 @@ describe('components/ChannelHeader', () => {
             ...populatedProps,
             isLastActiveEnabled: false,
             channel: TestHelper.getChannelMock({
-                header: 'not the bot description',
                 type: Constants.DM_CHANNEL as ChannelType,
                 status: 'offline',
             }),

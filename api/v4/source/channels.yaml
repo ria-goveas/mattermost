@@ -102,10 +102,6 @@
                 purpose:
                   type: string
                   description: A short description of the purpose of the channel
-                header:
-                  type: string
-                  description: Markdown-formatted text to display in the header of the
-                    channel
                 type:
                   type: string
                   description: "'O' for a public channel, 'P' for a private channel"
@@ -546,10 +542,6 @@
                 purpose:
                   type: string
                   description: A short description of the purpose of the channel
-                header:
-                  type: string
-                  description: Markdown-formatted text to display in the header of the
-                    channel
         description: Channel object to be updated
         required: true
       responses:
@@ -667,10 +659,6 @@
                   type: string
                   description: A short description of the purpose of the channel. Cannot
                     be updated for direct or group message channels.
-                header:
-                  type: string
-                  description: Markdown-formatted text to display in the header of the
-                    channel
                 group_constrained:
                   type: boolean
                   description: When true, only members of the linked LDAP groups can join

@@ -90,7 +90,7 @@ describe('Guest Account - Guest User Experience', () => {
         cy.uiGetLHSAddChannelButton().should('not.exist');
 
         // * Verify Guest Badge in Channel Header
-        cy.get('#channelHeaderDescription').within(($el) => {
+        cy.get('#channelHeaderStatus').within(($el) => {
             cy.wrap($el).find('.has-guest-header').should('be.visible').and('have.text', 'Channel has guests');
         });
 
@@ -159,7 +159,7 @@ describe('Guest Account - Guest User Experience', () => {
         // * Verify Guest Badge in Channel Header is removed
         cy.get('#sidebarItem_off-topic').click();
         cy.get('#channelIntro').should('be.visible');
-        cy.get('#channelHeaderDescription').within(($el) => {
+        cy.get('#channelHeaderStatus').within(($el) => {
             cy.wrap($el).find('.has-guest-header').should('not.exist');
         });
 

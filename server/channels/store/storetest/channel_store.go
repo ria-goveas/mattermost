@@ -4982,7 +4982,7 @@ func testCountPostsAfter(t *testing.T, rctx request.CTX, ss store.Store) {
 			UserId:    userID1,
 			ChannelId: channelID,
 			CreateAt:  1004,
-			Type:      model.PostTypeHeaderChange,
+			Type:      model.PostTypePurposeChange,
 		})
 		require.NoError(t, err)
 

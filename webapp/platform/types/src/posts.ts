@@ -21,7 +21,6 @@ export type PostType = 'system_add_remove' |
 'system_displayname_change' |
 'system_convert_channel' |
 'system_ephemeral' |
-'system_header_change' |
 'system_join_channel' |
 'system_join_leave' |
 'system_leave_channel' |

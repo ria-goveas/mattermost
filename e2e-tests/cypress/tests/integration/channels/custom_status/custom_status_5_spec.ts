@@ -135,11 +135,11 @@ describe('Custom Status - Verifying Where Custom Status Appears', () => {
         cy.get('#moreDmModal .more-modal__row').should('be.visible').and('contain', currentUser.username).click({force: true});
 
         // * Check if the channel is open and contains the channel header
-        cy.get('#channelHeaderDescription .header-status__text').should('exist');
+        cy.get('#channelHeaderStatus .header-status__text').should('exist');
 
         // * Custom status text and emoji should be displayed in the channel header
-        cy.get('#channelHeaderDescription .header-status__text').should('contain', customStatus.text);
-        cy.get('#channelHeaderDescription .header-status__text span.emoticon').should('exist').invoke('attr', 'data-emoticon').should('contain', customStatus.emoji);
+        cy.get('#channelHeaderStatus .header-status__text').should('contain', customStatus.text);
+        cy.get('#channelHeaderStatus .header-status__text span.emoticon').should('exist').invoke('attr', 'data-emoticon').should('contain', customStatus.emoji);
 
         // * Custom status emoji should be visible along with username in the  LHS Direct Messages section
         cy.get('.SidebarChannelGroup_content').contains('(you)').get('span.emoticon').should('exist').invoke('attr', 'data-emoticon').should('contain', customStatus.emoji);

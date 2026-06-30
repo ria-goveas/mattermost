@@ -58,7 +58,6 @@ describe('components/BrowseChannels', () => {
         team_id: 'team_1',
         display_name: 'channel-2',
         name: 'channel-2',
-        header: 'channel-2-header',
         purpose: 'channel-2-purpose',
     });
 
@@ -67,7 +66,6 @@ describe('components/BrowseChannels', () => {
         team_id: 'team_1',
         display_name: 'channel-3',
         name: 'channel-3',
-        header: 'channel-3-header',
         purpose: 'channel-3-purpose',
         type: 'P',
     });
@@ -107,7 +105,6 @@ describe('components/BrowseChannels', () => {
                         team_id: 'team_1',
                         display_name: 'Default Channel',
                         name: 'default-channel',
-                        header: 'Default channel header',
                         purpose: 'Default channel purpose',
                     })],
                 });
@@ -127,7 +124,6 @@ describe('components/BrowseChannels', () => {
         team_id: 'team_1',
         display_name: 'Default Channel',
         name: 'default-channel',
-        header: 'Default channel header',
         purpose: 'Default channel purpose',
     });
 

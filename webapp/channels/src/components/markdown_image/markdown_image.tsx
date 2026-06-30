@@ -114,11 +114,6 @@ export default class MarkdownImage extends PureComponent<Props, State> {
         this.setState({loadFailed: true});
     };
 
-    isHeaderChangeMessage = () => {
-        return this.props.postType &&
-            this.props.postType === Constants.PostTypes.HEADER_CHANGE;
-    };
-
     componentDidUpdate(prevProps: Props) {
         this.onUpdated(prevProps.src);
     }
@@ -142,15 +137,10 @@ export default class MarkdownImage extends PureComponent<Props, State> {
     render() {
         const {imageMetadata, src, alt, imageIsLink} = this.props;
         if (src === '' || this.state.loadFailed) {
-            let className = 'markdown-inline-img broken-image';
-            if (this.isHeaderChangeMessage()) {
-                className += ' broken-image--scaled-down';
-            }
-
             return (
                 <div style={{display: 'inline-block'}}>
                     <img
-                        className={className}
+                        className='markdown-inline-img broken-image'
                         alt={alt}
                         src={brokenImageIcon}
                     />
@@ -184,17 +174,11 @@ export default class MarkdownImage extends PureComponent<Props, State> {
                     let className = '';
                     if (this.state.loaded) {
                         className = imageIsLink || !extension ? `${this.props.className} markdown-inline-img--hover markdown-inline-img--no-border` : `${this.props.className} markdown-inline-img--hover cursor--pointer a11y--active`;
-
-                        if (this.isHeaderChangeMessage()) {
-                            className += ' markdown-inline-img--scaled-down';
-                        }
                     } else {
-                        const loadingClass = this.isHeaderChangeMessage() ? 'markdown-inline-img--scaled-down-loading' : 'markdown-inline-img--loading';
-                        className = `${this.props.className} ${loadingClass}`;
+                        className = `${this.props.className} markdown-inline-img--loading`;
                     }
 
                     const {height, width, title, postId, onImageHeightChanged} = this.props;
-                    const hideUtilities = this.isHeaderChangeMessage() || this.props.hideUtilities;
 
                     let imageElement = (
                         <SizeAwareImage
@@ -207,7 +191,7 @@ export default class MarkdownImage extends PureComponent<Props, State> {
                             dimensions={imageMetadata}
                             showLoader={false}
                             onClick={this.showModal}
-                            hideUtilities={hideUtilities}
+                            hideUtilities={this.props.hideUtilities}
                             onImageLoadFail={this.handleLoadFail}
                             onImageLoaded={this.handleImageLoaded}
                         />
