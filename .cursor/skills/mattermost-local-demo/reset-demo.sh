@@ -13,7 +13,8 @@
 #   reset-demo.sh dry-run    # report exactly what source reset would change
 #   reset-demo.sh build      # reset scoped source and rebuild webapp/channels/dist
 #   reset-demo.sh serve      # run the server in the foreground with demo env (no DB changes)
-#   reset-demo.sh wait       # poll the API until it is up (prints DEMO_READY)
+#   reset-demo.sh wait       # poll API until up, then ensure session-clear URL (DEMO_READY + OPEN_URL)
+#   reset-demo.sh open       # ensure demo-reset.html is served; print OPEN_URL (also run by wait)
 #   reset-demo.sh watch      # incremental webpack watch into dist (no reset/build/install/restart)
 #   reset-demo.sh watch-wait # block until webpack has rebuilt dist to match source (prints WATCH_FRESH)
 #   reset-demo.sh watch-stop # stop the webpack watch process
@@ -26,9 +27,13 @@
 #   1) run `prepare` (foreground; restores source + DB and builds the webapp — allow a few
 #      minutes the first time, ~30s when the webpack cache is warm)
 #   2) start `serve` as a BACKGROUND shell  (block_until_ms: 0)
-#   3) run `wait`    (foreground; blocks until DEMO_READY)
-#   4) open the demo in Glass, print credentials
+#      `serve` frees :8065 first (kills leftover mattermost/go-run holders) or dies.
+#   3) run `wait`    (foreground; blocks until DEMO_READY, then runs `open` and prints
+#      OPEN_URL — always open THAT URL in Glass, never bare / or /login)
+#   4) open OPEN_URL in Glass via cursor-app-control open_resource; print credentials
 # HUMAN FLOW: just run `reset-demo.sh` in a terminal (prepare + serve in foreground).
+#   After API is up, open http://localhost:8065/static/demo-reset.html once yourself
+#   (or run `reset-demo.sh open` / `wait` from another terminal).
 #
 # FAST FEATURE ITERATION (no reset): once the demo is up, start the incremental
 # frontend rebuild ONCE and leave it running; edits then land in dist without any
@@ -62,6 +67,9 @@ PG_PASSWORD="mostest"
 PG_DB="mattermost_test"
 SITE_URL="http://localhost:8065"
 PING_URL="http://127.0.0.1:8065/api/v4/system/ping"
+RESET_PAGE_URL="http://127.0.0.1:8065/static/demo-reset.html"
+RESET_PAGE_OPEN_URL="http://localhost:8065/static/demo-reset.html"
+LOGIN_FALLBACK_URL="http://localhost:8065/login?extra=signin_change"
 PING_TIMEOUT="${MM_DEMO_PING_TIMEOUT:-300}"   # seconds to wait for the API
 NODE_HEAP="${MM_DEMO_NODE_HEAP:-8192}"        # webpack can be memory-hungry
 
@@ -132,12 +140,66 @@ ensure_docker() {
 }
 
 # --- server lifecycle --------------------------------------------------------
+# Leftover mattermost / `go run` processes on :8065 are the usual reason a fresh
+# `serve` dies with "address already in use" while `wait` still succeeds against
+# the orphan — leaving Glass on a stale session and the honeycomb spinner.
+
+port_listen_pids() {
+  # Prefer TCP LISTEN PIDs; fall back to any :8065 holder (older lsof).
+  local pids
+  pids="$(lsof -tiTCP:8065 -sTCP:LISTEN 2>/dev/null || true)"
+  if [ -z "$pids" ]; then
+    pids="$(lsof -ti :8065 2>/dev/null || true)"
+  fi
+  # shellcheck disable=SC2086
+  echo $pids
+}
+
+kill_repo_mattermost_runners() {
+  # Orphaned `go run ./cmd/mattermost` from this checkout can respawn a binary on
+  # :8065 after we kill only the listener. Best-effort; never fail the reset.
+  pkill -f "${SERVER_DIR}/.*cmd/mattermost" 2>/dev/null || true
+  pkill -f "go-build/.*/mattermost" 2>/dev/null || true
+}
+
+ensure_port_free() {
+  # Free :8065 aggressively. Used by prepare/stop/serve so agents never attach to
+  # a leftover server after a DB wipe.
+  local require_free="${1:-}"   # if "require", die when still busy
+  ( cd "$SERVER_DIR" && make stop-server >/dev/null 2>&1 ) || true
+  kill_repo_mattermost_runners
+
+  local pids i
+  pids="$(port_listen_pids)"
+  if [ -n "$pids" ]; then
+    log "Killing leftover process(es) on :8065: $pids"
+    # shellcheck disable=SC2086
+    kill -9 $pids 2>/dev/null || true
+  fi
+
+  i=0
+  while [ -n "$(port_listen_pids)" ]; do
+    i=$((i + 1))
+    if [ "$i" -gt 20 ]; then
+      pids="$(port_listen_pids)"
+      if [ "$require_free" = "require" ]; then
+        die "port 8065 still in use after stop (pids: $pids). Kill them and retry serve."
+      fi
+      err "port 8065 still in use after stop (pids: $pids)"
+      return 1
+    fi
+    pids="$(port_listen_pids)"
+    # shellcheck disable=SC2086
+    [ -n "$pids" ] && kill -9 $pids 2>/dev/null || true
+    kill_repo_mattermost_runners
+    sleep 0.25
+  done
+  return 0
+}
+
 stop_server() {
   log "Stopping any running Mattermost server..."
-  ( cd "$SERVER_DIR" && make stop-server >/dev/null 2>&1 ) || true
-  local pids; pids="$(lsof -ti :8065 2>/dev/null || true)"
-  [ -n "$pids" ] && kill -9 $pids 2>/dev/null || true
-  sleep 1
+  ensure_port_free || true
 }
 
 install_reset_page() {
@@ -148,6 +210,33 @@ install_reset_page() {
   else
     log "Skipping demo-reset.html (dist or source missing); login URL fallback will be used."
   fi
+}
+
+reset_page_http_code() {
+  curl -sS -o /dev/null -w '%{http_code}' --max-time 5 "$RESET_PAGE_URL" 2>/dev/null || echo "000"
+}
+
+# Ensure the session-clear page is on disk AND served before Glass opens it.
+# Webpack clean can drop demo-reset.html from dist; opening a 404 skips cookie clear
+# and often leaves the honeycomb spinner after a DB wipe.
+cmd_open() {
+  install_reset_page
+  local code; code="$(reset_page_http_code)"
+  if [ "$code" != "200" ]; then
+    log "demo-reset.html returned HTTP $code; reinstalling and retrying..."
+    install_reset_page
+    sleep 1
+    code="$(reset_page_http_code)"
+  fi
+  if [ "$code" = "200" ]; then
+    log "Session-clear page is served (HTTP 200)."
+    echo "OPEN_URL=$RESET_PAGE_OPEN_URL"
+    echo "OPEN_OK"
+    return 0
+  fi
+  log "demo-reset.html still HTTP $code after reinstall; using login fallback."
+  echo "OPEN_URL=$LOGIN_FALLBACK_URL"
+  echo "OPEN_FALLBACK"
 }
 
 # --- webapp build ------------------------------------------------------------
@@ -297,6 +386,10 @@ serve_foreground() {
   # Demo-only env: stable SiteURL, no desktop landing interstitial, plugins off
   # (plugin webapp bundles are not built in this tree and would hang the SPA).
   mkdir -p "$SERVER_DIR/logs"
+  # Never bind on top of a leftover listener — that is how agents get DEMO_READY
+  # against an orphan process and Glass stays on a stale honeycomb spinner.
+  log "Ensuring :8065 is free before serve..."
+  ensure_port_free require
   log "Running Mattermost server (foreground, demo env). Ctrl+C to stop."
   cd "$SERVER_DIR"
   exec env \
@@ -392,6 +485,9 @@ cmd_wait() {
   wait_for_api
   log "Seed:"; print_counts
   echo "DEMO_READY"
+  # Always resolve the Glass target here so agents that skip a separate `open`
+  # still get a verified session-clear URL (or login fallback) after a DB wipe.
+  cmd_open
 }
 
 cmd_stop() {
@@ -443,11 +539,12 @@ case "${1:-reset}" in
   dry-run)  cmd_dry_run ;;
   serve)    serve_foreground ;;                # agent: run this as a background shell job
   wait)     cmd_wait ;;
+  open)     cmd_open ;;                        # after wait: verify demo-reset.html, print OPEN_URL
   watch)        watch_foreground ;;            # agent: run this as a background shell job
   watch-wait)   cmd_watch_wait ;;              # foreground: blocks until dist rebuilt (prints WATCH_FRESH)
   watch-stop)   cmd_watch_stop ;;
   watch-status) cmd_watch_status ;;
   stop)     cmd_stop ;;
   status)   cmd_status ;;
-  *) die "unknown command: $1 (use: reset | prepare | dry-run | build | serve | wait | watch | watch-wait | watch-stop | watch-status | stop | status)" ;;
+  *) die "unknown command: $1 (use: reset | prepare | dry-run | build | serve | wait | open | watch | watch-wait | watch-stop | watch-status | stop | status)" ;;
 esac

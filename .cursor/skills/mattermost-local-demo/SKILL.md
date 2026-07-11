@@ -14,7 +14,7 @@ description: >-
 
 | File | Purpose |
 |------|---------|
-| `reset-demo.sh` | The one script. `reset` (default), `prepare`, `dry-run`, `build`, `serve`, `wait`, `watch`, `watch-wait`, `watch-stop`, `watch-status`, `stop`, `status`. |
+| `reset-demo.sh` | The one script. `reset` (default), `prepare`, `dry-run`, `build`, `serve`, `wait`, `open`, `watch`, `watch-wait`, `watch-stop`, `watch-status`, `stop`, `status`. |
 | `baseline/mattermost_baseline.sql.gz` | Gitignored, checksummed demo DB dump. |
 | `demo-reset.html` | Cookie/storage clear page → served at `/static/demo-reset.html`. |
 
@@ -27,7 +27,7 @@ The reset uses the dedicated demo branch plus a **checksummed Postgres dump**:
 3. It ensures Docker (`postgres` + `redis`) is up, verifies the DB snapshot checksum, **drops & recreates** `mattermost_test`, and restores `baseline/mattermost_baseline.sql.gz`.
 4. It verifies that all six original public channels and their baseline metadata exist.
 5. It rebuilds `webapp/channels/dist` from the restored source and installs `demo-reset.html`.
-6. `serve` runs the server with demo env; `wait` polls the API.
+6. `serve` frees `:8065` (kills leftovers) then runs the server with demo env; `wait` polls the API and prints a verified `OPEN_URL` for Glass.
 
 Run this only on `demo/channel-header-baseline`. It discards tracked changes and non-ignored untracked files across the checkout. Ignored local environment files, dependencies, caches, server configuration, and this skill remain untouched.
 
@@ -41,7 +41,7 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh dry-run
 
 ## Fastest agent path
 
-The server must run as a **long-lived background shell job** (otherwise it gets reaped when a foreground tool call returns). So the agent uses three steps:
+The server must run as a **long-lived background shell job** (otherwise it gets reaped when a foreground tool call returns). So the agent uses these steps:
 
 1. Prepare (restore scoped source + DB baseline + original webapp bundle) — foreground. Wait for `PREPARE_OK`. Allow a few minutes the first time (webpack); cached runs are faster:
 
@@ -49,27 +49,25 @@ The server must run as a **long-lived background shell job** (otherwise it gets 
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh prepare
 ```
 
-2. Start the server as a **background shell** (`block_until_ms: 0`); leave it running:
+2. Start the server as a **background shell** (`block_until_ms: 0`); leave it running. `serve` **frees `:8065` first** (kills leftover mattermost / `go run` holders) or exits with an error — never bind on top of an orphan:
 
 ```bash
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh serve
 ```
 
-3. Wait for the API — foreground, blocks until `DEMO_READY`:
+3. Wait for the API — foreground. Blocks until `DEMO_READY`, then **automatically** runs the session-clear preflight and prints `OPEN_URL=...` plus `OPEN_OK` or `OPEN_FALLBACK`:
 
 ```bash
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh wait
 ```
 
-4. Open the demo **once** in Glass via the **`cursor-app-control`** MCP tool **`open_resource`**:
+(A separate `reset-demo.sh open` is still available and idempotent if you need to re-resolve the URL later.)
 
-`http://localhost:8065/static/demo-reset.html`
-
-(Fallback if that 404s: `http://localhost:8065/login?extra=signin_change`.)
+4. Open **the printed** `OPEN_URL` **once** in Glass via the **`cursor-app-control`** MCP tool **`open_resource`**. Prefer that over hardcoding. Never open bare `/` or `/login` right after a DB wipe.
 
 5. Reply with **exactly** the three-line credentials block below — nothing else.
 
-> Humans can instead run `bash .cursor/skills/mattermost-local-demo/reset-demo.sh` (no arg) in a terminal — it prepares, then runs the server in the foreground of that terminal.
+> Humans can instead run `bash .cursor/skills/mattermost-local-demo/reset-demo.sh` (no arg) in a terminal — it prepares, then runs the server in the foreground of that terminal. After the API is up, open `http://localhost:8065/static/demo-reset.html` once (or run `wait` / `open` from another terminal).
 
 ### Final message format (mandatory)
 
@@ -83,8 +81,11 @@ Only this in the chat reply (no tables, channel lists, token dumps, or "how to r
 
 ## Open / login policy (mandatory)
 
+- **DO** read `OPEN_URL=...` from `wait` (or `open`) and open **only** that URL in Glass.
 - **DO** open the demo **only** in the **Glass / Cursor embedded browser** via `cursor-app-control` → `open_resource`.
-- **Preferred URL after reset:** `http://localhost:8065/static/demo-reset.html` (clears stale cookies/storage, then `/login?extra=signin_change`).
+- **Preferred URL after reset:** `http://localhost:8065/static/demo-reset.html` (clears stale cookies/storage, then `/login?extra=signin_change`). `wait`/`open` reinstall that file if webpack cleaned it away and fall back to `/login?extra=signin_change` if it still is not HTTP 200.
+- **DO NOT** open `/` or a bare `/login` right after a DB wipe — that skips session clear and can leave the honeycomb spinner.
+- **DO NOT** treat `DEMO_READY` alone as “open the site” — always use the following `OPEN_URL`.
 - **DO NOT** use `cursor-ide-browser` / browser-fill automation MCP.
 - **DO NOT** use AppleScript / `open` targeting Chrome/Safari for success criteria.
 
@@ -140,7 +141,9 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch-wait
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh dry-run      # report source reset actions
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh build        # baseline only: restore HEAD + rebuild dist (not for feature tweaks)
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh status       # source / snapshot / DB / Docker / API status
-bash .cursor/skills/mattermost-local-demo/reset-demo.sh stop         # stop demo server (keeps Docker + DB)
+bash .cursor/skills/mattermost-local-demo/reset-demo.sh stop         # stop demo server; frees :8065 (keeps Docker + DB)
+bash .cursor/skills/mattermost-local-demo/reset-demo.sh wait         # API up → DEMO_READY → OPEN_URL (session-clear preflight)
+bash .cursor/skills/mattermost-local-demo/reset-demo.sh open         # re-resolve OPEN_URL only (also run automatically by wait)
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch        # start incremental webpack watch (run as a background shell)
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch-wait   # block until dist rebuilt (prints WATCH_FRESH)
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch-status # watch process + dist freshness + recent compile log
@@ -151,7 +154,8 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch-stop   # stop the 
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
-| Infinite spinner; 401 on `/api/v4/users/me*` after reset | Stale browser session cookie | Open `/static/demo-reset.html` (or `/login?extra=signin_change`); hard-refresh |
+| Infinite spinner; 401 on `/api/v4/users/me*` after reset | Stale browser session cookie, or `demo-reset.html` 404 after webpack clean | Run `wait` or `open`, then open the printed `OPEN_URL` in Glass; hard-refresh |
+| `serve` fails / `address already in use` / spinner after “successful” reset | Leftover mattermost on `:8065`; new serve died while `wait` hit the orphan | `stop` (or re-run `serve`, which frees the port); then `wait` and open `OPEN_URL` |
 | "View in Desktop App" | Desktop landing page | Reset sets `EnableDesktopLandingPage=false`; click "View in Browser" once if needed |
 | API never comes up | First run compiles Go / Docker down | Check `server/logs/demo-server.log`; ensure Docker is running |
 | `baseline not found` or checksum mismatch | Fixed snapshot is missing or was changed | Recover the original skill-local snapshot; do not capture the current demo DB over it |
