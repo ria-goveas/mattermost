@@ -429,14 +429,12 @@ func TestUpdateChannel(t *testing.T) {
 
 	// Update a open channel
 	channel.DisplayName = "My new display name"
-	channel.Header = "My fancy header"
 	channel.Purpose = "Mattermost ftw!"
 
 	newChannel, _, err := client.UpdateChannel(context.Background(), channel)
 	require.NoError(t, err)
 
 	require.Equal(t, channel.DisplayName, newChannel.DisplayName, "Update failed for DisplayName")
-	require.Equal(t, channel.Header, newChannel.Header, "Update failed for Header")
 	require.Equal(t, channel.Purpose, newChannel.Purpose, "Update failed for Purpose")
 
 	// Test GroupConstrained flag
@@ -449,14 +447,12 @@ func TestUpdateChannel(t *testing.T) {
 
 	// Update a private channel
 	private.DisplayName = "My new display name for private channel"
-	private.Header = "My fancy private header"
 	private.Purpose = "Mattermost ftw! in private mode"
 
 	newPrivateChannel, _, err := client.UpdateChannel(context.Background(), private)
 	require.NoError(t, err)
 
 	require.Equal(t, private.DisplayName, newPrivateChannel.DisplayName, "Update failed for DisplayName in private channel")
-	require.Equal(t, private.Header, newPrivateChannel.Header, "Update failed for Header in private channel")
 	require.Equal(t, private.Purpose, newPrivateChannel.Purpose, "Update failed for Purpose in private channel")
 
 	// Test updating default channel's name and returns error
@@ -499,41 +495,6 @@ func TestUpdateChannel(t *testing.T) {
 
 	channel.DisplayName = "Should not update"
 	_, resp, err = client.UpdateChannel(context.Background(), channel)
-	require.Error(t, err)
-	CheckForbiddenStatus(t, resp)
-
-	// Test updating the header of someone else's GM channel.
-	user1 := th.CreateUser(t)
-	user2 := th.CreateUser(t)
-	user3 := th.CreateUser(t)
-
-	groupChannel, _, err := client.CreateGroupChannel(context.Background(), []string{user1.Id, user2.Id})
-	require.NoError(t, err)
-
-	groupChannel.Header = "lolololol"
-	_, err = client.Logout(context.Background())
-	require.NoError(t, err)
-	_, _, err = client.Login(context.Background(), user3.Email, user3.Password)
-	require.NoError(t, err)
-	_, resp, err = client.UpdateChannel(context.Background(), groupChannel)
-	require.Error(t, err)
-	CheckForbiddenStatus(t, resp)
-
-	// Test updating the header of someone else's GM channel.
-	_, err = client.Logout(context.Background())
-	require.NoError(t, err)
-	_, _, err = client.Login(context.Background(), user.Email, user.Password)
-	require.NoError(t, err)
-
-	directChannel, _, err := client.CreateDirectChannel(context.Background(), user.Id, user1.Id)
-	require.NoError(t, err)
-
-	directChannel.Header = "lolololol"
-	_, err = client.Logout(context.Background())
-	require.NoError(t, err)
-	_, _, err = client.Login(context.Background(), user3.Email, user3.Password)
-	require.NoError(t, err)
-	_, resp, err = client.UpdateChannel(context.Background(), directChannel)
 	require.Error(t, err)
 	CheckForbiddenStatus(t, resp)
 
@@ -831,12 +792,10 @@ func TestPatchChannel(t *testing.T) {
 		patch := &model.ChannelPatch{
 			Name:        new(string),
 			DisplayName: new(string),
-			Header:      new(string),
 			Purpose:     new(string),
 		}
 		*patch.Name = model.NewId()
 		*patch.DisplayName = model.NewId()
-		*patch.Header = model.NewId()
 		*patch.Purpose = model.NewId()
 
 		channel, _, err := client.PatchChannel(context.Background(), th.BasicChannel.Id, patch)
@@ -844,7 +803,6 @@ func TestPatchChannel(t *testing.T) {
 
 		require.Equal(t, *patch.Name, channel.Name, "do not match")
 		require.Equal(t, *patch.DisplayName, channel.DisplayName, "do not match")
-		require.Equal(t, *patch.Header, channel.Header, "do not match")
 		require.Equal(t, *patch.Purpose, channel.Purpose, "do not match")
 	})
 
@@ -860,7 +818,6 @@ func TestPatchChannel(t *testing.T) {
 		require.NoError(t, err)
 
 		patch := &model.ChannelPatch{
-			Header:  new(string),
 			Purpose: new(string),
 		}
 
@@ -882,46 +839,6 @@ func TestPatchChannel(t *testing.T) {
 		_, resp, err := client.PatchChannel(context.Background(), defaultChannel.Id, defaultChannelPatch)
 		require.Error(t, err)
 		CheckBadRequestStatus(t, resp)
-	})
-
-	t.Run("Test updating the header of someone else's GM channel", func(t *testing.T) {
-		// Test updating the header of someone else's GM channel.
-		user := th.CreateUser(t)
-		user1 := th.CreateUser(t)
-		user2 := th.CreateUser(t)
-		user3 := th.CreateUser(t)
-
-		groupChannel, _, err := client.CreateGroupChannel(context.Background(), []string{user1.Id, user2.Id})
-		require.NoError(t, err)
-
-		_, err = client.Logout(context.Background())
-		require.NoError(t, err)
-		_, _, err = client.Login(context.Background(), user3.Email, user3.Password)
-		require.NoError(t, err)
-
-		channelPatch := &model.ChannelPatch{}
-		channelPatch.Header = new(string)
-		*channelPatch.Header = "lolololol"
-
-		_, resp, err := client.PatchChannel(context.Background(), groupChannel.Id, channelPatch)
-		require.Error(t, err)
-		CheckForbiddenStatus(t, resp)
-
-		_, err = client.Logout(context.Background())
-		require.NoError(t, err)
-		_, _, err = client.Login(context.Background(), user.Email, user.Password)
-		require.NoError(t, err)
-
-		directChannel, _, err := client.CreateDirectChannel(context.Background(), user.Id, user1.Id)
-		require.NoError(t, err)
-
-		_, err = client.Logout(context.Background())
-		require.NoError(t, err)
-		_, _, err = client.Login(context.Background(), user3.Email, user3.Password)
-		require.NoError(t, err)
-		_, resp, err = client.PatchChannel(context.Background(), directChannel.Id, channelPatch)
-		require.Error(t, err)
-		CheckForbiddenStatus(t, resp)
 	})
 
 	t.Run("Should block changes to name, display name or purpose for group messages", func(t *testing.T) {
@@ -1678,9 +1595,9 @@ func TestPatchChannel(t *testing.T) {
 		}()
 
 		// Mixed patch (channel property + AutoTranslation) fails when user lacks AutoTranslation permission
-		newHeader := "mixed patch header"
+		newPurpose := "mixed patch purpose"
 		mixedPatch := &model.ChannelPatch{
-			Header:          &newHeader,
+			Purpose:         &newPurpose,
 			AutoTranslation: new(true),
 			BannerInfo: &model.ChannelBannerInfo{
 				Enabled: new(false),
@@ -1726,7 +1643,7 @@ func TestPatchChannel(t *testing.T) {
 		patchedChannel, resp, err := client.PatchChannel(context.Background(), th.BasicChannel.Id, mixedPatch)
 		require.NoError(t, err)
 		CheckOKStatus(t, resp)
-		require.Equal(t, newHeader, patchedChannel.Header)
+		require.Equal(t, newPurpose, patchedChannel.Purpose)
 		require.True(t, patchedChannel.AutoTranslation)
 	})
 }
@@ -1917,7 +1834,6 @@ func TestChannelUnicodeNames(t *testing.T) {
 		patch := &model.ChannelPatch{
 			Name:        new(string),
 			DisplayName: new(string),
-			Header:      new(string),
 			Purpose:     new(string),
 		}
 		*patch.Name = "\u206ecommunitychannel\u206f"

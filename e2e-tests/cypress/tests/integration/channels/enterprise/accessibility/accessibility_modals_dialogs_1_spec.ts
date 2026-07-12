@@ -55,11 +55,6 @@ describe('Verify Accessibility Support in Modals & Dialogs', () => {
 
         cy.visit(`/${testTeam.name}/channels/off-topic`);
 
-        // * Verify the accessibility support in Channel Edit Header Dialog
-        verifyChannelMenuModal('Edit Channel Header', 'Edit Header for Off-Topic');
-
-        cy.wait(TIMEOUTS.TWO_SEC);
-
         // * Verify the accessibility support in Channel Edit Purpose Dialog
         verifyChannelMenuModal('Edit Channel Purpose', 'Edit Purpose for Off-Topic');
 

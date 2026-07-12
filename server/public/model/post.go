@@ -45,7 +45,6 @@ const (
 	PostTypeMoveChannel           = "system_move_channel"
 	PostTypeAddToTeam             = "system_add_to_team"
 	PostTypeRemoveFromTeam        = "system_remove_from_team"
-	PostTypeHeaderChange          = "system_header_change"
 	PostTypeDisplaynameChange     = "system_displayname_change"
 	PostTypeConvertChannel        = "system_convert_channel"
 	PostTypePurposeChange         = "system_purpose_change"
@@ -533,7 +532,6 @@ func (o *Post) IsValid(maxPostSize int) *AppError {
 		PostTypeAddToTeam,
 		PostTypeRemoveFromTeam,
 		PostTypeMessageAttachment,
-		PostTypeHeaderChange,
 		PostTypePurposeChange,
 		PostTypeDisplaynameChange,
 		PostTypeConvertChannel,

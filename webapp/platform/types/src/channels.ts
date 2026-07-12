@@ -55,7 +55,6 @@ export type Channel = {
     type: ChannelType;
     display_name: string;
     name: string;
-    header: string;
     purpose: string;
     last_post_at: number;
     last_root_post_at: number;

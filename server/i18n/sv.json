@@ -6265,34 +6265,6 @@
     "translation": "Fel vid hämtning av nuvarande kanal."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Fel vid uppdatering av kanalhuvudet."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Du har inte rättigheter att editera kanalens rubrik."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "rubrik"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Ett meddelande måste förses med /header kommando."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Editera kanalens rubrik"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Fel vid hämtning av nuvarande kanal."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Du är nu Tillfälligt borta"
   },
@@ -6709,26 +6681,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Misslyckades att posta join/leave meddelande"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s uppdaterade kanalens titel till: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s uppdaterade kanalens titel från: %s till: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Användaren kunde inte hämtas vid uppdatering av kanalens ämne"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s tog bort kanalens titel (var: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Det gick inte att uppdatera kanalens huvudmeddelande"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
@@ -7821,10 +7773,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Angiven text överskrider max tillåtna tecken. Kanalens syfte är begränsat till {{.MaxLength}} tecken."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Angiven text överskrider max tillåtna tecken. Kanalhuvudet är begränsat till {{.MaxLength}} tecken."
   },
   {
     "id": "api.email_batching.send_batched_email_notification.title",

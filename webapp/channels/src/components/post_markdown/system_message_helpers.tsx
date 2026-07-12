@@ -19,7 +19,7 @@ import CombinedSystemMessage from 'components/post_view/combined_system_message'
 import GMConversionMessage from 'components/post_view/gm_conversion_message/gm_conversion_message';
 import PostAddChannelMember from 'components/post_view/post_add_channel_member';
 
-import {isChannelNamesMap, type TextFormattingOptions} from 'utils/text_formatting';
+import type {TextFormattingOptions} from 'utils/text_formatting';
 import {getSiteURL} from 'utils/url';
 
 export function renderUsername(value: unknown): ReactNode {
@@ -185,63 +185,6 @@ function renderRemoveFromTeamMessage(post: Post): ReactNode {
             }}
         />
     );
-}
-
-function renderHeaderChangeMessage(post: Post): ReactNode {
-    if (!post.props.username) {
-        return null;
-    }
-
-    const headerOptions = {
-        channelNamesMap: isChannelNamesMap(post.props?.channel_mentions) ? post.props.channel_mentions : undefined,
-        mentionHighlight: true,
-    };
-
-    const username = renderUsername(post.props.username);
-    const oldHeader = post.props.old_header ? renderFormattedText(post.props.old_header, headerOptions, post) : null;
-    const newHeader = post.props.new_header ? renderFormattedText(post.props.new_header, headerOptions, post) : null;
-
-    if (post.props.new_header) {
-        if (post.props.old_header) {
-            return (
-                <FormattedMessage
-                    id='api.channel.post_update_channel_header_message_and_forget.updated_from'
-                    defaultMessage='{username} updated the channel header <br></br><strong>From:</strong> {old} <br></br><strong>To:</strong> {new}'
-                    values={{
-                        username,
-                        old: oldHeader,
-                        new: newHeader,
-                        strong: (chunks: React.ReactNode) => (<strong>{chunks}</strong>),
-                        br: (x: React.ReactNode) => (<><br/>{x}</>),
-                    }}
-                />
-            );
-        }
-
-        return (
-            <FormattedMessage
-                id='api.channel.post_update_channel_header_message_and_forget.updated_to'
-                defaultMessage='{username} updated the channel header to: {new}'
-                values={{
-                    username,
-                    new: newHeader,
-                }}
-            />
-        );
-    } else if (post.props.old_header) {
-        return (
-            <FormattedMessage
-                id='api.channel.post_update_channel_header_message_and_forget.removed'
-                defaultMessage='{username} removed the channel header (was: {old})'
-                values={{
-                    username,
-                    old: oldHeader,
-                }}
-            />
-        );
-    }
-
-    return null;
 }
 
 function renderDisplayNameChangeMessage(post: Post): ReactNode {
@@ -441,7 +384,6 @@ const systemMessageRenderers = {
     [Posts.POST_TYPES.LEAVE_TEAM]: renderLeaveTeamMessage,
     [Posts.POST_TYPES.ADD_TO_TEAM]: renderAddToTeamMessage,
     [Posts.POST_TYPES.REMOVE_FROM_TEAM]: renderRemoveFromTeamMessage,
-    [Posts.POST_TYPES.HEADER_CHANGE]: renderHeaderChangeMessage,
     [Posts.POST_TYPES.DISPLAYNAME_CHANGE]: renderDisplayNameChangeMessage,
     [Posts.POST_TYPES.CONVERT_CHANNEL]: renderConvertChannelToPrivateMessage,
     [Posts.POST_TYPES.PURPOSE_CHANGE]: renderPurposeChangeMessage,

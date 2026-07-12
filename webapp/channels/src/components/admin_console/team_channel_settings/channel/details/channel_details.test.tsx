@@ -47,7 +47,6 @@ describe('admin_console/team_channel_settings/channel/ChannelDetails', () => {
         type: 'O',
         display_name: 'name',
         name: 'DN',
-        header: 'header',
         purpose: 'purpose',
         last_post_at: 0,
         last_root_post_at: 0,

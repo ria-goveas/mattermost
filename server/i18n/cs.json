@@ -4492,34 +4492,6 @@
     "translation": "Chyba při načítání aktuálního kanálu."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Chyba při aktualizaci záhlaví kanálu."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Nemáte dostatečná práva pro změnu záhlaví kanálu."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "záhlaví"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Text musí být zadán s příkazem /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Upravit Záhlaví kanálu"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Chyba při načítání aktuálního kanálu."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Nyní jste \"Pryč\""
   },
@@ -4698,26 +4670,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Nepodařilo se odeslat zprávu o připojení/opuštění"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s změnil záhlaví kanálu na: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s změnil záhlaví kanálu z: %s na: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Nepodařilo se načíst uživatele při aktualizaci záhlaví kanálu"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s odstranil záhlaví kanálu (byl: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Nepodařilo se odeslat zprávu o aktualizaci záhlaví kanálu"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
@@ -6602,10 +6554,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Zadaný text překračuje povolený limit znaků. Účel kanálu je omezen na {{.MaxLength}} znaků."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Zadaný text přesahuje maximální povolenou délku. Záhlaví kanálu je omezeno na {{.MaxLength}} znaků."
   },
   {
     "id": "api.cloud.cws_webhook_event_missing_error",

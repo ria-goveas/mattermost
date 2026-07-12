@@ -232,26 +232,6 @@
     "translation": "%s a mis à jour l'entête du canal de : %s en : %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Impossible de publier le message indiquant le changement de l'entête du canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s a supprimé le titre du canal (était : %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Impossible de récupérer l'utilisateur lors de la modification de l'entête du canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s a mis à jour l'entête du canal de : %s en : %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s a mis à jour l'entête du canal en : %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Impossible de publier le message indiquant l'entrée ou la sortie de l'utilisateur du canal"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Vous êtes maintenant absent(e)"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Une erreur s'est produite lors de la récupération du canal courant."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Édite l'entête du canal"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[texte]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Du texte doit être spécifié avec la commande /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "entête"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Vous ne disposez pas des permissions requises pour éditer l'entête du canal."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Une erreur s'est produite lors de la modification de l'entête du canal."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -6825,10 +6777,6 @@
   },
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
-    "translation": "Le texte saisi dépasse la limite de caractères. L'en-tête du canal est limité à {{.MaxLength}} caractères."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
     "translation": "Le texte saisi dépasse la limite de caractères. L'en-tête du canal est limité à {{.MaxLength}} caractères."
   },
   {

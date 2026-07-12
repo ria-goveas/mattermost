@@ -6483,34 +6483,6 @@
     "translation": "Грешка при получаване на текущия канал."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Грешка при актуализиране заглавката на канала."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Нямате необходимите права да редактирате заглавието на канала."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "заглавие"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Текстът трябва да започва с командата /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[Текст]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Редактирайте заглавието на канала"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Грешка при получаване на текущия канал."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Вече сте 'отсъстващ'"
   },
@@ -6705,26 +6677,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Неуспешно публикуване на съобщение за присъединяване/напускане"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s обнови заглавието на канала до: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s обнови заглавието на канала от: %s на: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Неуспешно извличане на потребителя при обновяване на заглавието на канала"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s премахна заглавието на канала (беше: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Неуспешно публикуване на съобщението за обновяване заглавието на канала"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
@@ -7593,10 +7545,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Въведеният текст надхвърля ограничението за символи. Предназначението на канала е ограничено до {{.MaxLength}} символи."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Въведеният текст надхвърля ограничението за символи. Заглавието на канала е ограничено до {{.MaxLength}} символи."
   },
   {
     "id": "api.admin.saml.failure_reset_authdata_to_email.app_error",

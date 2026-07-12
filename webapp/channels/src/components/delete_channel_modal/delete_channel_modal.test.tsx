@@ -20,7 +20,6 @@ describe('components/delete_channel_modal', () => {
         type: 'O' as ChannelType,
         display_name: 'testing',
         name: 'testing',
-        header: 'test',
         purpose: 'test',
         last_post_at: 1508265709635,
         last_root_post_at: 1508265709635,

@@ -232,26 +232,6 @@
     "translation": "%s actualizado el nombre del canal de: %s a: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Falla al publicar el mensaje de actualización del encabezado del canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s removió el encabezado del canal (era: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "No se pudo recuperar el usuario al actualizar el mensaje del encabezado del canal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s actualizó el encabezado del canal de: %s a: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s actualizó el encabezado del canal a: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Fallo al publicar el mensaje de unir/abandonar"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Ahora estás ausente"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Error al recuperar el canal actual."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Editar el encabezado del canal"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[texto]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "El texto debe ser proporcionado con el comando /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "encabezado"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "No tienes los permisos adecuados para modificar el encabezado del canal."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Error al actualizar la cabecera del canal."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7006,10 +6958,6 @@
   {
     "id": "api.admin.saml.failure_reset_authdata_to_email.app_error",
     "translation": "No se ha podido restablecer el campo AuthData a Email."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "El texto introducido supera el límite de caracteres. La cabecera del canal está limitada a {{.MaxLength}} caracteres."
   },
   {
     "id": "api.cloud.cws_webhook_event_missing_error",

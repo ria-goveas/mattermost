@@ -17,7 +17,6 @@ describe('components/channel_banner', () => {
         id: 'channel_id_1',
         team_id: 'team_id',
         display_name: 'Test Channel 1',
-        header: 'This is the channel header',
         name: 'test-channel',
         type: Constants.OPEN_CHANNEL as ChannelType,
         banner_info: {
@@ -31,7 +30,6 @@ describe('components/channel_banner', () => {
         id: 'channel_id_2',
         team_id: 'team_id',
         display_name: 'Test Channel 2',
-        header: 'This is the channel header',
         name: 'test-channel',
         type: Constants.OPEN_CHANNEL as ChannelType,
         banner_info: {
@@ -45,7 +43,6 @@ describe('components/channel_banner', () => {
         id: 'channel_id_3',
         team_id: 'team_id',
         display_name: 'Test Channel 3',
-        header: 'This is the channel header',
         name: 'test-channel',
         type: Constants.OPEN_CHANNEL as ChannelType,
         banner_info: {
@@ -189,7 +186,6 @@ describe('components/channel_banner', () => {
             id: 'channel_id_1',
             team_id: 'team_id',
             display_name: 'Test Channel 1',
-            header: 'This is the channel header',
             name: 'test-channel',
             banner_info: {
 

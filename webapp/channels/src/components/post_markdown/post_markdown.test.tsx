@@ -8,7 +8,6 @@ import React from 'react';
 import type {Post, PostType} from '@mattermost/types/posts';
 
 import {Client4} from 'mattermost-redux/client';
-import {Posts} from 'mattermost-redux/constants';
 
 import {renderWithContext, screen} from 'tests/react_testing_utils';
 import {PostTypes} from 'utils/constants';
@@ -195,64 +194,6 @@ describe('components/PostMarkdown', () => {
         };
         renderWithContext(<PostMarkdown {...props}/>, state);
         expect(screen.getByText('message')).toBeInTheDocument();
-    });
-
-    test('should render header change properly', () => {
-        const post = TestHelper.getPostMock({
-            id: 'post_id',
-            type: Posts.POST_TYPES.HEADER_CHANGE as PostType,
-            props: {
-                username: 'user',
-                old_header: 'see ~test',
-                new_header: 'now ~test',
-                channel_mentions: {
-                    test: {
-                        display_name: 'Test',
-                        team_name: 'test',
-                    },
-                },
-            },
-        });
-
-        const props = {
-            ...baseProps,
-            post,
-        };
-
-        const stateWithPost = {
-            ...state,
-            entities: {
-                ...state.entities,
-                posts: {
-                    posts: {
-                        [post.id]: post,
-                    },
-                    postsInThread: {},
-                },
-            },
-        };
-
-        renderWithContext(<PostMarkdown {...props}/>, stateWithPost);
-        expect(screen.getByText('@user')).toBeInTheDocument();
-        expect(screen.getByText('updated the channel header')).toBeInTheDocument();
-        expect(screen.getByText('From:')).toBeInTheDocument();
-        expect(screen.getByText('see')).toBeInTheDocument();
-
-        expect(screen.getByText('To:')).toBeInTheDocument();
-        expect(screen.getByText('now')).toBeInTheDocument();
-
-        const testLink = screen.getAllByRole('link', {name: '~Test'});
-        expect(testLink).toHaveLength(2);
-
-        expect(testLink[0]).toHaveAttribute('data-channel-mention', 'test');
-        expect(testLink[0]).toHaveAttribute('data-channel-mention-team', 'test');
-        expect(testLink[0]).toHaveAttribute('href', '/test/channels/test');
-        expect(screen.getAllByRole('link')[0]).toHaveClass('mention-link');
-
-        expect(testLink[1]).toHaveAttribute('data-channel-mention', 'test');
-        expect(testLink[1]).toHaveAttribute('data-channel-mention-team', 'test');
-        expect(testLink[1]).toHaveAttribute('href', '/test/channels/test');
-        expect(screen.getAllByRole('link')[1]).toHaveClass('mention-link');
     });
 
     test('plugin hooks can build upon other hook message updates', () => {

@@ -1935,8 +1935,6 @@
   "delete_channel.cancel": "रद्द करना",
   "delete_post.cancel": "रद्द करना",
   "delete_post.del": "हटाएं",
-  "edit_channel_header_modal.cancel": "रद्द करना",
-  "edit_channel_header_modal.save": "सहेजें",
   "edit_channel_purpose_modal.cancel": "रद्द करना",
   "edit_channel_purpose_modal.save": "सहेजें",
   "edit_command.update": "अपडेट करें",

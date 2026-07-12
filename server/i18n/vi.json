@@ -722,10 +722,6 @@
     "translation": "Id gốc không hợp lệ"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s cập nhật các tiêu đề kênh từ: %s: %s"
-  },
-  {
     "id": "api.command.execute_command.not_found.app_error",
     "translation": "Không tìm thấy lệnh kích hoạt '{{.Trigger}}'. Để gửi tin nhắn bắt đầu bằng \"/\", hãy thử thêm một khoảng trống ở đầu tin nhắn."
   },
@@ -740,10 +736,6 @@
   {
     "id": "app.plugin.deactivate.app_error",
     "translation": "Không thể vô hiệu hoá plugin"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Không thể truy xuất người dùng trong khi cập nhật tiêu đề kênh"
   },
   {
     "id": "api.admin.test_email.body",
@@ -776,10 +768,6 @@
   {
     "id": "ent.ldap_groups.reachable_groups_error",
     "translation": "lỗi truy xuất nhóm cho người dùng"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Văn bản phải được cung cấp với lệnh /header."
   },
   {
     "id": "app.import.import_line.null_team.error",
@@ -2044,10 +2032,6 @@
     "translation": "Không có hoạt động websocket nào."
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s loại bỏ các kênh đầu (was: %s)"
-  },
-  {
     "id": "app.import.validate_reply_import_data.message_length.error",
     "translation": "Trả lời thuộc tính Tin nhắn dài hơn độ dài tối đa được phép."
   },
@@ -2618,10 +2602,6 @@
     "translation": "Không thể thiết lập lại mật khẩu cho tài khoản SSO"
   },
   {
-    "id": "api.command_channel_header.name",
-    "translation": "đầu trang"
-  },
-  {
     "id": "api.command_msg.dm_fail.app_error",
     "translation": "Đã xảy ra lỗi trong khi tạo tin nhắn trực tiếp."
   },
@@ -3146,10 +3126,6 @@
     "translation": "yêu cầu không hợp lệ: Redirect_uri được cung cấp không hợp kệ với callback_url đã được đăng ký"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s cập nhật các kênh tiêu đề: %s"
-  },
-  {
     "id": "model.user.is_valid.pwd_lowercase_number_symbol.app_error",
     "translation": "Mật khẩu của bạn phải chứa ít nhất {{.Min}} ký tự được tạo thành từ ít nhất một chữ cái viết thường, ít nhất một số và ít nhất một ký hiệu (ví dụ: \"~! @ # $% ^ & * ()\")."
   },
@@ -3222,10 +3198,6 @@
     "translation": "không thể giải mã"
   },
   {
-    "id": "api.command_channel_header.desc",
-    "translation": "Chỉnh sửa tiêu đề kênh"
-  },
-  {
     "id": "api.command_online.name",
     "translation": "trực tuyến"
   },
@@ -3296,10 +3268,6 @@
   {
     "id": "api.channel.update_channel.tried.app_error",
     "translation": "Cố gắng thực hiện một cập nhật không hợp lệ của kênh mặc định {{.Channel}}."
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Lỗi khi truy xuất kênh hiện tại."
   },
   {
     "id": "api.user.update_password.menu",
@@ -4278,10 +4246,6 @@
     "translation": "Bài đăng trực tiếp chỉ có thể được gắn cờ bởi các thành viên của kênh đó. \"{{.Username}}\" không phải là thành viên."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Lỗi cập nhật kênh hiện tại."
-  },
-  {
     "id": "api.admin.upload_brand_image.too_large.app_error",
     "translation": "Không thể tải tệp tin lên. Tệp tin quá lớn."
   },
@@ -4532,10 +4496,6 @@
     "translation": "User id không hợp lệ"
   },
   {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
     "id": "app.plugin.install_marketplace_plugin.app_error",
     "translation": "Không thể bổ sung các plugin trên marketplace."
   },
@@ -4582,10 +4542,6 @@
   {
     "id": "api.channel.delete_channel.cannot.app_error",
     "translation": "Không thể xóa kênh mặc định {{.Channel}}."
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Thất bại để gửi cập nhật tiêu đề kênh tin nhắn"
   },
   {
     "id": "api.channel.patch_update_channel.forbidden.app_error",
@@ -4784,10 +4740,6 @@
   {
     "id": "app.import.validate_direct_channel_import_data.members_too_few.error",
     "translation": "Danh sách thành viên kênh trực tiếp chứa quá ít mục"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Bạn không có quyền để chỉnh sửa tiêu đề kênh."
   },
   {
     "id": "app.import.validate_channel_import_data.purpose_length.error",
@@ -6360,10 +6312,6 @@
   {
     "id": "api.command_custom_status.clear.app_error",
     "translation": "Lỗi xoá trạng thái"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Văn bản đã nhập vượt quá giới hạn ký tự. Tiêu đề kênh được giới hạn ở {{.MaxLength}} ký tự."
   },
   {
     "id": "api.cloud.teams_limit_reached.create",

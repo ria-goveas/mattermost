@@ -146,7 +146,6 @@ func ExampleClient4_PatchChannel() {
 	patch := &model.ChannelPatch{
 		Name:        new("new_name"),
 		DisplayName: new("New Display Name"),
-		Header:      new("New header"),
 		Purpose:     new("New purpose"),
 	}
 

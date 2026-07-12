@@ -62,7 +62,6 @@ describe('useBurnOnRead', () => {
         type,
         display_name: 'Test Channel',
         name: name || 'test-channel',
-        header: '',
         purpose: '',
         last_post_at: 0,
         last_root_post_at: 0,

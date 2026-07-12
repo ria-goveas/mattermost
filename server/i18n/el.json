@@ -890,34 +890,6 @@
     "translation": "Σφάλμα κατά την ανάκτηση του τρέχον καναλιού."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Σφάλμα κατά την ενημέρωση του τρέχον καναλιού."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Δεν έχετε δικαιώματα για να επεξεργαστείτε τη κεφαλίδα."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "Κεφαλίδα"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Ένα μήνυμα πρέπει να παρέχεται με την εντολή /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[κείμενο]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Επεξεργαστείτε τη κεφαλίδα του καναλιού"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Σφάλμα για να ανακτήσετε το τρέχον κανάλι."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Τώρα είσαι σε κατάσταση 'Λείπω'"
   },
@@ -1044,26 +1016,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Αποτυχία δημοσίευσης μηνύματος συμμετοχής/αποχώρησης"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s ενημέρωσε την κεφαλίδα του καναλιού σε: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s ενημέρωσε την κεφαλίδα του καναλιού από: %s σε: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Αποτυχία ανάκτησης του χρήστη κατά την ενημέρωση της κεφαλίδας του καναλιού"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s αφαίρεσε τη κεφαλίδα του καναλιού (ήταν: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Αποτυχία ενημέρωσης μηνύματος επικεφαλίδας καναλιού"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
@@ -1728,10 +1680,6 @@
   {
     "id": "api.command_channel_purpose.desc",
     "translation": "Επεξεργασία του σκοπού του καναλιού"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Το κείμενο που έχει εισαχθεί υπερβαίνει το όριο χαρακτήρων. Η επικεφαλίδα του καναλιού περιορίζεται σε {{.MaxLength}} χαρακτήρες."
   },
   {
     "id": "api.cloud.request_error",

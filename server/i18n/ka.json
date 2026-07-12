@@ -192,26 +192,6 @@
     "translation": "ვერ მოხერხდა შესვლა/დატოვების შემოდგომი შეტყობინების გამოქვეყნება"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s-მა შეცვალა არხის სათაური: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s-მა შეცვალა არხის სათაური, %s-დან : %s-ზე"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "ვერ მოხერხდა მომხმარებლის მიღება არხის სათაურის განახლებისას"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s-მა წაშალა არხის სათაური (იყო: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "ვერ მოხერხდა არხის სათაურის შეცვლის შეტყობინების გამოქვეყნება"
-  },
-  {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
     "translation": "%s-მა შეცვალა არხის ეკრანული სახელი: %s-დან : %s-ზე"
   },

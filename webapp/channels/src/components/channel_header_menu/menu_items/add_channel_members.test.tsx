@@ -16,7 +16,7 @@ import {TestHelper} from 'utils/test_helper';
 import AddChannelMembers from './add_channel_members';
 
 describe('components/ChannelHeaderMenu/MenuItems/AddChannelMembers', () => {
-    const channel = TestHelper.getChannelMock({header: 'Test Header'});
+    const channel = TestHelper.getChannelMock();
 
     beforeEach(() => {
         jest.spyOn(modalActions, 'openModal');

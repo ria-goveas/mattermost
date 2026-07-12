@@ -88,7 +88,6 @@ describe('components/ChannelHeaderMenu/ChannelHeaderGroupMenu', () => {
         );
 
         expect(screen.getByText('Channel Settings')).toBeInTheDocument();
-        expect(screen.queryByText('Edit Header')).not.toBeInTheDocument();
     });
 
     it('shows Settings submenu when RestrictDMAndGMAutotranslation is enabled', () => {

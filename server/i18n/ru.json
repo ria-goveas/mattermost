@@ -232,26 +232,6 @@
     "translation": "%s обновил отображаемое имя канала с: %s на: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Не удалось опубликовать сообщение обновления заголовка канала"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s удалил заголовок канала (был: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Не удалось получить пользователя при попытке обновления сообщения заголовка канала"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s обновил заголовок канала с: %s на: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s обновил заголовок канала на: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Не удалось отправить сообщение о присоединении/покидании"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Сейчас ваше состояние \"Отошёл\""
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Ошибка получения текущего канала."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Редактировать заголовок канала"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[текст]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Перед сообщение должна быть команда /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "заголовок"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "У вас нет прав для редактирования заголовка канала."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Ошибка обновления заголовка канала."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7826,10 +7778,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Введенный текст превышает лимит символов. Назначение канала ограничено {{.MaxLength}} символами."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Введенный текст превышает лимит символов. Заголовок канала ограничен {{.MaxLength}} символами."
   },
   {
     "id": "api.channel.create_channel.direct_channel.team_restricted_error",

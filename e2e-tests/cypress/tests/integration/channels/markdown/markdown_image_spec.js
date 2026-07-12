@@ -120,47 +120,4 @@ describe('Markdown', () => {
         cy.uiCloseFilePreviewModal();
     });
 
-    it('channel header is markdown image', () => {
-        // # Update channel header
-        cy.updateChannelHeader('![MM Logo](https://raw.githubusercontent.com/mattermost/mattermost/master/e2e-tests/cypress/tests/fixtures/small-image.png)').wait(TIMEOUTS.TWO_SEC);
-
-        // * Verify image in header
-        cy.get('#channelHeaderDescription').find('span.markdown__paragraph-inline').as('imageDiv');
-
-        cy.get('@imageDiv').find('img.markdown-inline-img').
-            should('have.class', 'markdown-inline-img--hover').
-            and('have.class', 'cursor--pointer').
-            and('have.class', 'a11y--active').
-            and('have.css', 'height', '18px');
-
-        // * Verify image in system message
-        cy.uiGetPostBody().
-            find('img.markdown-inline-img').
-            should('have.class', 'markdown-inline-img--hover').
-            and('have.class', 'cursor--pointer').
-            and('have.class', 'a11y--active').
-            and('have.class', 'markdown-inline-img--scaled-down').
-            and('have.css', 'height', '18px');
-    });
-
-    it('channel header is markdown image that is also a link', () => {
-        // # Update channel header
-        cy.updateChannelHeader('[![Build Status](https://raw.githubusercontent.com/mattermost/mattermost/master/e2e-tests/cypress/tests/fixtures/small-image.png)](https://raw.githubusercontent.com/mattermost/mattermost/master/e2e-tests/cypress/tests/fixtures/small-image.png)').wait(TIMEOUTS.TWO_SEC);
-
-        // * Verify image in header
-        cy.get('#channelHeaderDescription').find('span.markdown__paragraph-inline').as('imageDiv');
-
-        cy.get('@imageDiv').find('img.markdown-inline-img').
-            should('have.class', 'markdown-inline-img--hover').
-            and('have.class', 'markdown-inline-img--no-border').
-            and('have.css', 'height', '18px');
-
-        // * Verify image in system message
-        cy.uiGetPostBody().
-            find('img.markdown-inline-img--no-border').
-            should('have.class', 'markdown-inline-img--hover').
-            and('have.class', 'markdown-inline-img').
-            and('have.class', 'markdown-inline-img--scaled-down').
-            and('have.css', 'height', '18px');
-    });
 });

@@ -120,7 +120,6 @@ describe('channel_info_rhs/about_area_gm', () => {
     const defaultProps = {
         channel: {
             id: 'test-c-id',
-            header: 'my channel header',
         } as Channel,
         gmUsers: [
             {
@@ -134,9 +133,6 @@ describe('channel_info_rhs/about_area_gm', () => {
                 username: 'my username2',
             } as UserProfile,
         ],
-        actions: {
-            editChannelHeader: jest.fn(),
-        },
     };
 
     test('should display users avatar', () => {
@@ -162,14 +158,4 @@ describe('channel_info_rhs/about_area_gm', () => {
         expect(screen.getByText('my username')).toBeInTheDocument();
     });
 
-    test('should display channel header', () => {
-        renderWithContext(
-            <AboutAreaGM
-                {...defaultProps}
-            />,
-            initialState,
-        );
-
-        expect(screen.getByText('my channel header')).toBeInTheDocument();
-    });
 });

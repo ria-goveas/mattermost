@@ -14,14 +14,8 @@ import Permissions from 'mattermost-redux/constants/permissions';
 import {areManagedCategoriesEnabled, getChannelManagedCategoryName, isChannelCategorySortingEnabled, makeGetSidebarCategoryNamesForTeam} from 'mattermost-redux/selectors/entities/channel_categories';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 
-import {
-    setShowPreviewOnChannelSettingsHeaderModal,
-    setShowPreviewOnChannelSettingsPurposeModal,
-} from 'actions/views/textbox';
-import {
-    showPreviewOnChannelSettingsHeaderModal,
-    showPreviewOnChannelSettingsPurposeModal,
-} from 'selectors/views/textbox';
+import {setShowPreviewOnChannelSettingsPurposeModal} from 'actions/views/textbox';
+import {showPreviewOnChannelSettingsPurposeModal} from 'selectors/views/textbox';
 
 import ConvertConfirmModal from 'components/admin_console/team_channel_settings/convert_confirm_modal';
 import CategorySelector from 'components/category_selector/category_selector';
@@ -55,7 +49,6 @@ function ChannelSettingsInfoTab({
     const getSidebarCategoryNamesForTeam = useRef(makeGetSidebarCategoryNamesForTeam());
 
     const shouldShowPreviewPurpose = useSelector(showPreviewOnChannelSettingsPurposeModal);
-    const shouldShowPreviewHeader = useSelector(showPreviewOnChannelSettingsHeaderModal);
 
     const isPrivate = channel.type === Constants.PRIVATE_CHANNEL;
     const isDirect = channel.type === Constants.DM_CHANNEL;
@@ -126,9 +119,6 @@ function ChannelSettingsInfoTab({
         setServerManagedCategoryName(currentManagedCategoryName);
     }, [currentManagedCategoryName]);
 
-    // Constants
-    const HEADER_MAX_LENGTH = 1024;
-
     // Internal state variables
     const [internalUrlError, setUrlError] = useState('');
     const [channelNameError, setChannelNameError] = useState('');
@@ -141,7 +131,6 @@ function ChannelSettingsInfoTab({
     const [displayName, setDisplayName] = useState(channel?.display_name ?? '');
     const [channelUrl, setChannelURL] = useState(channel?.name ?? '');
     const [channelPurpose, setChannelPurpose] = useState(channel.purpose ?? '');
-    const [channelHeader, setChannelHeader] = useState(channel?.header ?? '');
     const [channelType, setChannelType] = useState<ChannelType>(channel?.type as ChannelType ?? Constants.OPEN_CHANNEL as ChannelType);
 
     // UI Feedback: errors, states
@@ -170,14 +159,13 @@ function ChannelSettingsInfoTab({
             displayName.trim() !== channel.display_name ||
             channelUrl.trim() !== channel.name ||
             channelPurpose.trim() !== channel.purpose ||
-            channelHeader.trim() !== channel.header ||
             channelType !== channel.type ||
             (defaultCategoryName ?? '') !== (serverDefaultCategoryName ?? '') ||
             managedCategoryName !== serverManagedCategoryName
         ) : false;
 
         setAreThereUnsavedChanges?.(unsavedChanges);
-    }, [channel, displayName, channelUrl, channelPurpose, channelHeader, channelType, defaultCategoryName, serverDefaultCategoryName, managedCategoryName, serverManagedCategoryName, setAreThereUnsavedChanges]);
+    }, [channel, displayName, channelUrl, channelPurpose, channelType, defaultCategoryName, serverDefaultCategoryName, managedCategoryName, serverManagedCategoryName, setAreThereUnsavedChanges]);
 
     const handleURLChange = useCallback((newURL: string) => {
         if (internalUrlError) {
@@ -191,10 +179,6 @@ function ChannelSettingsInfoTab({
     const togglePurposePreview = useCallback(() => {
         dispatch(setShowPreviewOnChannelSettingsPurposeModal(!shouldShowPreviewPurpose));
     }, [dispatch, shouldShowPreviewPurpose]);
-
-    const toggleHeaderPreview = useCallback(() => {
-        dispatch(setShowPreviewOnChannelSettingsHeaderModal(!shouldShowPreviewHeader));
-    }, [dispatch, shouldShowPreviewHeader]);
 
     const handleChannelTypeChange = (selected: string) => {
         // This consumer doesn't pass pluginOptions, so the selector only fires built-in channel
@@ -217,27 +201,6 @@ function ChannelSettingsInfoTab({
         setChannelType(type);
         setFormError('');
     };
-
-    const handleHeaderChange = useCallback((e: React.ChangeEvent<TextboxElement>) => {
-        const newValue = e.target.value;
-
-        // Update the header value
-        setChannelHeader(newValue);
-
-        // Check for character limit
-        if (newValue.trim().length > HEADER_MAX_LENGTH) {
-            setFormError(formatMessage({
-                id: 'edit_channel_header_modal.error',
-                defaultMessage: 'The text entered exceeds the character limit. The channel header is limited to {maxLength} characters.',
-            }, {
-                maxLength: HEADER_MAX_LENGTH,
-            }));
-        } else if (formError && !channelNameError) {
-            // Only clear form error if there's no channel name error
-            // This prevents clearing channel name errors when editing the header
-            setFormError('');
-        }
-    }, [HEADER_MAX_LENGTH, formError, channelNameError, setFormError, formatMessage]);
 
     const handlePurposeChange = useCallback((e: React.ChangeEvent<TextboxElement>) => {
         const newValue = e.target.value;
@@ -308,9 +271,6 @@ function ChannelSettingsInfoTab({
         if (!isDMorGroupChannel && channelPurpose.trim() !== channel.purpose) {
             updated.purpose = channelPurpose.trim();
         }
-        if (channelHeader.trim() !== channel.header) {
-            updated.header = channelHeader.trim();
-        }
         if ((defaultCategoryName ?? '') !== (serverDefaultCategoryName ?? '')) {
             updated.default_category_name = defaultCategoryName ?? '';
         }
@@ -336,12 +296,11 @@ function ChannelSettingsInfoTab({
             setChannelURL(data?.name ?? updated.name ?? channel.name);
             setChannelPurpose(data?.purpose ?? updated.purpose ?? channel.purpose);
         }
-        setChannelHeader(data?.header ?? updated.header ?? channel.header);
         setServerDefaultCategoryName(defaultCategoryName);
         setServerManagedCategoryName(managedCategoryName);
 
         return true;
-    }, [channel, displayName, channelType, isDMorGroupChannel, channelUrl, channelPurpose, channelHeader, dispatch, formatMessage, handleServerError, defaultCategoryName, serverDefaultCategoryName, managedCategoryName, serverManagedCategoryName]);
+    }, [channel, displayName, channelType, isDMorGroupChannel, channelUrl, channelPurpose, dispatch, formatMessage, handleServerError, defaultCategoryName, serverDefaultCategoryName, managedCategoryName, serverManagedCategoryName]);
 
     // Handle save changes panel actions
     const handleSaveChanges = useCallback(async () => {
@@ -380,7 +339,6 @@ function ChannelSettingsInfoTab({
         setDisplayName(channel?.display_name ?? '');
         setChannelURL(channel?.name ?? '');
         setChannelPurpose(channel?.purpose ?? '');
-        setChannelHeader(channel?.header ?? '');
         setChannelType(channel?.type as ChannelType ?? Constants.OPEN_CHANNEL as ChannelType);
         setDefaultCategoryName(serverDefaultCategoryName);
         setManagedCategoryName(serverManagedCategoryName);
@@ -408,7 +366,6 @@ function ChannelSettingsInfoTab({
     const shouldShowPanel = useMemo(() => {
         let unsavedChanges = false;
         if (channel) {
-            unsavedChanges = unsavedChanges || channelHeader.trim() !== channel.header;
             if (!isDMorGroupChannel) {
                 unsavedChanges = unsavedChanges || displayName.trim() !== channel.display_name;
                 unsavedChanges = unsavedChanges || channelUrl.trim() !== channel.name;
@@ -420,7 +377,7 @@ function ChannelSettingsInfoTab({
         }
 
         return unsavedChanges || saveChangesPanelState === 'saved';
-    }, [channel, isDMorGroupChannel, displayName, channelUrl, channelPurpose, channelHeader, channelType, saveChangesPanelState, defaultCategoryName, serverDefaultCategoryName, managedCategoryName, serverManagedCategoryName]);
+    }, [channel, isDMorGroupChannel, displayName, channelUrl, channelPurpose, channelType, saveChangesPanelState, defaultCategoryName, serverDefaultCategoryName, managedCategoryName, serverManagedCategoryName]);
 
     return (
         <div className='ChannelSettingsModal__infoTab'>
@@ -545,38 +502,6 @@ function ChannelSettingsInfoTab({
                     name={formatMessage({id: 'channel_settings.purpose.label', defaultMessage: 'Channel Purpose'})}
                 />
             )}
-
-            {/* Channel Header Section*/}
-            <AdvancedTextbox
-                id='channel_settings_header_textbox'
-                value={channelHeader}
-                channelId={channel.id}
-                onChange={handleHeaderChange}
-                createMessage={formatMessage({
-                    id: 'channel_settings_modal.header.placeholder',
-                    defaultMessage: 'Enter a header for this channel',
-                })}
-                maxLength={HEADER_MAX_LENGTH}
-                preview={shouldShowPreviewHeader}
-                togglePreview={toggleHeaderPreview}
-                useChannelMentions={false}
-                onKeyPress={() => {}}
-                descriptionMessage={formatMessage({
-                    id: 'channel_settings.purpose.header',
-                    defaultMessage: 'This is the text that will appear in the header of the channel beside the channel name. You can use markdown to include links by typing [Link Title](http://example.com).',
-                })}
-                hasError={channelHeader.length > HEADER_MAX_LENGTH}
-                errorMessage={channelHeader.length > HEADER_MAX_LENGTH ? formatMessage({
-                    id: 'edit_channel_header_modal.error',
-                    defaultMessage: 'The text entered exceeds the character limit. The channel header is limited to {maxLength} characters.',
-                }, {
-                    maxLength: HEADER_MAX_LENGTH,
-                }) : undefined
-                }
-                showCharacterCount={channelHeader.length > HEADER_MAX_LENGTH}
-                readOnly={!canManageChannelProperties}
-                name={formatMessage({id: 'channel_settings.header.label', defaultMessage: 'Channel Header'})}
-            />
 
             {/* SaveChangesPanel for unsaved changes */}
             {((canManageChannelProperties || canManageChannelRoles) && shouldShowPanel) && (

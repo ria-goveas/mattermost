@@ -111,7 +111,7 @@ describe('Keyboard shortcut CTRL/CMD+Shift+\\ for adding reaction to last messag
         cy.uiOpenChannelMenu('Channel Settings');
         verifyEmojiPickerNotOpen();
 
-        ['Channel Purpose', 'Channel Header'].forEach((modal) => {
+        ['Channel Purpose'].forEach((modal) => {
             // # Open channel menu and click View Info
             cy.uiOpenChannelMenu('View Info');
 

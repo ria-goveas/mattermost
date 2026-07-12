@@ -97,7 +97,6 @@ const mockChannel = TestHelper.getChannelMock({
     display_name: 'Test Channel',
     name: 'test-channel',
     purpose: 'Testing purpose',
-    header: 'Initial header',
     type: 'O',
     banner_info: {
         enabled: false,
@@ -113,7 +112,6 @@ const mockChannelWithBanner = TestHelper.getChannelMock({
     display_name: 'Test Channel',
     name: 'test-channel',
     purpose: 'Testing purpose',
-    header: 'Initial header',
     type: 'O',
     banner_info: {
         enabled: true,

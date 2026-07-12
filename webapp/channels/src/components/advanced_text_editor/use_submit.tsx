@@ -26,7 +26,6 @@ import {onSubmit} from 'actions/views/create_comment';
 import {openModal} from 'actions/views/modals';
 import {editPost} from 'actions/views/posts';
 
-import EditChannelHeaderModal from 'components/edit_channel_header_modal';
 import EditChannelPurposeModal from 'components/edit_channel_purpose_modal';
 import NotifyConfirmModal from 'components/notify_confirm_modal';
 import PostDeletedModal from 'components/post_deleted_modal';
@@ -355,23 +354,6 @@ const useSubmit = (
                 };
 
                 dispatch(openModal(resetStatusModalData));
-
-                handleDraftChange({
-                    ...submittingDraft,
-                    message: '',
-                });
-                isDraftSubmitting.current = false;
-                return;
-            }
-
-            if (submittingDraft.message.trimEnd() === '/header') {
-                const editChannelHeaderModalData = {
-                    modalId: ModalIdentifiers.EDIT_CHANNEL_HEADER,
-                    dialogType: EditChannelHeaderModal,
-                    dialogProps: {channel},
-                };
-
-                dispatch(openModal(editChannelHeaderModalData));
 
                 handleDraftChange({
                     ...submittingDraft,

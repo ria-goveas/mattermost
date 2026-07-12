@@ -1375,8 +1375,6 @@
   "delete_channel.cancel": "Cancelar",
   "delete_post.cancel": "Cancelar",
   "delete_post.del": "Eliminar",
-  "edit_channel_header_modal.cancel": "Cancelar",
-  "edit_channel_header_modal.save": "Gardar",
   "edit_channel_purpose_modal.cancel": "Cancelar",
   "edit_channel_purpose_modal.save": "Gardar",
   "edit_post.editPost": "Editar a publicación…",

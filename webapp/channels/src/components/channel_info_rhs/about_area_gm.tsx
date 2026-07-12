@@ -10,12 +10,8 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {Client4} from 'mattermost-redux/client';
 
-import Markdown from 'components/markdown';
 import ProfilePicture from 'components/profile_picture';
 import UserProfileElement from 'components/user_profile';
-
-import EditableArea from './components/editable_area';
-import LineLimiter from './components/linelimiter';
 
 const Usernames = styled.p`
     font-family: Metropolis, sans-serif;
@@ -51,10 +47,6 @@ const UsersArea = styled.div`
     }
 `;
 
-const ChannelHeader = styled.div`
-    margin-bottom: 12px;
-`;
-
 const ChannelId = styled.div`
     margin-bottom: 12px;
     font-size: 11px;
@@ -66,12 +58,9 @@ const ChannelId = styled.div`
 interface Props {
     channel: Channel;
     gmUsers: UserProfile[];
-    actions: {
-        editChannelHeader: () => void;
-    };
 }
 
-const AboutAreaGM = ({channel, gmUsers, actions}: Props) => {
+const AboutAreaGM = ({channel, gmUsers}: Props) => {
     const {formatMessage} = useIntl();
 
     return (
@@ -105,25 +94,6 @@ const AboutAreaGM = ({channel, gmUsers, actions}: Props) => {
                     ))}
                 </Usernames>
             </UsersArea>
-
-            <ChannelHeader>
-                <EditableArea
-                    content={channel.header && (
-                        <LineLimiter
-                            maxLines={4}
-                            lineHeight={20}
-                            moreText={formatMessage({id: 'channel_info_rhs.about_area.channel_header.line_limiter.more', defaultMessage: 'more'})}
-                            lessText={formatMessage({id: 'channel_info_rhs.about_area.channel_header.line_limiter.less', defaultMessage: 'less'})}
-                        >
-                            <Markdown message={channel.header}/>
-                        </LineLimiter>
-                    )}
-                    editable={true}
-                    onEdit={actions.editChannelHeader}
-                    editTooltip={formatMessage({id: 'channel_info_rhs.about_area.edit_channel_header', defaultMessage: 'Edit channel header'})}
-                    emptyLabel={formatMessage({id: 'channel_info_rhs.about_area.add_channel_header', defaultMessage: 'Add a channel header'})}
-                />
-            </ChannelHeader>
 
             <ChannelId>
                 {formatMessage({id: 'channel_info_rhs.about_area_id', defaultMessage: 'ID:'})} {channel.id}

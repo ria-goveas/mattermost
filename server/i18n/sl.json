@@ -3957,34 +3957,6 @@
     "translation": "Napaka pridobivanja trenutnega kanala."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Napaka pri posodabljanju trenutnega kanala."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Nimate ustreznih pravic za urejanje teme kanala."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "sporočilo kanala"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Tekst mora biti podan z /header ukazom."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Uredi sporočilo kanala"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Napaka pridobivanja trenutnega kanala."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Trenutno ste odsotni"
   },
@@ -4183,26 +4155,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Napaka pri objavi prihod/odhod sporočila"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s je posodobil sporočilo kanala v: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s je posodobil sporočilo kanala iz: %s v: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Napaka pridobivanja uporabnika med posodabljanjem sporočila kanala"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s je odstranil sporočila kanala (prej: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Napaka pri sporočanju o spremembi glavnega sporočila"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

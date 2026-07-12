@@ -232,26 +232,6 @@
     "translation": "%s actualizat numele afişat canal din: %s la: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Nu a reuşit să posta actualizare canal antet mesaj"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s eliminată din antetul de canal (a fost: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "A reuşit să regăsească utilizatorului în timpul actualizării canal antet"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s actualizat antetul de canal din: %s la: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s actualizat antetul de canal la: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Nu a reușit să se afișeze mesajul de conectare/plecare"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Acum esti departe"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Eroare la regăsirea canalul curent."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Editați antetul de canal"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Textul trebuie prevăzute cu comanda /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "antet"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Nu aveţi permisiunile corespunzătoare pentru a modifica antetul de canal."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Eroare la actualizare canalul curent."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7826,9 +7778,5 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Textul introdus depășește limita de caractere. Scopul canalului este limitat la {{.MaxLength}} caractere."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Textul introdus depășește limita de caractere. Antetul canalului este limitat la {{.MaxLength}} caractere."
   }
 ]

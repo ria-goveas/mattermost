@@ -1548,7 +1548,6 @@ func (s *SqlPostStore) GetPostsSinceForSync(options model.GetPostsSinceForSyncOp
 
 	if options.ExcludeChannelMetadataSystemPosts {
 		query = query.Where(sq.NotEq{"Posts.Type": []string{
-			model.PostTypeHeaderChange,
 			model.PostTypeDisplaynameChange,
 			model.PostTypePurposeChange,
 		}})

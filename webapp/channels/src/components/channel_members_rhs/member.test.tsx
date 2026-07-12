@@ -22,7 +22,6 @@ describe('components/channel_members_rhs/Member', () => {
             update_at: 1234567890,
             delete_at: 0,
             creator_id: 'creator_id',
-            header: '',
             purpose: '',
             last_post_at: 1234567890,
             last_root_post_at: 1234567890,

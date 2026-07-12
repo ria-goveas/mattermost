@@ -28,7 +28,6 @@ import {
 import {canPopout, isChannelPopoutWindow, popoutChannel} from 'utils/popouts/popout_windows';
 import {isEmptyObject} from 'utils/utils';
 
-import ChannelHeaderText from './channel_header_text';
 import ChannelHeaderTitle from './channel_header_title';
 import ChannelInfoButton from './channel_info_button';
 import HeaderIconWrapper from './components/header_icon_wrapper';
@@ -46,8 +45,6 @@ class ChannelHeader extends React.PureComponent<Props> {
     }
 
     componentDidMount() {
-        this.props.actions.getCustomEmojisInText(this.props.channel ? this.props.channel.header : '');
-
         // Fetch remote names for shared channels on initial mount
         if (this.props.channel?.shared) {
             // Don't force refresh on initial load, use cached data if available
@@ -56,12 +53,6 @@ class ChannelHeader extends React.PureComponent<Props> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const header = this.props.channel ? this.props.channel.header : '';
-        const prevHeader = prevProps.channel ? prevProps.channel.header : '';
-        if (header !== prevHeader) {
-            this.props.actions.getCustomEmojisInText(header);
-        }
-
         // Fetch remote names when channel changes or when a channel becomes shared
         if (this.props.channel?.shared) {
             if (this.props.channel.id !== prevProps.channel?.id) {
@@ -145,7 +136,6 @@ class ChannelHeader extends React.PureComponent<Props> {
 
     render() {
         const {
-            team,
             currentUser,
             gmMembers,
             channel,
@@ -416,17 +406,12 @@ class ChannelHeader extends React.PureComponent<Props> {
                                     />
                                 </div>
                                 <div
-                                    id='channelHeaderDescription'
-                                    className='channel-header__description'
+                                    id='channelHeaderStatus'
+                                    className='channel-header__status'
                                 >
                                     {dmHeaderTextStatus}
                                     {hasGuestsText}
                                     {autotranslationMessage}
-                                    <ChannelHeaderText
-                                        teamId={team?.id}
-                                        channel={channel}
-                                        dmUser={dmUser}
-                                    />
                                 </div>
                             </div>
                         </div>

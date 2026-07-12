@@ -45,7 +45,7 @@ describe('System Console > User Management > Deactivation', () => {
             cy.clickPostCommentIcon();
 
             // * Verify status indicator is shown in channel header
-            cy.get('#channelHeaderDescription .status').should('be.visible');
+            cy.get('#channelHeaderStatus .status').should('be.visible');
 
             // # Deactivate other user
             cy.apiDeactivateUser(user.id);
@@ -57,7 +57,7 @@ describe('System Console > User Management > Deactivation', () => {
             cy.get('#rhsContainer .post-create-message').contains('You are viewing an archived channel with a deactivated user. New messages cannot be posted.');
 
             // * Verify status indicator is not shown in channel header
-            cy.get('#channelHeaderDescription .status').should('not.exist');
+            cy.get('#channelHeaderStatus .status').should('not.exist');
 
             // * Verify archived icon is shown in LHS
             cy.uiGetLhsSection('DIRECT MESSAGES').

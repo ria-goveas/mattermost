@@ -230,8 +230,6 @@
   "delete_channel.cancel": "Ακύρωση",
   "delete_post.cancel": "Ακύρωση",
   "delete_post.del": "Διαγραφή",
-  "edit_channel_header_modal.cancel": "Ακύρωση",
-  "edit_channel_header_modal.save": "Αποθήκευση",
   "edit_channel_purpose_modal.cancel": "Ακύρωση",
   "edit_channel_purpose_modal.save": "Αποθήκευση",
   "edit_command.update": "Αναβάθμιση",

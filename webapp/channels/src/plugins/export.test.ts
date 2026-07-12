@@ -8,10 +8,6 @@ import './export';
 jest.mock('utils/message_html_to_component');
 
 describe('window.Components exposes plugin modals', () => {
-    test('EditChannelHeaderModal is defined', () => {
-        expect((window as any).Components.EditChannelHeaderModal).toBeDefined();
-    });
-
     test('ChannelNotificationsModal is defined', () => {
         expect((window as any).Components.ChannelNotificationsModal).toBeDefined();
     });

@@ -1423,8 +1423,8 @@ export default class PluginRegistry {
     /**
      * Register a component that replaces the descriptive body (icon, title, creation info, and
      * description) of a standard public/private channel's intro for channels the matcher selects.
-     * The channel's action buttons (favorite, add members, set header, notification preferences,
-     * and plugin intro buttons) remain rendered by the server. The matcher receives the full Redux
+     * The channel's action buttons (favorite, add members, notification preferences, and plugin
+     * intro buttons) remain rendered by the server. The matcher receives the full Redux
      * state so it can read plugin-owned slices (e.g. state['plugins-<id>']). First registration
      * whose matcher returns true wins (alphabetical pluginId, then insertion order); the rest are
      * ignored for that channel. Cleaned up automatically when the plugin is removed.

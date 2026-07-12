@@ -24,14 +24,6 @@
     "translation": "Группыг зохистой ашиглах тухай мэдээлэл өөрчлөх"
   },
   {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Du har ikke de nødvendige tillatelsene til å redigere kanaloverskriften."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Rediger kanaloverskriften"
-  },
-  {
     "id": "api.command.invite_people.name",
     "translation": "invite_people"
   },
@@ -246,14 +238,6 @@
   {
     "id": "api.templates.license_up_for_renewal_contact_sales",
     "translation": "Kontakt salgsavdelingen"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Feil ved henting av gjeldende kanal."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[tekst]"
   },
   {
     "id": "api.command_away.name",
@@ -563,14 +547,6 @@
   {
     "id": "api.command.team_mismatch.app_error",
     "translation": "Kan ikke oppdatere kommandoer på tvers av team."
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Teksten må oppgis med kommandoen /header."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Feil ved oppdatering av kanalens overskrift."
   },
   {
     "id": "api.user.login.invalid_credentials_sso",

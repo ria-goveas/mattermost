@@ -1033,7 +1033,6 @@ func (a *App) PatchChannel(rctx request.CTX, channel *model.Channel, patch *mode
 	}
 
 	oldChannelDisplayName := channel.DisplayName
-	oldChannelHeader := channel.Header
 	oldChannelPurpose := channel.Purpose
 	oldChannelAutotranslation := channel.AutoTranslation
 
@@ -1047,12 +1046,6 @@ func (a *App) PatchChannel(rctx request.CTX, channel *model.Channel, patch *mode
 
 	if oldChannelDisplayName != channel.DisplayName {
 		if err = a.PostUpdateChannelDisplayNameMessage(rctx, userID, channel, oldChannelDisplayName, channel.DisplayName); err != nil {
-			rctx.Logger().Warn(err.Error())
-		}
-	}
-
-	if channel.Header != oldChannelHeader {
-		if err = a.PostUpdateChannelHeaderMessage(rctx, userID, channel, oldChannelHeader, channel.Header); err != nil {
 			rctx.Logger().Warn(err.Error())
 		}
 	}
@@ -2025,40 +2018,6 @@ func (a *App) AddDirectChannels(rctx request.CTX, teamID string, user *model.Use
 
 	if err := a.Srv().Store().Preference().Save(preferences); err != nil {
 		return model.NewAppError("AddDirectChannels", "api.user.add_direct_channels_and_forget.failed.error", map[string]any{"UserId": user.Id, "TeamId": teamID, "Error": err.Error()}, "", http.StatusInternalServerError)
-	}
-
-	return nil
-}
-
-func (a *App) PostUpdateChannelHeaderMessage(rctx request.CTX, userID string, channel *model.Channel, oldChannelHeader, newChannelHeader string) *model.AppError {
-	user, err := a.Srv().Store().User().Get(context.Background(), userID)
-	if err != nil {
-		return model.NewAppError("PostUpdateChannelHeaderMessage", "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error", nil, "", http.StatusBadRequest).Wrap(err)
-	}
-
-	var message string
-	if oldChannelHeader == "" {
-		message = fmt.Sprintf(i18n.T("api.channel.post_update_channel_header_message_and_forget.updated_to"), user.Username, newChannelHeader)
-	} else if newChannelHeader == "" {
-		message = fmt.Sprintf(i18n.T("api.channel.post_update_channel_header_message_and_forget.removed"), user.Username, oldChannelHeader)
-	} else {
-		message = fmt.Sprintf(i18n.T("api.channel.post_update_channel_header_message_and_forget.updated_from"), user.Username, oldChannelHeader, newChannelHeader)
-	}
-
-	post := &model.Post{
-		ChannelId: channel.Id,
-		Message:   message,
-		Type:      model.PostTypeHeaderChange,
-		UserId:    userID,
-		Props: model.StringInterface{
-			"username":   user.Username,
-			"old_header": oldChannelHeader,
-			"new_header": newChannelHeader,
-		},
-	}
-
-	if _, _, err := a.CreatePost(rctx, post, channel, model.CreatePostFlags{SetOnline: true}); err != nil {
-		return model.NewAppError("", "api.channel.post_update_channel_header_message_and_forget.post.error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
 	return nil

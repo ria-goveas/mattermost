@@ -16,10 +16,7 @@ import {getChannel} from 'mattermost-redux/selectors/entities/channels';
 import {getConfig, getLicense, isChannelPermissionPoliciesEnabled} from 'mattermost-redux/selectors/entities/general';
 import {haveIChannelPermission, haveISystemPermission} from 'mattermost-redux/selectors/entities/roles';
 
-import {
-    setShowPreviewOnChannelSettingsHeaderModal,
-    setShowPreviewOnChannelSettingsPurposeModal,
-} from 'actions/views/textbox';
+import {setShowPreviewOnChannelSettingsPurposeModal} from 'actions/views/textbox';
 import {isChannelAccessControlEnabled} from 'selectors/general';
 
 import {focusElement} from 'utils/a11y_utils';
@@ -241,7 +238,6 @@ function ChannelSettingsModal({channelId, isOpen, onExited, focusOriginElement}:
 
     const handleHideConfirm = () => {
         // Reset preview states to false when closing the modal
-        dispatch(setShowPreviewOnChannelSettingsHeaderModal(false));
         dispatch(setShowPreviewOnChannelSettingsPurposeModal(false));
         setShow(false);
     };

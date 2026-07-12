@@ -4098,7 +4098,7 @@ func TestPatchChannelDefaultCategoryReapplyIsIdempotent(t *testing.T) {
 
 	// Patching again re-runs the default category logic while the channel is already in the target
 	// category. This must not error or list the channel twice in the category.
-	_, appErr = th.App.PatchChannel(th.Context, channel, &model.ChannelPatch{Header: new("updated header")}, th.BasicUser.Id)
+	_, appErr = th.App.PatchChannel(th.Context, channel, &model.ChannelPatch{Purpose: new("updated purpose")}, th.BasicUser.Id)
 	require.Nil(t, appErr)
 
 	categories, appErr := th.App.GetSidebarCategoriesForTeamForUser(th.Context, th.BasicUser.Id, th.BasicTeam.Id)

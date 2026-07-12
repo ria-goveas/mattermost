@@ -23,7 +23,6 @@ describe('components/ChannelMembersModal', () => {
             team_id: '',
             type: 'O' as ChannelType,
             name: '',
-            header: '',
             purpose: '',
             last_post_at: 0,
             last_root_post_at: 0,

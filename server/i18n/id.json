@@ -2122,34 +2122,6 @@
     "translation": "Galat mengambil kanal termutakhir."
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Galat dalam memperbaharui kanal sekarang"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Kamu tidak memiliki hak akses yang sesuai untuk mengubah tajuk kanal"
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "Tajuk"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Teks harus disediakan dengan perintah /header"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[teks]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Ubah header kanal"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Galat mengambil kanal termutakhir"
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Kamu sekarang tidak ditempat"
   },
@@ -2566,26 +2538,6 @@
     "translation": "Gagal dalam mengirim pesan masuk/keluar"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s memperbaharui header kanal menjadi: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s memperbaharui header kanal dari: %s ke: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Gagal mendapatkan pengguna ketika mencoba merubah header kanal"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s menghapus kop kanal (sebelumnya: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Galat ketika mengirim kop pesan kanal"
-  },
-  {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
     "translation": "%s memperbaharui nama display kanal dari: %s ke: %s"
   },
@@ -2916,10 +2868,6 @@
   {
     "id": "api.cloud.teams_limit_reached.create",
     "translation": "Tidak dapat membuat tim karena batas tim telah tercapai"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Teks yang dimasukkan melebihi batas karakter. Header saluran dibatasi hingga karakter {{.MaxLength}}."
   },
   {
     "id": "api.command_channel_purpose.update_channel.max_length",

@@ -108,7 +108,6 @@ describe('components/post_view/post_list_row', () => {
                 display_name: 'Test Channel 1',
                 type: ('P' as ChannelType),
                 team_id: 'team-1',
-                header: '',
                 purpose: '',
                 creator_id: '',
                 scheme_id: '',

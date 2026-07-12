@@ -232,26 +232,6 @@
     "translation": "%s 將頻道顯示名稱由「%s」改為「%s」"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "發布更新頻道標題訊息時失敗"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s 已移除頻道標題「%s」"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "在更新頻道標題時無法取得使用者資訊"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s 將原頻道標題由 %s 改為 %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s 已將頻道標題設為「%s」"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "發送加入/退出訊息失敗"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "現在狀態為「離開」"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "取得目前頻道時發生錯誤。"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "編輯頻道標題"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[文字]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "/header 命令必須帶有文字。"
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "標題"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "權限不足以編輯頻道標題。"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "更新目前頻道名稱時發生錯誤。"
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -6776,10 +6728,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "輸入的文字超出字數限制。頻道用途不得超過 {{.MaxLength}} 個字元。"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "輸入的文字超出字數限制。頻道標題不得超過 {{.MaxLength}} 個字元。"
   },
   {
     "id": "api.cloud.cws_webhook_event_missing_error",

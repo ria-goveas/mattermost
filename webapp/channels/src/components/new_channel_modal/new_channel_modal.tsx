@@ -187,7 +187,6 @@ const NewChannelModal = () => {
                 name: url,
                 display_name: displayName,
                 purpose,
-                header: '',
                 type,
                 create_at: 0,
                 creator_id: '',

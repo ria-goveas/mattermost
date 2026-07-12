@@ -232,26 +232,6 @@
     "translation": "%sがチャンネル表示名を %s から %s に更新しました"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "チャンネルヘッダー更新メッセージを投稿できませんでした"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%sはチャンネルヘッダーを削除しました(これまでは%sでした)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "チャンネルヘッダーを更新する際にユーザーを取得できませんでした"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%sがチャンネルヘッダーを%sから%sに更新しました"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%sがチャンネルヘッダーを%sに更新しました"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "参加/脱退のメッセージを投稿できませんでした"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "あなたは離席中です"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "現在のチャンネルを取得する際にエラーが発生しました。"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "チャンネルヘッダーを編集する"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[テキスト]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "/headerコマンドはテキストを指定しなくてはいけません。"
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "ヘッダー"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "あなたにはチャンネルヘッダーを編集するのに必要な権限が付与されていません。"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "チャンネルを更新する際にエラーが発生しました。"
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7812,10 +7764,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "入力されたテキストが文字数制限を超えています。チャンネルの目的は {{.MaxLength}} 文字に制限されています。"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "入力されたテキストが文字数制限を超えています。チャンネルヘッダーは {{.MaxLength}} 文字に制限されています。"
   },
   {
     "id": "api.admin.saml.failure_reset_authdata_to_email.app_error",

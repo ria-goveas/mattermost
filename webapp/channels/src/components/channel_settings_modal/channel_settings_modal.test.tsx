@@ -159,7 +159,6 @@ describe('ChannelSettingsModal', () => {
                             id: channelId,
                             type: General.OPEN_CHANNEL,
                             purpose: 'Testing purpose',
-                            header: 'Channel header',
                             group_constrained: false,
                         }),
                     },

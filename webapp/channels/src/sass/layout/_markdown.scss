@@ -120,31 +120,8 @@ h6.markdown__heading {
         border: unset;
     }
 
-    .markdown-inline-img--scaled-down {
-        max-height: 18px;
-        border-radius: 2px;
-        margin: 2px;
-
-        &:hover {
-            z-index: 2;
-            box-shadow: 0 2px 2px 0 rgba(variables.$black, 0.1), 0 2px 2px 0 rgba(variables.$black, 0.1);
-            transition: all 0.1s linear;
-        }
-    }
-
-    .markdown-inline-img--scaled-down-loading {
-        height: 18px;
-        margin: 2px;
-        visibility: hidden;
-    }
-
     .broken-image {
         border-radius: unset;
-    }
-
-    .broken-image--scaled-down {
-        max-height: 18px;
-        margin: 2px;
     }
 }
 

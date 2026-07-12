@@ -50,7 +50,7 @@ describe('Verify Guest User Identification in different screens', () => {
 
     it('MM-T1419 Deactivating a Guest removes "Channel has guests" message from channel header', () => {
         // * Verify the text 'Channel has guests' is displayed in the header
-        cy.get('#channelHeaderDescription').within(($el) => {
+        cy.get('#channelHeaderStatus').within(($el) => {
             cy.wrap($el).find('.has-guest-header').should('be.visible').and('have.text', 'Channel has guests');
         });
 
@@ -63,7 +63,7 @@ describe('Verify Guest User Identification in different screens', () => {
         cy.get(`.SidebarChannel:contains(${testChannel.display_name})`).click();
 
         // * Verify the text 'Channel has guests' is removed from the header
-        cy.get('#channelHeaderDescription').within(($el) => {
+        cy.get('#channelHeaderStatus').within(($el) => {
             cy.wrap($el).find('.has-guest-header').should('not.exist');
         });
     });

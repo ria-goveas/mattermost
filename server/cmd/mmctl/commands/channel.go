@@ -123,7 +123,6 @@ func init() {
 	ChannelCreateCmd.Flags().String("name", "", "Channel Name")
 	ChannelCreateCmd.Flags().String("display-name", "", "Channel Display Name")
 	ChannelCreateCmd.Flags().String("team", "", "Team name or ID")
-	ChannelCreateCmd.Flags().String("header", "", "Channel header")
 	ChannelCreateCmd.Flags().String("purpose", "", "Channel purpose")
 	ChannelCreateCmd.Flags().Bool("private", false, "Create a private channel.")
 
@@ -169,7 +168,6 @@ func createChannelCmdF(c client.Client, cmd *cobra.Command, args []string) error
 	if errteam != nil || teamArg == "" {
 		return errors.New("team is required")
 	}
-	header, _ := cmd.Flags().GetString("header")
 	purpose, _ := cmd.Flags().GetString("purpose")
 	useprivate, _ := cmd.Flags().GetBool("private")
 
@@ -187,7 +185,6 @@ func createChannelCmdF(c client.Client, cmd *cobra.Command, args []string) error
 		TeamId:      team.Id,
 		Name:        name,
 		DisplayName: displayname,
-		Header:      header,
 		Purpose:     purpose,
 		Type:        channelType,
 		CreatorId:   "",

@@ -428,18 +428,6 @@
     "translation": "%v го архивираше каналот."
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Неуспеа да се поврати корисникот при ажурирање на заглавието на каналот"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s го избриша заглавието на каналот (беше: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Неуспех при постирање на ажурирана порака за заглавието на каналот"
-  },
-  {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",
     "translation": "%s го ажурираше екранското име од: %s во: %s"
   },
@@ -474,14 +462,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Неуспеа да се постира пораката за приклучување/напуштување"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s го промени заглавието на каналот од: %s во: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s го промени заглавието на каналот во: %s"
   },
   {
     "id": "api.channel.rename_channel.cant_rename_group_messages.app_error",
@@ -652,26 +632,6 @@
     "translation": "Невалиден приказ на тимски член. Мора да биде 'full_name', 'nickname_full_name' или 'username'."
   },
   {
-    "id": "api.command_channel_header.name",
-    "translation": "заглавје"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Текстот мора да биде наведен со командата /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[текст]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Уреди го заглавјето на каналот"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Грешка при добавување на сегашниот канал."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Вие сте сега отсутни"
   },
@@ -732,14 +692,6 @@
     "translation": "Имејл поканите се исклучени, не беше пратено"
   },
   {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Грешка при ажурирањето на заглавјето на каналот."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Немате соодветни привилегии за да го уредите заглавјето на каналот."
-  },
-  {
     "id": "api.command.team_mismatch.app_error",
     "translation": "Не можеше да се ажурираат командите низ тимовите."
   },
@@ -774,10 +726,6 @@
   {
     "id": "api.command_channel_purpose.channel.app_error",
     "translation": "Грешка при превземање на сегашниот канал."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Внесениот текст надминува лимитот за карактери. Заглабјето на каналот е лимитирано на {{.MaxLength}} карактери."
   },
   {
     "id": "api.command_channel_remove.channel.app_error",

@@ -123,7 +123,6 @@ Cypress.Commands.add('apiCreateGroupChannel', apiCreateGroupChannel);
  * @param {string} channel.name - The unique handle for the channel, will be present in the channel URL
  * @param {string} channel.display_name - The non-unique UI name for the channel
  * @param {string} channel.purpose - A short description of the purpose of the channel
- * @param {string} channel.header - Markdown-formatted text to display in the header of the channel
  * @returns {Channel} `out.channel` as `Channel`
  *
  * @example
@@ -156,7 +155,6 @@ Cypress.Commands.add('apiUpdateChannel', apiUpdateChannel);
  * @param {string} channel.name - The unique handle for the channel, will be present in the channel URL
  * @param {string} channel.display_name - The non-unique UI name for the channel
  * @param {string} channel.purpose - A short description of the purpose of the channel
- * @param {string} channel.header - Markdown-formatted text to display in the header of the channel
  * @returns {Channel} `out.channel` as `Channel`
  *
  * @example

@@ -27,7 +27,6 @@ describe('components/sidebar/sidebar_channel', () => {
             team_id: '',
             type: 'O' as ChannelType,
             name: '',
-            header: '',
             purpose: '',
             last_post_at: 0,
             last_root_post_at: 0,

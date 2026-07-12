@@ -54,12 +54,10 @@ jest.mock('mattermost-redux/selectors/entities/roles', () => ({
 }));
 
 jest.mock('selectors/views/textbox', () => ({
-    showPreviewOnChannelSettingsHeaderModal: jest.fn().mockReturnValue(false),
     showPreviewOnChannelSettingsPurposeModal: jest.fn().mockReturnValue(false),
 }));
 
 jest.mock('actions/views/textbox', () => ({
-    setShowPreviewOnChannelSettingsHeaderModal: jest.fn(),
     setShowPreviewOnChannelSettingsPurposeModal: jest.fn(),
 }));
 
@@ -115,18 +113,7 @@ const mockChannel = TestHelper.getChannelMock({
     display_name: 'Test Channel',
     name: 'test-channel',
     purpose: 'Testing purpose',
-    header: 'Initial header',
     type: 'O',
-});
-
-const mockDirectMessageChannel = TestHelper.getChannelMock({
-    id: 'dm-channel1',
-    team_id: '',
-    display_name: '',
-    name: 'current_user_id__other_user_id',
-    purpose: '',
-    header: 'DM initial header',
-    type: 'D',
 });
 
 const baseProps = {
@@ -149,9 +136,6 @@ describe('ChannelSettingsInfoTab', () => {
 
         // Check that the purpose field has the correct value.
         expect(screen.getByTestId('channel_settings_purpose_textbox')).toHaveValue('Testing purpose');
-
-        // Check that the header field has the correct value.
-        expect(screen.getByTestId('channel_settings_header_textbox')).toHaveValue('Initial header');
 
         // Check that the public channel button is selected.
         expect(screen.getByRole('button', {name: /Public Channel/}).classList.contains('selected')).toBe(true);
@@ -195,11 +179,6 @@ describe('ChannelSettingsInfoTab', () => {
             const purposeInput = screen.getByTestId('channel_settings_purpose_textbox');
             await userEvent.clear(purposeInput);
             await userEvent.type(purposeInput, 'Updated purpose');
-
-            // Change the channel header.
-            const headerInput = screen.getByTestId('channel_settings_header_textbox');
-            await userEvent.clear(headerInput);
-            await userEvent.type(headerInput, 'Updated header');
         });
 
         // Add a small delay to ensure all state updates are processed
@@ -213,33 +192,7 @@ describe('ChannelSettingsInfoTab', () => {
         expect(patchChannel).toHaveBeenCalledWith('channel1', {
             display_name: 'Updated Channel Name',
             purpose: 'Updated purpose',
-            header: 'Updated header',
         });
-    });
-
-    it('should save DM header from channel settings without requiring channel name', async () => {
-        const {patchChannel} = require('mattermost-redux/actions/channels');
-        patchChannel.mockReturnValue({type: 'MOCK_ACTION', data: {}});
-
-        renderWithContext(
-            <ChannelSettingsInfoTab
-                channel={mockDirectMessageChannel}
-                setAreThereUnsavedChanges={jest.fn()}
-            />,
-        );
-
-        // DMs do not render the channel name field.
-        expect(screen.queryByRole('textbox', {name: 'Channel name'})).not.toBeInTheDocument();
-
-        const headerInput = screen.getByTestId('channel_settings_header_textbox');
-        await userEvent.clear(headerInput);
-        await userEvent.type(headerInput, 'Updated DM header');
-        await userEvent.click(screen.getByRole('button', {name: 'Save'}));
-
-        expect(patchChannel).toHaveBeenCalledWith('dm-channel1', {
-            header: 'Updated DM header',
-        });
-        expect(screen.queryByText('Channel name is required')).not.toBeInTheDocument();
     });
 
     it('should trim whitespace from channel fields when saving', async () => {
@@ -259,11 +212,6 @@ describe('ChannelSettingsInfoTab', () => {
             const purposeInput = screen.getByTestId('channel_settings_purpose_textbox');
             await userEvent.clear(purposeInput);
             await userEvent.type(purposeInput, '  Purpose with whitespace  ');
-
-            // Change the channel header with whitespace
-            const headerInput = screen.getByTestId('channel_settings_header_textbox');
-            await userEvent.clear(headerInput);
-            await userEvent.type(headerInput, '  Header with whitespace  ');
         });
 
         // Add a small delay to ensure all state updates are processed
@@ -276,7 +224,6 @@ describe('ChannelSettingsInfoTab', () => {
         expect(patchChannel).toHaveBeenCalledWith('channel1', {
             display_name: 'Channel Name With Whitespace', // Whitespace should be trimmed
             purpose: 'Purpose with whitespace', // Whitespace should be trimmed
-            header: 'Header with whitespace', // Whitespace should be trimmed
         });
 
         // Verify that the local state is updated with trimmed values
@@ -286,7 +233,6 @@ describe('ChannelSettingsInfoTab', () => {
         // The inputs should now have the trimmed values
         expect(screen.getByRole('textbox', {name: 'Channel name'})).toHaveValue('Channel Name With Whitespace');
         expect(screen.getByTestId('channel_settings_purpose_textbox')).toHaveValue('Purpose with whitespace');
-        expect(screen.getByTestId('channel_settings_header_textbox')).toHaveValue('Header with whitespace');
     });
 
     it('should hide SaveChangesPanel after successful save', async () => {
@@ -415,32 +361,6 @@ describe('ChannelSettingsInfoTab', () => {
             const purposeInput = screen.getByTestId('channel_settings_purpose_textbox');
             await userEvent.clear(purposeInput);
             await userEvent.type(purposeInput, longPurpose);
-        });
-
-        // Add a small delay to ensure all state updates are processed
-        await new Promise((resolve) => setTimeout(resolve, 0));
-
-        // SaveChangesPanel should show error state.
-        const errorMessage = screen.getByText(/There are errors in the form above/);
-        const errorPanel = errorMessage.closest('.SaveChangesPanel');
-        expect(errorPanel).toHaveClass('error');
-    });
-
-    it('should show error when header exceeds character limit', async () => {
-        renderWithContext(
-            <ChannelSettingsInfoTab
-                {...baseProps}
-            />,
-        );
-
-        // Create a string that exceeds the header character limit.
-        const longHeader = 'a'.repeat(1025);
-
-        // Wrap the interaction in act to handle state updates properly
-        await act(async () => {
-            const headerInput = screen.getByTestId('channel_settings_header_textbox');
-            await userEvent.clear(headerInput);
-            await userEvent.type(headerInput, longHeader);
         });
 
         // Add a small delay to ensure all state updates are processed

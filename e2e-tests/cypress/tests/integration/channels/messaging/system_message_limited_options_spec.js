@@ -15,19 +15,20 @@ import * as TIMEOUTS from '@/fixtures/timeouts';
 describe('Messaging', () => {
     let townsquareLink;
     let otherUser;
+    let testChannelId;
 
     before(() => {
-        // # Visit town-square
-        cy.apiInitSetup().then(({team, user}) => {
+        cy.apiInitSetup().then(({team, channel, user}) => {
             otherUser = user;
-            townsquareLink = `/${team.name}/channels/town-square`;
+            testChannelId = channel.id;
+            townsquareLink = `/${team.name}/channels/${channel.name}`;
             cy.visit(townsquareLink);
         });
     });
 
     it('MM-T213 System message limited options', () => {
-        // # Update channel header to create a new system message
-        cy.updateChannelHeader(Date.now());
+        // # Patch channel metadata to create a new system message
+        cy.apiPatchChannel(testChannelId, {header: Date.now().toString()});
 
         // # Get system message Id
         cy.getLastPostId().then((lastPostId) => {

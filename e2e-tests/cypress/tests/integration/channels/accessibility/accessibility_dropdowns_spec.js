@@ -63,7 +63,6 @@ describe('Verify Accessibility Support in Dropdown Menus', () => {
             'Mute Channel',
             'Add Members',
             'Manage Members',
-            'Edit Channel Header',
             'Edit Channel Purpose',
             'Rename Channel',
             'Convert to Private Channel',

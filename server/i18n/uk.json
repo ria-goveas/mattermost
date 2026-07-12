@@ -232,26 +232,6 @@
     "translation": "%s оновив відображуване ім’я каналу з: %s на: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Не вдалося опублікувати повідомлення про оновлення заголовка каналу"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s видалив(ла) заголовок каналу (було: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Не вдалося отримати користувача під час оновлення заголовка каналу"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s оновив(ла) заголовок каналу з: %s на: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s оновив(ла) заголовок каналу на: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Не вдалося опублікувати повідомлення про приєднання/вихід"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Зараз ваш статус \"Не на місці\""
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Помилка отримання поточного каналу."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Редагування заголовка каналу"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[текст]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Текст повинен бути вказаний з командою /header."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "заголовок"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Ви не маєте відповідних прав для редагування заголовка каналу."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Помилка оновлення заголовка каналу."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -6550,10 +6502,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "Введений текст перевищує ліміт символів. Призначення каналу обмежено {{.MaxLength}} символами."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Введений текст перевищує ліміт символів. Заголовок каналу обмежено {{.MaxLength}} символами."
   },
   {
     "id": "api.cloud.teams_limit_reached.restore",

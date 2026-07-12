@@ -105,7 +105,6 @@ describe('Channel Settings Modal', () => {
 
         // * Verify changes are saved
         cy.get('.SaveChangesPanel').should('contain', 'Settings saved');
-
         // # Close the modal
         cy.get('.GenericModal .modal-header button[aria-label="Close"]').click();
 
@@ -246,7 +245,7 @@ describe('Channel Settings Modal', () => {
         cy.get('.SaveChangesPanel').should('contain', 'There are errors in the form above');
     });
 
-    it('MM-T6: Can edit channel purpose and header', () => {
+    it('MM-T6: Can edit channel purpose', () => {
         // # Open channel settings modal
         cy.get('#channelHeaderDropdownButton').click();
         cy.findByText('Channel Settings').click();
@@ -254,20 +253,12 @@ describe('Channel Settings Modal', () => {
         // # Edit channel purpose
         cy.get('#channel_settings_purpose_textbox').clear().type('This is a test purpose');
 
-        // # Edit channel header
-        cy.get('#channel_settings_header_textbox').clear().type('This is a test header');
-
         // # Save changes
         cy.get('[data-testid="SaveChangesPanel__save-btn"]').click();
 
         // * Verify changes are saved
         cy.get('.SaveChangesPanel').should('contain', 'Settings saved');
 
-        // # Close the modal
-        cy.get('.GenericModal .modal-header button[aria-label="Close"]').click();
-
-        // * Verify channel header shows updated header
-        cy.get('#channelHeaderDescription').should('contain', 'This is a test header');
     });
 
     it('MM-T7: Shows error when purpose exceeds character limit', () => {
@@ -281,20 +272,6 @@ describe('Channel Settings Modal', () => {
 
         // * Verify error is shown
         cy.findAllByTestId('channel_settings_purpose_textbox').should('have.class', 'textarea--has-errors');
-        cy.get('.SaveChangesPanel').should('contain', 'There are errors in the form above');
-    });
-
-    it('MM-T8: Shows error when header exceeds character limit', () => {
-        // # Open channel settings modal
-        cy.get('#channelHeaderDropdownButton').click();
-        cy.findByText('Channel Settings').click();
-
-        // # Enter header that exceeds character limit (1024 characters)
-        const longHeader = 'a'.repeat(1050);
-        cy.findByTestId('channel_settings_header_textbox').clear().type(longHeader);
-
-        // * Verify error is shown
-        cy.findByTestId('channel_settings_header_textbox').should('have.class', 'textarea--has-errors');
         cy.get('.SaveChangesPanel').should('contain', 'There are errors in the form above');
     });
 
@@ -390,8 +367,8 @@ describe('Channel Settings Modal', () => {
         });
     });
 
-    // MM-T12: Can preview purpose and header with markdown
-    it('MM-T12: Can preview purpose and header with markdown', () => {
+    // MM-T12: Can preview purpose with markdown
+    it('MM-T12: Can preview purpose with markdown', () => {
     // # Create a new channel for this test
         cy.apiCreateChannel(testTeam.id, 'markdown-test', 'Markdown Test').then(({channel}) => {
         // # Visit the channel page using the channel name returned from the API
@@ -418,21 +395,6 @@ describe('Channel Settings Modal', () => {
             cy.get('.textbox-preview-area').
                 find('em').
                 should('contain', 'italic');
-
-            // # Add markdown to header
-            cy.get('#channel_settings_header_textbox').clear().type('Visit [Mattermost](https://mattermost.com)');
-
-            // # Click preview button for header
-            cy.get('#channel_settings_header_textbox').
-                parents('.AdvancedTextbox').
-                find('#PreviewInputTextButton').
-                click();
-
-            // * Verify that markdown is rendered in preview: check for a link with text "Mattermost"
-            cy.get('.textbox-preview-area').
-                should('contain', 'Visit').
-                find('a').
-                should('contain', 'Mattermost');
         });
     });
 

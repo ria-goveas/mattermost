@@ -114,7 +114,6 @@ describe('channel_info_rhs/about_area_dm', () => {
     const defaultProps = {
         channel: {
             id: 'test-c-id',
-            header: 'my channel header',
         } as Channel,
         dmUser: {
             user: {
@@ -128,9 +127,6 @@ describe('channel_info_rhs/about_area_dm', () => {
             display_name: 'my_username',
             is_guest: false,
             status: Constants.UserStatuses.ONLINE,
-        },
-        actions: {
-            editChannelHeader: jest.fn(),
         },
     };
 
@@ -227,35 +223,4 @@ describe('channel_info_rhs/about_area_dm', () => {
         expect(screen.getByText('my bot description')).toBeInTheDocument();
     });
 
-    test('should display channel header', () => {
-        renderWithContext(
-            <AboutAreaDM
-                {...defaultProps}
-            />,
-            initialState,
-        );
-
-        expect(screen.getByText('my channel header')).toBeInTheDocument();
-    });
-
-    test('should not display channel header for bots', () => {
-        const props = {
-            ...defaultProps,
-            dmUser: {
-                ...defaultProps.dmUser,
-                user: {
-                    ...defaultProps.dmUser.user,
-                    is_bot: true,
-                },
-            },
-        };
-        renderWithContext(
-            <AboutAreaDM
-                {...props}
-            />,
-            initialState,
-        );
-
-        expect(screen.queryByText('my channel header')).not.toBeInTheDocument();
-    });
 });

@@ -232,26 +232,6 @@
     "translation": "%s heeft de kanaalnaam veranderd van: %s naar: %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Kanaalkoptekst bijwerken mislukt"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s heeft de kanaalkoptekst verwijderd (was: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Kon de gebruiker niet ophalen tijdens het bewaren van de nieuwe kanaalkoptekst"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s heeft de kanaalkoptekst veranderd van \"%s\" naar \"%s\""
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s heeft de kanaalkoptekst bijgewerkt naar: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Mislukt post doe/bericht achterlaten"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Je bent nu afwezig"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Fout bij het ophalen van het huidige kanaal."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Kanaalhoofding wijzigen"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Een bericht moet worden opgegeven met het /echo commando."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "hoofding"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Je hebt niet voldoende rechten om de kanaalhoofding te wijzigen."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Fout bij het wijzigen van de kanaalhoofding."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7821,10 +7773,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "De ingevoerde tekst overschrijdt de karakterlimiet. Het doel van het kanaal is beperkt tot {{.MaxLength}} tekens."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "De ingevoerde tekst overschrijdt de karakterlimiet. De hoofding van het kanaal is gelimiteerd tot {{.MaxLength}} tekens."
   },
   {
     "id": "app.notification.footer.title",

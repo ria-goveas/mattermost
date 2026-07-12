@@ -232,26 +232,6 @@
     "translation": "%s 将频道显示名从 %s 更新为 %s"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "更新频道标题消息失败"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s 删除了频道标题 (原为: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "尝试保存更新的频道标题时获取用户信息失败"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s 将频道标题从 %s 更新为 %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s 更新频道标题为: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "发布添加/退出消息失败"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "您现在离开了"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "获取当前频道错误。"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "修改频道标题"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[文字]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "必须为 /header 命令提供文本。"
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "标题"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "您没有权限更改频道标题。"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "更新频道标题错误。"
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -7560,10 +7512,6 @@
   {
     "id": "api.command_channel_purpose.update_channel.max_length",
     "translation": "输入的文本超出字符数限制。频道用途不得超过 {{.MaxLength}} 个字符。"
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "输入的文本超出字符数限制。频道标题不得超过 {{.MaxLength}} 个字符。"
   },
   {
     "id": "api.command_share.channel_status.help",

@@ -50,8 +50,6 @@
                 name:
                   type: string
                   description: URL-safe channel name. Auto-generated if omitted.
-                header:
-                  type: string
                 purpose:
                   type: string
       responses:

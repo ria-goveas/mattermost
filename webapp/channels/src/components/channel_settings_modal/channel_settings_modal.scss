@@ -92,7 +92,7 @@
         }
 
         // This is a workaround forcing styles to override the ones from the textbox component that affect post input
-        .textbox-preview-area, #channel_settings_purpose_textbox,  #channel_settings_header_textbox {
+        .textbox-preview-area, #channel_settings_purpose_textbox {
             height: 80px !important;
             border: none !important;
             box-shadow: none !important;

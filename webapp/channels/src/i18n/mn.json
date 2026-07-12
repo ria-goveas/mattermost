@@ -110,8 +110,6 @@
   "apps.error.parser.missing_field_value": "Талбарын утга байхгүй байна.",
   "bot.create_token.close": "Хааx",
   "channel_notifications.preferences": "Дохионы тохируулга",
-  "edit_channel_header_modal.description": "Группын нэрний ард харагдах богино хэмжээний текстэн мэдээллийг өөрчлөх",
-  "edit_channel_header_modal.title": "{channel} группын товч тайлбар/уриаг өөрчлөх",
   "emoji_list.image": "Зураг",
   "emoji_list.name": "Нэр",
   "emoji_picker.close": "Хааx",

@@ -232,26 +232,6 @@
     "translation": "%s hat den Kanal-Anzeigenamen von %s nach %s aktualisiert"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Fehler bei der Aktualisierung der Kanalüberschrift"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "Die Kanalüberschrift wurde durch %s entfernt (vorher: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Fehler beim Abrufen des Benutzers während der Aktualisierung der Kanalüberschrift"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s hat die Kanalüberschrift von %s auf %s geändert"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s hat die Kanalüberschrift geändert auf: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Die Begrüßungs-/Abschiedsnachricht konnte nicht gesendet werden"
   },
@@ -390,34 +370,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Du bist nun abwesend"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Fehler beim Laden des aktuellen Kanals."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Kanalüberschrift bearbeiten"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Der Befehl /überschrift muss Text beinhalten."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "überschrift"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Du hast nicht die nötigen Berechtigungen, um die Kanalüberschrift zu bearbeiten."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Fehler beim Aktualisieren der Kanalüberschrift."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",
@@ -6541,10 +6493,6 @@
   {
     "id": "api.command_custom_status.app_error",
     "translation": "Fehler beim Setzen des Status."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Der eingegebene Text ist zu lang. Die Kanalüberschrift ist auf {{.MaxLength}} Zeichen beschränkt."
   },
   {
     "id": "api.cloud.request_error",

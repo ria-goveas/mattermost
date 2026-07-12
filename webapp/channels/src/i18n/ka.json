@@ -459,8 +459,6 @@
   "confirm_modal.cancel": "გაუქმება",
   "delete_channel.cancel": "გაუქმება",
   "delete_post.cancel": "გაუქმება",
-  "edit_channel_header_modal.cancel": "გაუქმება",
-  "edit_channel_header_modal.save": "შენახვა",
   "edit_channel_purpose_modal.cancel": "გაუქმება",
   "edit_channel_purpose_modal.save": "შენახვა",
   "emoji_list.image": "გამოსახულება",

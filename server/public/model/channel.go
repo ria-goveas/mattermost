@@ -89,7 +89,7 @@ type Channel struct {
 	Type              ChannelType        `json:"type"`
 	DisplayName       string             `json:"display_name"`
 	Name              string             `json:"name"`
-	Header            string             `json:"header"`
+	Header            string             `json:"-"`
 	Purpose           string             `json:"purpose"`
 	LastPostAt        int64              `json:"last_post_at"`
 	TotalMsgCount     int64              `json:"total_msg_count"`
@@ -184,7 +184,6 @@ type ChannelsWithCount struct {
 type ChannelPatch struct {
 	DisplayName         *string            `json:"display_name"`
 	Name                *string            `json:"name"`
-	Header              *string            `json:"header"`
 	Purpose             *string            `json:"purpose"`
 	GroupConstrained    *bool              `json:"group_constrained"`
 	BannerInfo          *ChannelBannerInfo `json:"banner_info"`
@@ -196,7 +195,6 @@ type ChannelPatch struct {
 
 func (c *ChannelPatch) Auditable() map[string]any {
 	return map[string]any{
-		"header":                c.Header,
 		"group_constrained":     c.GroupConstrained,
 		"purpose":               c.Purpose,
 		"default_category_name": c.DefaultCategoryName,
@@ -465,10 +463,6 @@ func (o *Channel) Patch(patch *ChannelPatch) {
 
 	if patch.Name != nil {
 		o.Name = *patch.Name
-	}
-
-	if patch.Header != nil {
-		o.Header = *patch.Header
 	}
 
 	if patch.Purpose != nil {

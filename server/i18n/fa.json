@@ -7387,38 +7387,6 @@
     "translation": "خطا در بازیابی کانال فعلی."
   },
   {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "متن وارد شده از حد مجاز کاراکتر بیشتر است. هدر کانال به {{.MaxLength}} نویسه محدود شده است."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "بروزرسانی سربرگ کانال با خطا روبرو شد."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "شما مجوزهای مناسب برای ویرایش هدر کانال را ندارید."
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "هدر"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "متن باید با دستور /header ارائه شود."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "هدر کانال را ویرایش کنید"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "خطا در بازیابی کانال فعلی."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "شما دیگر دور هستید"
   },
@@ -7617,26 +7585,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "پیام پیوستن/ترک ارسال نشد"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s عنوان کانال را به روز کرد:%s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s عنوان کانال را از: %s به: %s به روز کرد"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "هنگام به روزرسانی هدر کانال ، کاربر بازیابی نشد"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s عنوان کانال را حذف کرد (قبلی:%s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "پیام به روزرسانی هدر کانال ارسال نشد"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

@@ -704,28 +704,8 @@
     "translation": "Mangler team_id i request-meddelelsen"
   },
   {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s opdaterede kanalemne fra: %s til: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Kunne ikke hente bruger under opdatering af kanalemne"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s opdaterede kanalemne til: %s"
-  },
-  {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Kunne ikke sende join/leave-meddelelse"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s fjernede kanalens emne (var: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Kunne ikke sende besked om opdatering af kanalemne"
   },
   {
     "id": "api.channel.remove.default.app_error",
@@ -774,22 +754,6 @@
   {
     "id": "api.command_away.success",
     "translation": "Du er nu Midlertidigt væk"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Fejl ved hentning af den nuværende kanal."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Rediger kanalens emne"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Teksten skal angives med kommandoen /header."
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[tekst]"
   },
   {
     "id": "api.command_channel_purpose.direct_group.app_error",
@@ -908,10 +872,6 @@
     "translation": "Kan ikke opdatere kommandoer på tværs af teams."
   },
   {
-    "id": "api.command_channel_header.name",
-    "translation": "emne"
-  },
-  {
     "id": "api.command_away.desc",
     "translation": "Angiv din status som midlertidigt væk"
   },
@@ -1014,18 +974,6 @@
   {
     "id": "api.command.invite_people.fail",
     "translation": "Der opstod en fejl ved afsendelse af e-mailinvitation(er)"
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "Du har ikke rettigheder til at ændre kanalens emne."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Fejl ved opdatering af kanalens emne."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Den indtastede tekst overskrider tegngrænsen. Kanalemnet er begrænset til {{.MaxLength}} tegn."
   },
   {
     "id": "api.command_channel_purpose.channel.app_error",

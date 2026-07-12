@@ -5677,7 +5677,6 @@ func testGetPostsSinceForSyncExcludeMetadata(t *testing.T, rctx request.CTX, ss 
 
 	data := []*model.Post{
 		{Id: model.NewId(), ChannelId: channelID, UserId: model.NewId(), Message: "regular post 1", Type: model.PostTypeDefault},
-		{Id: model.NewId(), ChannelId: channelID, UserId: model.NewId(), Message: "changed header", Type: model.PostTypeHeaderChange},
 		{Id: model.NewId(), ChannelId: channelID, UserId: model.NewId(), Message: "regular post 2", Type: model.PostTypeDefault},
 		{Id: model.NewId(), ChannelId: channelID, UserId: model.NewId(), Message: "changed display name", Type: model.PostTypeDisplaynameChange},
 		{Id: model.NewId(), ChannelId: channelID, UserId: model.NewId(), Message: "regular post 3", Type: model.PostTypeDefault},
@@ -5715,9 +5714,9 @@ func testGetPostsSinceForSyncExcludeMetadata(t *testing.T, rctx request.CTX, ss 
 		// Verify we have the expected post IDs (only regular posts)
 		expectedIDs := []string{
 			data[0].Id, // regular post 1
-			data[2].Id, // regular post 2
-			data[4].Id, // regular post 3
-			data[6].Id, // regular post 4
+			data[1].Id, // regular post 2
+			data[3].Id, // regular post 3
+			data[5].Id, // regular post 4
 		}
 
 		postIDs := make([]string, 0, len(posts))
@@ -5739,7 +5738,7 @@ func testGetPostsSinceForSyncExcludeMetadata(t *testing.T, rctx request.CTX, ss 
 		require.NoError(t, err)
 
 		// Verify all posts are returned
-		require.Len(t, posts, 7, "should return all 7 posts when not excluding metadata posts")
+		require.Len(t, posts, 6, "should return all 6 posts when not excluding metadata posts")
 
 		// Verify all post types are included by counting each type
 		postTypeCount := make(map[string]int)
@@ -5748,7 +5747,6 @@ func testGetPostsSinceForSyncExcludeMetadata(t *testing.T, rctx request.CTX, ss 
 		}
 
 		require.Equal(t, 4, postTypeCount[model.PostTypeDefault], "should have 4 regular posts")
-		require.Equal(t, 1, postTypeCount[model.PostTypeHeaderChange], "should have 1 header change post")
 		require.Equal(t, 1, postTypeCount[model.PostTypeDisplaynameChange], "should have 1 display name change post")
 		require.Equal(t, 1, postTypeCount[model.PostTypePurposeChange], "should have 1 purpose change post")
 	})
@@ -5862,7 +5860,6 @@ func testGetPostsForReporting(t *testing.T, rctx request.CTX, ss store.Store, s 
 		{ChannelId: channelID, UserId: model.NewId(), Message: "post 7"},
 		{ChannelId: channelID, UserId: model.NewId(), Message: "post 8", DeleteAt: model.GetMillis()},
 		{ChannelId: channelID, UserId: model.NewId(), Message: "post 9", DeleteAt: model.GetMillis()},
-		{ChannelId: channelID, UserId: model.NewId(), Message: "header change", Type: model.PostTypeHeaderChange},
 		{ChannelId: channelID, UserId: model.NewId(), Message: "name change", Type: model.PostTypeDisplaynameChange},
 	}
 
@@ -5904,8 +5901,8 @@ func testGetPostsForReporting(t *testing.T, rctx request.CTX, ss store.Store, s 
 		queryParams2.PerPage = 5
 		result2, err := ss.Post().GetPostsForReporting(rctx, *queryParams2)
 		require.NoError(t, err)
-		require.Len(t, result2.Posts, 5, "should get 5 posts")
-		require.Nil(t, result2.NextCursor, "should not have next cursor (10 non-deleted posts total: 0-7,10-11)")
+		require.Len(t, result2.Posts, 4, "should get 4 posts")
+		require.Nil(t, result2.NextCursor, "should not have next cursor (9 non-deleted posts total)")
 	})
 
 	t.Run("DESC sort order", func(t *testing.T) {
@@ -5923,7 +5920,7 @@ func testGetPostsForReporting(t *testing.T, rctx request.CTX, ss store.Store, s 
 		queryParams := buildReportPostQueryParams(channelID, model.ReportingTimeFieldCreateAt, model.ReportingSortDirectionAsc, 100, true, false)
 		result, err := ss.Post().GetPostsForReporting(rctx, queryParams)
 		require.NoError(t, err)
-		require.Len(t, result.Posts, 12, "should get all 12 posts including deleted")
+		require.Len(t, result.Posts, 11, "should get all 11 posts including deleted")
 
 		// Verify deleted posts are included
 		deletedCount := 0
@@ -5943,7 +5940,6 @@ func testGetPostsForReporting(t *testing.T, rctx request.CTX, ss store.Store, s 
 
 		// Verify no system posts for channel metadata are included
 		for _, post := range result.Posts {
-			require.NotEqual(t, model.PostTypeHeaderChange, post.Type)
 			require.NotEqual(t, model.PostTypeDisplaynameChange, post.Type)
 			require.NotEqual(t, model.PostTypePurposeChange, post.Type)
 		}

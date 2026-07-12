@@ -204,14 +204,6 @@
     "translation": "[text]"
   },
   {
-    "id": "api.command_channel_header.name",
-    "translation": "загаловак"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
     "id": "api.command_away.name",
     "translation": "не на месцы"
   },
@@ -6852,30 +6844,6 @@
     "translation": "Памылка атрымання бягучага канала."
   },
   {
-    "id": "api.command_channel_header.update_channel.max_length",
-    "translation": "Уведзены тэкст перавышае ліміт сімвалаў. Загаловак канала абмежаваны {{.MaxLength}} сімваламі."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Памылка абнаўлення загалоўка канала."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "У вас няма адпаведных правоў для рэдагавання загалоўка канала."
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Тэкст павінен быць прадастаўлены з камандай /header."
-  },
-  {
-    "id": "api.command_channel_header.desc",
-    "translation": "Рэдагаваць загаловак канала"
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Памылка атрымання бягучага канала."
-  },
-  {
     "id": "api.command_away.success",
     "translation": "Цяпер вы не на месцы"
   },
@@ -7058,26 +7026,6 @@
   {
     "id": "api.channel.post_user_add_remove_message_and_forget.error",
     "translation": "Не атрымалася апублікаваць паведамленне аб далучэнні/выхадзе"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_to",
-    "translation": "%s абнавіў(ла) загаловак канала на: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.updated_from",
-    "translation": "%s абнавіў(ла) загаловак канала з: %s на: %s"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.retrieve_user.error",
-    "translation": "Не атрымалася атрымаць карыстальніка пры абнаўленні загалоўка канала"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.removed",
-    "translation": "%s выдаліў загаловак канала (было: %s)"
-  },
-  {
-    "id": "api.channel.post_update_channel_header_message_and_forget.post.error",
-    "translation": "Не атрымалася апублікаваць паведамленне аб абнаўленні загалоўка канала"
   },
   {
     "id": "api.channel.post_update_channel_displayname_message_and_forget.updated_from",

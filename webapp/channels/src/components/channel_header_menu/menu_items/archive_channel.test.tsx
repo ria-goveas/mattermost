@@ -58,7 +58,7 @@ describe('components/ChannelHeaderMenu/MenuItems/ArchiveChannel', () => {
 
     LocalStorageStore.setPenultimateChannelName('current_user_id', 'team-id', 'current_channel_id');
 
-    const channel = TestHelper.getChannelMock({header: 'Test Header'});
+    const channel = TestHelper.getChannelMock();
     beforeEach(() => {
         jest.spyOn(modalActions, 'openModal');
 

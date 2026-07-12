@@ -194,7 +194,7 @@ describe('Team Permissions', () => {
         });
     });
 
-    it('MM-T2908 As a Team Admin, the test user is able to update the public channel Name, Header and Purpose', () => {
+    it('MM-T2908 As a Team Admin, the test user is able to update the public channel name and purpose', () => {
         cy.apiLogin(testUser);
 
         // # Create new team
@@ -222,9 +222,6 @@ describe('Team Permissions', () => {
 
             // * Verify user can edit channel purpose
             cy.get('#channel_settings_purpose_textbox').scrollIntoView().should('be.visible').and('not.be.disabled');
-
-            // * Verify user can edit channel header
-            cy.get('#channel_settings_header_textbox').scrollIntoView().should('be.visible').and('not.be.disabled');
 
             // # Close the modal
             cy.get('.GenericModal .modal-header button[aria-label="Close"]').click();

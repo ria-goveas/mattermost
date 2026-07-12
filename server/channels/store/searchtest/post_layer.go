@@ -1828,7 +1828,7 @@ func testSearchShouldExcludeSystemMessages(t *testing.T, th *SearchTestHelper) {
 	require.NoError(t, err)
 	_, err = th.createPost(th.User.Id, th.ChannelBasic.Id, "test system message five", "", model.PostTypeAddToTeam, 0, false)
 	require.NoError(t, err)
-	_, err = th.createPost(th.User.Id, th.ChannelBasic.Id, "test system message six", "", model.PostTypeHeaderChange, 0, false)
+	_, err = th.createPost(th.User.Id, th.ChannelBasic.Id, "test system message six", "", model.PostTypeDisplaynameChange, 0, false)
 	require.NoError(t, err)
 	defer th.deleteUserPosts(th.User.Id)
 
