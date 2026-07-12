@@ -3,6 +3,8 @@
 
 import mockStore from 'tests/test_store';
 
+import {getMe} from 'mattermost-redux/actions/users';
+
 import {loadConfigAndMe} from './index';
 
 jest.mock('mattermost-redux/actions/general', () => {
@@ -18,7 +20,7 @@ jest.mock('mattermost-redux/actions/users', () => {
     const original = jest.requireActual('mattermost-redux/actions/users');
     return {
         ...original,
-        getMe: () => ({type: 'MOCK_LOAD_ME'}),
+        getMe: jest.fn(() => ({type: 'MOCK_LOAD_ME'})),
     };
 });
 
@@ -87,6 +89,36 @@ describe('loadConfigAndMe', () => {
             {type: 'MOCK_GET_MY_TEAM_MEMBERS'},
             {type: 'MOCK_GET_MY_TEAM_UNREADS'},
             {type: 'MOCK_GET_SERVER_LIMITS'},
+        ]);
+    });
+
+    test('loadConfigAndMe, with stale session cookie', async () => {
+        const testStore = mockStore({
+            entities: {
+                general: {
+                    serverVersion: '1.0.0',
+                },
+            },
+        });
+
+        document.cookie = 'MMUSERID=userid';
+
+        jest.mocked(getMe).mockImplementationOnce(() => () => Promise.resolve({
+            error: {
+                message: 'Invalid or expired session, please login again.',
+                status_code: 401,
+            },
+        }));
+
+        const result = await testStore.dispatch(loadConfigAndMe());
+        expect(result).toEqual({
+            isLoaded: true,
+            isMeRequested: false,
+        });
+        expect(testStore.getActions()).toEqual([
+            {type: 'MOCK_GET_CLIENT_CONFIG'},
+            {type: 'MOCK_GET_LICENSE_CONFIG'},
+            {type: 'RECEIVED_SERVER_VERSION', data: '1.0.0'},
         ]);
     });
 });

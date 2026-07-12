@@ -21,6 +21,7 @@ import {getActiveTeamsList} from 'mattermost-redux/selectors/entities/teams';
 import {checkIsFirstAdmin, getCurrentUser, isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
 
 import {redirectUserToDefaultTeam, emitUserLoggedOutEvent} from 'actions/global_actions';
+import {clearUserCookie} from 'actions/views/cookie';
 
 import {reloadPage} from 'utils/browser_utils';
 import {StoragePrefixes} from 'utils/constants';
@@ -62,8 +63,24 @@ export function loadConfigAndMe(): ThunkActionFunc<Promise<{isLoaded: boolean; i
         dispatch({type: GeneralTypes.RECEIVED_SERVER_VERSION, data: serverVersion});
 
         try {
+            const meResult = await dispatch(getMe());
+            if (meResult.error) {
+                if (meResult.error.status_code === 401) {
+                    clearUserCookie();
+                    Client4.setToken('');
+                    return {
+                        isLoaded: true,
+                        isMeRequested: false,
+                    };
+                }
+
+                dispatch(logError(meResult.error));
+                return {
+                    isLoaded: false,
+                };
+            }
+
             await Promise.all([
-                dispatch(getMe()),
                 dispatch(getMyPreferences()),
                 dispatch(getMyTeams()),
                 dispatch(getMyTeamMembers()),
