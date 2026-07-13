@@ -5,7 +5,7 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
@@ -143,6 +143,21 @@ describe('SidebarHeader', () => {
         renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
 
         expect(screen.getByRole('button', {name: /Browse or create channels/i})).toBeInTheDocument();
+    });
+
+    test('should open Browse Channels from the browse menu item', async () => {
+        const props = {
+            ...defaultProps,
+            showNewChannelModal: jest.fn(),
+            showMoreChannelsModal: jest.fn(),
+        };
+        renderWithContext(<SidebarHeader {...props}/>, initialState);
+
+        await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
+        await userEvent.click(screen.getByText('Browse channels'));
+
+        expect(props.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        expect(props.showNewChannelModal).not.toHaveBeenCalled();
     });
 
     test('should not render anything when team is empty', () => {

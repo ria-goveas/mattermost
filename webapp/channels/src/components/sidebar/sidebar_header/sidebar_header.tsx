@@ -39,7 +39,7 @@ const SidebarHeader = (props: Props) => {
                     canCreateChannel={props.canCreateChannel}
                     onCreateNewChannelClick={props.showNewChannelModal}
                     canJoinPublicChannel={props.canJoinPublicChannel}
-                    onBrowseChannelClick={props.showMoreChannelsModal}
+                    onBrowseChannelClick={props.showNewChannelModal}
                     onOpenDirectMessageClick={props.handleOpenDirectMessagesModal}
                     canCreateCustomGroups={props.canCreateCustomGroups}
                     onCreateNewUserGroupClick={props.showCreateUserGroupModal}
