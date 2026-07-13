@@ -78,6 +78,7 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(favoriteChannel).toHaveBeenCalledWith(activeChannel.id);
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'FAVORITE_CHANNEL',

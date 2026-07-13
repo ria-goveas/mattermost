@@ -34,7 +34,7 @@ const ChannelHeaderTitleFavorite = () => {
         if (isFavorite) {
             dispatch(unfavoriteChannel(channel.id));
         } else {
-            dispatch(favoriteChannel(channel.id));
+            dispatch(favoriteChannel(''));
         }
         requestAnimationFrame(() => {
             if (favIconRef.current) {
