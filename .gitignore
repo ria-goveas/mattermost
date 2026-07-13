@@ -176,6 +176,10 @@ docker-compose.override.yaml
 .cursor/scripts/*
 !.cursor/scripts/cloud-agent-install.sh
 !.cursor/scripts/cloud-agent-start.sh
+!.cursor/skills/
+.cursor/skills/*
+!.cursor/skills/implement/
+!.cursor/skills/implement/SKILL.md
 server/prev-report.xml
 server/prev-gotestsum.json
 server/shard-*.txt
