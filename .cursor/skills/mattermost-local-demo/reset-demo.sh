@@ -230,12 +230,12 @@ cmd_open() {
   fi
   if [ "$code" = "200" ]; then
     log "Session-clear page is served (HTTP 200)."
-    echo "OPEN_URL=$RESET_PAGE_OPEN_URL"
+    echo "OPEN_URL=${RESET_PAGE_OPEN_URL}?cb=$(date +%s)"
     echo "OPEN_OK"
     return 0
   fi
   log "demo-reset.html still HTTP $code after reinstall; using login fallback."
-  echo "OPEN_URL=$LOGIN_FALLBACK_URL"
+  echo "OPEN_URL=${LOGIN_FALLBACK_URL}&cb=$(date +%s)"
   echo "OPEN_FALLBACK"
 }
 

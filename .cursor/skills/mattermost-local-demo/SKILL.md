@@ -65,19 +65,19 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh wait
 
 4. Open **the printed** `OPEN_URL` **once** in Glass via the **`cursor-app-control`** MCP tool **`open_resource`**. Prefer that over hardcoding. Never open bare `/` or `/login` right after a DB wipe.
 
-5. Reply with **exactly** the three-line credentials block below — nothing else.
+5. Reply with **exactly** the three-line credentials block below — paste the **exact** `OPEN_URL` from step 3 into the `Open:` line (never bare `/`).
 
-> Humans can instead run `bash .cursor/skills/mattermost-local-demo/reset-demo.sh` (no arg) in a terminal — it prepares, then runs the server in the foreground of that terminal. After the API is up, open `http://localhost:8065/static/demo-reset.html` once (or run `wait` / `open` from another terminal).
+> Humans can instead run `bash .cursor/skills/mattermost-local-demo/reset-demo.sh` (no arg) in a terminal — it prepares, then runs the server in the foreground of that terminal. After the API is up, run `wait` or `open` and open the printed `OPEN_URL` once.
 
 ### Final message format (mandatory)
 
 ```
 Username: riagoveas
 Password: Password123!
-Open: http://localhost:8065
+Open: http://localhost:8065/static/demo-reset.html?cb=<from OPEN_URL>
 ```
 
-Only this in the chat reply (no tables, channel lists, token dumps, or "how to reset"). If the run **failed**, one short error line is OK instead.
+Use the full `OPEN_URL` value from `wait` (including `?cb=...`). Do not substitute `http://localhost:8065` alone.
 
 ## Open / login policy (mandatory)
 

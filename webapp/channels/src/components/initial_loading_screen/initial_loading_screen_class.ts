@@ -148,6 +148,13 @@ export class InitialLoadingScreenClass {
 
             this.loadingScreenElement.className = LOADING_COMPLETE_CLASS_FOR_SCREEN;
             this.loadingAnimationElement.className = LOADING_COMPLETE_CLASS_FOR_ANIMATION;
+
+            // Fallback: some embedded browsers never fire animationend; force-remove the overlay.
+            setTimeout(() => {
+                if (this.loadingScreenElement) {
+                    this.destroy();
+                }
+            }, 2500);
         }, remainingTime);
     }
 }
