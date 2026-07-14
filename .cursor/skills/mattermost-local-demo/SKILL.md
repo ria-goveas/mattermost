@@ -2,13 +2,14 @@
 name: mattermost-local-demo
 description: >-
   Fast full reset of the local Mattermost Acme Demo for screen-share. Restores
-  the scoped demo source files and DB to their original pre-demo baselines,
-  rebuilds the original bundle, runs the server on :8065, then opens the demo in
-  the Glass / Cursor embedded browser. Use for demo workspace, Acme Demo,
-  riagoveas, reset the demo, true full reset, or local Mattermost demo.
+  either the original source baseline or the pinned Matty seeded-bug state,
+  restores the DB baseline, rebuilds the bundle, runs the server on :8065, then
+  opens the demo in the Glass / Cursor embedded browser. Use for demo workspace,
+  Acme Demo, Matty demo, riagoveas, reset the demo, true full reset, or local
+  Mattermost demo.
 ---
 
-# Mattermost local demo (reset + Glass embedded browser)
+# Mattermost local demo (baseline/Matty reset + Glass embedded browser)
 
 **Everything for this skill lives in this folder** (`.cursor/skills/mattermost-local-demo/`, gitignored):
 
@@ -20,16 +21,25 @@ description: >-
 
 ## How reset works
 
-The reset uses the dedicated demo branch plus a **checksummed Postgres dump**:
+The reset supports two dedicated branches plus a **checksummed Postgres dump**:
+
+| Checked-out branch | Source reset target |
+|---|---|
+| `demo/channel-header-baseline` | The branch's current `HEAD` |
+| `rg/matty-demo-bugs` | Immutable tag `matty-demo-bugs-seed-v1` (product seed `1378fbc9959e87012cdac802513c80b6591ddf32` plus this reset tooling) |
+
+Any other branch is rejected before destructive work begins.
 
 1. `prepare` stops any running server.
-2. It restores tracked source from repository `HEAD` and removes non-ignored untracked files.
+2. It restores the checked-out branch to the source target above and removes non-ignored untracked files.
 3. It ensures Docker (`postgres` + `redis`) is up, verifies the DB snapshot checksum, **drops & recreates** `mattermost_test`, and restores `baseline/mattermost_baseline.sql.gz`.
 4. It verifies that all six original public channels and their baseline metadata exist.
-5. It rebuilds `webapp/channels/dist` from the restored source and installs `demo-reset.html`.
+5. It rebuilds `webapp/channels/dist` from the restored source target and installs `demo-reset.html`.
 6. `serve` frees `:8065` (kills leftovers) then runs the server with demo env; `wait` polls the API and prints a verified `OPEN_URL` for Glass.
 
-Run this only on `demo/channel-header-baseline`. It discards tracked changes and non-ignored untracked files across the checkout. Ignored local environment files, dependencies, caches, server configuration, and this skill remain untouched.
+The Matty reset moves the entire local `rg/matty-demo-bugs` branch back to the immutable seed tag. The tagged commit permanently includes the reset tooling, so the branch is clean and the reset remains reusable. It intentionally discards all later local commits, tracked changes, and non-ignored untracked files across the checkout, including fixes made during a manual demo. Ignored local environment files, dependencies, caches, and server configuration remain untouched. It never force-pushes or otherwise changes GitHub.
+
+Keep `origin/rg/matty-demo-bugs` and `matty-demo-bugs-seed-v1` pinned to the tagged seed. Fixing agents must create their own branches or pull requests from this branch instead of committing directly to it, so every run starts from the same two broken behaviors.
 
 The build is mandatory during a full reset so `dist` always matches the checked-out source.
 
@@ -43,7 +53,7 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh dry-run
 
 The server must run as a **long-lived background shell job** (otherwise it gets reaped when a foreground tool call returns). So the agent uses these steps:
 
-1. Prepare (restore scoped source + DB baseline + original webapp bundle) — foreground. Wait for `PREPARE_OK`. Allow a few minutes the first time (webpack); cached runs are faster:
+1. Prepare (restore configured source target + DB baseline + matching webapp bundle) — foreground. Wait for `PREPARE_OK`. Allow a few minutes the first time (webpack); cached runs are faster:
 
 ```bash
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh prepare
@@ -103,7 +113,7 @@ Don't add extra posts/channels/DMs — the reset restores this baseline.
 
 ## Incremental feature work (mandatory for agents)
 
-The reset script is **only** for returning to baseline. **Never** tell the user to run `prepare`, `build`, or a full reset just to see a small feature tweak.
+The reset script is **only** for returning to the checked-out branch's configured source target. **Never** tell the user to run `prepare`, `build`, or a full reset just to see a small feature tweak.
 
 While implementing features on the demo branch, the running server serves `webapp/channels/dist` (read from disk per request). Use the **webpack watch fast path** so changed chunks land in `dist` automatically. `dist` is generated output; never hand-edit it.
 
@@ -133,13 +143,13 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch-wait
 - **DO NOT** run `reset-demo.sh prepare` or `reset-demo.sh build` to preview UI changes — those restore `HEAD` and wipe uncommitted work.
 - **DO NOT** run `npm run build` (production) for routine tweaks unless watch is unavailable or you need a one-off production bundle.
 - **DO NOT** edit `webapp/channels/dist` by hand; let webpack regenerate it.
-- Reserve `prepare` / full reset for explicit baseline restore only (demo start, screen-share reset, or user asks to discard local changes). A full build auto-stops the watch first to avoid two webpack writers clashing on `dist`.
+- Reserve `prepare` / full reset for an explicit baseline or Matty seed restore (demo start, screen-share reset, or user asks to discard local changes). A full build auto-stops the watch first to avoid two webpack writers clashing on `dist`.
 
 ## Other commands
 
 ```bash
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh dry-run      # report source reset actions
-bash .cursor/skills/mattermost-local-demo/reset-demo.sh build        # baseline only: restore HEAD + rebuild dist (not for feature tweaks)
+bash .cursor/skills/mattermost-local-demo/reset-demo.sh build        # restore branch target + rebuild dist (not for feature tweaks)
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh status       # source / snapshot / DB / Docker / API status
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh stop         # stop demo server; frees :8065 (keeps Docker + DB)
 bash .cursor/skills/mattermost-local-demo/reset-demo.sh wait         # API up → DEMO_READY → OPEN_URL (session-clear preflight)
@@ -159,6 +169,7 @@ bash .cursor/skills/mattermost-local-demo/reset-demo.sh watch-stop   # stop the 
 | "View in Desktop App" | Desktop landing page | Reset sets `EnableDesktopLandingPage=false`; click "View in Browser" once if needed |
 | API never comes up | First run compiles Go / Docker down | Check `server/logs/demo-server.log`; ensure Docker is running |
 | `baseline not found` or checksum mismatch | Fixed snapshot is missing or was changed | Recover the original skill-local snapshot; do not capture the current demo DB over it |
+| `Matty seed tag is unavailable` | The immutable seed tag is missing from the local clone | Fetch tags from `origin`, then retry without moving or recreating the tag |
 | Restored DB fails channel metadata validation | Snapshot metadata differs or an expected channel is missing | Recover the skill-local snapshot; reset refuses to report success |
 | `webapp build failed` during `prepare`/`build` | Node/webpack error in restored `HEAD` source or dependencies | Read the build output; correct the environment/dependency issue, then re-run reset only if returning to baseline |
 | Code change still showing | Browser cached an old bundle, or webpack watch not running / mid-compile | Run `reset-demo.sh watch-status`; if not running start `reset-demo.sh watch` (background shell); run `reset-demo.sh watch-wait` for `WATCH_FRESH`, then hard-refresh (or `/static/demo-reset.html`). Do **not** run reset/build for this |

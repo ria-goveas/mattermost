@@ -2,10 +2,11 @@
 #
 # Mattermost local demo — single self-contained reset tool.
 #
-# Strategy: restore the dedicated demo branch to repository HEAD, remove
-# non-ignored untracked files, restore a checksummed Acme Demo database dump,
-# and rebuild the client. Ignored local environment, dependency, and cache paths
-# are left alone.
+# Strategy: restore a supported demo branch to its configured source target,
+# remove non-ignored untracked files, restore a checksummed Acme Demo database
+# dump, and rebuild the client. The baseline branch restores from its HEAD; the
+# Matty branch resets to its pinned seeded-bug commit. Ignored local environment,
+# dependency, and cache paths are left alone.
 #
 # Commands:
 #   reset-demo.sh            # default: prepare (source + DB + bundle) THEN run server (foreground)
@@ -56,6 +57,9 @@ DIST_DIR="$CHANNELS_DIR/dist"
 BASELINE_FILE="$SCRIPT_DIR/baseline/mattermost_baseline.sql.gz"
 BASELINE_SHA256="393c7b7335cfacebff2111c5bb308d7e3b3bb2e25b34ca6841eef423b1d2cc5e"
 BASELINE_BRANCH="demo/channel-header-baseline"
+MATTY_BRANCH="rg/matty-demo-bugs"
+MATTY_SEED_REF="matty-demo-bugs-seed-v1"
+MATTY_PRODUCT_SEED_COMMIT="1378fbc9959e87012cdac802513c80b6591ddf32"
 RESET_HTML_SRC="$SCRIPT_DIR/demo-reset.html"
 SERVER_LOG="$SERVER_DIR/logs/demo-server.log"
 WATCH_LOG="$SERVER_DIR/logs/demo-webpack-watch.log"
@@ -94,35 +98,73 @@ verify_baseline_file() {
     || die "baseline checksum mismatch (expected $BASELINE_SHA256, got $actual); refusing destructive DB restore"
 }
 
+current_branch() {
+  git -C "$REPO_ROOT" branch --show-current
+}
+
 verify_repo_root() {
   local actual branch
   actual="$(git -C "$REPO_ROOT" rev-parse --show-toplevel 2>/dev/null)" \
     || die "repository not found at $REPO_ROOT"
   [ "$actual" = "$REPO_ROOT" ] || die "unexpected repository root: $actual"
-  branch="$(git -C "$REPO_ROOT" branch --show-current)"
-  [ "$branch" = "$BASELINE_BRANCH" ] \
-    || die "reset requires branch $BASELINE_BRANCH (current: ${branch:-detached})"
+  branch="$(current_branch)"
+  case "$branch" in
+    "$BASELINE_BRANCH")
+      ;;
+    "$MATTY_BRANCH")
+      git -C "$REPO_ROOT" cat-file -e "${MATTY_SEED_REF}^{commit}" 2>/dev/null \
+        || die "Matty seed tag is unavailable: $MATTY_SEED_REF"
+      ;;
+    *)
+      die "reset requires branch $BASELINE_BRANCH or $MATTY_BRANCH (current: ${branch:-detached})"
+      ;;
+  esac
 }
 
 source_status() {
-  local status_output
+  local branch head seed status_output has_drift=0
+  branch="$(current_branch)"
+  if [ "$branch" = "$MATTY_BRANCH" ]; then
+    head="$(git -C "$REPO_ROOT" rev-parse HEAD)"
+    seed="$(git -C "$REPO_ROOT" rev-parse "${MATTY_SEED_REF}^{commit}")"
+    if [ "$head" != "$seed" ]; then
+      echo "  HEAD $head"
+      echo "  will reset to Matty seed $MATTY_SEED_REF ($seed)"
+      git -C "$REPO_ROOT" diff --stat "$MATTY_SEED_REF..HEAD" | sed 's/^/  /'
+      has_drift=1
+    fi
+  fi
   status_output="$(git -C "$REPO_ROOT" status --short --untracked-files=all --ignored=no)"
-  if [ -z "$status_output" ]; then
+  if [ -n "$status_output" ]; then
+    printf '%s\n' "$status_output"
+    has_drift=1
+  fi
+  if [ "$has_drift" -eq 0 ]; then
     echo "  clean"
     return 0
   fi
-  printf '%s\n' "$status_output"
   return 1
 }
 
 restore_source_baseline() {
   verify_repo_root
-  log "Restoring the checked-out source baseline..."
-  git -C "$REPO_ROOT" restore --source=HEAD --staged --worktree -- .
+  local branch
+  branch="$(current_branch)"
+  if [ "$branch" = "$MATTY_BRANCH" ]; then
+    log "Resetting $MATTY_BRANCH to the pinned seeded-bug tag $MATTY_SEED_REF..."
+    git -C "$REPO_ROOT" reset --hard "$MATTY_SEED_REF"
+  else
+    log "Restoring the checked-out source baseline..."
+    git -C "$REPO_ROOT" restore --source=HEAD --staged --worktree -- .
+  fi
   while IFS= read -r -d '' path; do
     rm -rf -- "$REPO_ROOT/$path"
   done < <(git -C "$REPO_ROOT" ls-files -z --others --exclude-standard)
-  log "Source baseline restored."
+  if [ "$branch" = "$MATTY_BRANCH" ]; then
+    log "Matty seeded bugs restored."
+  else
+    log "Source baseline restored."
+  fi
 }
 
 # --- docker / postgres -------------------------------------------------------
@@ -527,9 +569,17 @@ cmd_status() {
 
 cmd_dry_run() {
   verify_repo_root
+  local branch
+  branch="$(current_branch)"
   echo "Dry run only; no files, DB, build output, or processes changed."
+  if [ "$branch" = "$MATTY_BRANCH" ]; then
+    echo "Target: exact Matty seed tag $MATTY_SEED_REF (product seed $MATTY_PRODUCT_SEED_COMMIT)."
+    echo "A real reset discards all later local commits, tracked changes, and non-ignored untracked files on $MATTY_BRANCH."
+  else
+    echo "Target: checked-out HEAD on $BASELINE_BRANCH."
+  fi
   source_status || true
-  echo "Preserved: ignored local paths, including .env/secrets, node_modules, caches, user config, and this skill."
+  echo "Preserved: ignored local paths, including .env/secrets, node_modules, caches, user config, and skill-local data."
 }
 
 case "${1:-reset}" in
