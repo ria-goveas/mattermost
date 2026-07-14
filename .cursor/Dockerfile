@@ -107,7 +107,15 @@ RUN case "$(dpkg --print-architecture)" in \
       arm64) go_arch=arm64 ;; \
       *) echo "Unsupported Go architecture: $(dpkg --print-architecture)" >&2; exit 1 ;; \
     esac && \
-    curl --retry 3 --retry-delay 5 -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-${go_arch}.tar.gz" -o /tmp/go.tgz && \
+    for go_url in \
+      "https://go.dev/dl/go${GO_VERSION}.linux-${go_arch}.tar.gz" \
+      "https://dl.google.com/go/go${GO_VERSION}.linux-${go_arch}.tar.gz" \
+      "https://golang.org/dl/go${GO_VERSION}.linux-${go_arch}.tar.gz"; do \
+        echo "Downloading Go from ${go_url}" && \
+        curl --retry 5 --retry-delay 5 --retry-connrefused --connect-timeout 30 -fSL "${go_url}" -o /tmp/go.tgz && break; \
+        echo "Download from ${go_url} failed, trying next mirror" >&2; \
+    done && \
+    test -s /tmp/go.tgz && \
     rm -rf /usr/local/go && \
     tar -C /usr/local -xzf /tmp/go.tgz && \
     ln -sfnT /usr/local/go/bin/go /usr/local/bin/go && \
