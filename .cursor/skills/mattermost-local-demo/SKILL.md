@@ -41,6 +41,15 @@ The Matty reset moves the entire local `rg/matty-demo-bugs` branch back to the i
 
 Keep `origin/rg/matty-demo-bugs` and `matty-demo-bugs-seed-v1` pinned to the tagged seed. Fixing agents must create their own branches or pull requests from this branch instead of committing directly to it, so every run starts from the same two broken behaviors.
 
+### Matty Jira hygiene (no API key)
+
+The local reset does not touch Jira. Repeatable Matty demos rely on two rules instead:
+
+- **Matty Triage** deduplicates only against open RIA issues (`To Do`, `In Progress`, `In Review`). Done issues do not block new filings for the same symptom.
+- After a demo run, transition Matty-created tickets (`RIA-9` and above, or anything labeled `matty-triaged`) to **Done**. Keep `RIA-1` through `RIA-8` as the fixed backlog.
+
+`RIA-9` and `RIA-10` are already **Done** so the first live Slack reports can file fresh tickets.
+
 The build is mandatory during a full reset so `dist` always matches the checked-out source.
 
 Inspect the reset without changing anything:

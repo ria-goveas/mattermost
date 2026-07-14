@@ -5,9 +5,10 @@
     "dockerfile": "Dockerfile",
     "context": "."
   },
-  "repositoryDependencies": [
-    "github.com/mattermost/enterprise"
-  ],
+  "env": {
+    "CLOUD_AGENT_SKIP_ENTERPRISE": "true",
+    "CLOUD_AGENT_SKIP_GO_DEPS": "true"
+  },
   "install": "bash .cursor/scripts/cloud-agent-install.sh",
   "start": "bash .cursor/scripts/cloud-agent-start.sh",
   "ports": [
