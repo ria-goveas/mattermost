@@ -180,6 +180,8 @@ docker-compose.override.yaml
 .cursor/skills/*
 !.cursor/skills/implement/
 !.cursor/skills/implement/SKILL.md
+!.cursor/skills/matty-read-issue-thread/
+!.cursor/skills/matty-read-issue-thread/SKILL.md
 !.cursor/agents/
 .cursor/agents/*
 !.cursor/agents/matty-hypothesis-checker.md
