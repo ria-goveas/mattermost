@@ -185,8 +185,6 @@ docker-compose.override.yaml
 !.cursor/agents/
 .cursor/agents/*
 !.cursor/agents/matty-hypothesis-checker.md
-!.cursor/agents/
-.cursor/agents/*
 !.cursor/agents/matty-independent-investigation.md
 server/prev-report.xml
 server/prev-gotestsum.json
