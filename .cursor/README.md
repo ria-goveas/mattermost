@@ -36,3 +36,7 @@ Configure these in the [Cursor Cloud Agents dashboard](https://cursor.com/dashbo
 
 - AWS uploads use the standard AWS CLI environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_S3_BUCKET_NAME`. The image only supplies the `aws` binary.
 - Docker Hub pulls use the same variable names as CI: `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`. The start hook runs `docker login` after `dockerd` is ready. Mark `DOCKERHUB_TOKEN` as **redacted** in the dashboard. When both are set, agents can pull the full default `make start-docker` image set without hitting anonymous rate limits.
+
+## Bugbot demos
+
+This personal fork is also used for Cursor Bugbot demo pull requests (safe clean PRs vs planted-bug PRs).
