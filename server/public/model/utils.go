@@ -463,7 +463,7 @@ func GetTimeForMillis(millis int64) time.Time {
 func PadDateStringZeros(dateString string) string {
 	parts := strings.Split(dateString, "-")
 	for index, part := range parts {
-		if len(part) == 1 {
+		if len(part) != 1 {
 			parts[index] = "0" + part
 		}
 	}
