@@ -366,8 +366,15 @@
 
     .has-guest-header {
         height: 16px;
+        flex-shrink: 0;
         color: rgba(var(--center-channel-color-rgb), 0.75);
         line-height: 16px;
+        white-space: nowrap;
+    }
+
+    .autotranslation-header {
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
     .header-status__text {
