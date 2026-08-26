@@ -1,10 +1,11 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import type {Location} from 'history';
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {matchPath} from 'react-router-dom';
+import {matchPath, useLocation} from 'react-router-dom';
 
 import {Button} from '@mattermost/shared/components/button';
 import * as UserAgent from '@mattermost/shared/utils/user_agent';
@@ -19,7 +20,7 @@ import {getHistory} from 'utils/browser_history';
 const urlFormatForDMGMPermalink = '/:teamName/messages/:username/:postid';
 const urlFormatForChannelPermalink = '/:teamName/channels/:channelname/:postid';
 
-type Props = {
+export type Props = {
     post: Post;
     commentCount: number;
     isRHS: boolean;
@@ -27,19 +28,20 @@ type Props = {
     actions: {
         deleteAndRemovePost: (post: Post) => Promise<ActionResult<boolean>>;
     };
-    location: {
-        pathname: string;
-    };
+};
+
+type DeletePostModalProps = Props & {
+    location: Location;
 };
 
 type State = {
     show: boolean;
 };
 
-export default class DeletePostModal extends React.PureComponent<Props, State> {
+export class DeletePostModal extends React.PureComponent<DeletePostModalProps, State> {
     deletePostBtn: React.RefObject<HTMLButtonElement>;
 
-    constructor(props: Props) {
+    constructor(props: DeletePostModalProps) {
         super(props);
         this.deletePostBtn = React.createRef();
 
@@ -233,3 +235,16 @@ const SharedChannelPostDeleteWarning = ({post}: {post: Post}) => {
         />
     );
 };
+
+const DeletePostModalWithLocation = (props: Props) => {
+    const location = useLocation();
+
+    return (
+        <DeletePostModal
+            {...props}
+            location={location}
+        />
+    );
+};
+
+export default DeletePostModalWithLocation;
