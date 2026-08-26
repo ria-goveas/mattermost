@@ -1,0 +1,91 @@
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+
+.ChannelHeaderPurpose {
+    display: flex;
+    overflow: hidden;
+    min-width: 0;
+    height: 24px;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: 4px;
+    color: rgba(var(--center-channel-color-rgb), 0.75);
+    font-size: 12px;
+    line-height: 16px;
+
+    &__content {
+        overflow: hidden;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    &__text {
+        display: block;
+        overflow: hidden;
+        min-width: 0;
+        text-overflow: ellipsis;
+        user-select: text;
+        white-space: nowrap;
+    }
+
+    &__add {
+        display: inline-flex;
+        overflow: hidden;
+        max-width: 100%;
+        align-items: center;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: rgba(var(--center-channel-color-rgb), 0.75);
+        font-size: 12px;
+        line-height: 16px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .icon {
+            display: none;
+            margin-left: 4px;
+            font-size: 14px;
+        }
+
+        &:hover .icon,
+        &:focus-visible .icon {
+            display: inline-block;
+        }
+    }
+
+    &__edit {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        opacity: 0;
+    }
+
+    &__editButton {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 4px;
+        background: none;
+        color: rgba(var(--center-channel-color-rgb), 0.64);
+
+        &:hover,
+        &:focus-visible {
+            background: rgba(var(--center-channel-color-rgb), 0.08);
+            color: rgba(var(--center-channel-color-rgb), 0.75);
+        }
+
+        .icon {
+            font-size: 14px;
+        }
+    }
+
+    &:hover &__edit,
+    &:focus-within &__edit {
+        opacity: 1;
+    }
+}

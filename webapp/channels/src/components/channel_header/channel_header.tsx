@@ -28,6 +28,7 @@ import {
 import {canPopout, isChannelPopoutWindow, popoutChannel} from 'utils/popouts/popout_windows';
 import {isEmptyObject} from 'utils/utils';
 
+import ChannelHeaderPurpose from './channel_header_purpose';
 import ChannelHeaderTitle from './channel_header_title';
 import ChannelInfoButton from './channel_info_button';
 import HeaderIconWrapper from './components/header_icon_wrapper';
@@ -412,6 +413,9 @@ class ChannelHeader extends React.PureComponent<Props> {
                                     {dmHeaderTextStatus}
                                     {hasGuestsText}
                                     {autotranslationMessage}
+                                    {!isDirect && !isGroup && (
+                                        <ChannelHeaderPurpose/>
+                                    )}
                                 </div>
                             </div>
                         </div>
