@@ -111,22 +111,15 @@ RUN case "$(dpkg --print-architecture)" in \
       arm64) go_arch=arm64 ;; \
       *) echo "Unsupported Go architecture: $(dpkg --print-architecture)" >&2; exit 1 ;; \
     esac && \
-    curl --retry 3 --retry-delay 5 -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-${go_arch}.tar.gz" -o /tmp/go.tgz && \
+    curl --retry 3 --retry-delay 5 -fsSL "https://dl.google.com/go/go${GO_VERSION}.linux-${go_arch}.tar.gz" -o /tmp/go.tgz && \
     rm -rf /usr/local/go && \
     tar -C /usr/local -xzf /tmp/go.tgz && \
     ln -sfnT /usr/local/go/bin/go /usr/local/bin/go && \
     ln -sfnT /usr/local/go/bin/gofmt /usr/local/bin/gofmt && \
     rm -f /tmp/go.tgz
 
-RUN case "$(dpkg --print-architecture)" in \
-      amd64) aws_arch=x86_64 ;; \
-      arm64) aws_arch=aarch64 ;; \
-      *) echo "Unsupported AWS CLI architecture: $(dpkg --print-architecture)" >&2; exit 1 ;; \
-    esac && \
-    curl --retry 3 --retry-delay 5 -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-${aws_arch}.zip" -o /tmp/awscliv2.zip && \
-    unzip -q /tmp/awscliv2.zip -d /tmp && \
-    /tmp/aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli && \
-    rm -rf /tmp/aws /tmp/awscliv2.zip
+# AWS CLI omitted: awscli.amazonaws.com is another builder-egress failure
+# candidate, and install/start treat `aws` as optional.
 
 RUN install -m 0755 -d /var/run/sshd && \
     printf '%s\n' 'PasswordAuthentication no' 'ChallengeResponseAuthentication no' 'UsePAM no' > /etc/ssh/sshd_config.d/disable_password_auth.conf && \
