@@ -12,7 +12,7 @@ import * as modalActions from 'actions/views/modals';
 
 import EditChannelPurposeModal from 'components/edit_channel_purpose_modal';
 
-import {fireEvent, renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
 import {ModalIdentifiers} from 'utils/constants';
 import {TestHelper} from 'utils/test_helper';
 
@@ -111,15 +111,13 @@ describe('ChannelHeaderPurpose', () => {
     test('should open the existing purpose modal with Enter or Space on the pencil', async () => {
         renderComponent();
 
-        const editButton = screen.getByRole('button', {name: 'Edit'});
-        editButton.focus();
-        expect(editButton).toHaveFocus();
+        await userEvent.tab();
+        expect(screen.getByRole('button', {name: 'Edit'})).toHaveFocus();
 
         await userEvent.keyboard('{Enter}');
         expect(openModalSpy).toHaveBeenCalledTimes(1);
 
         openModalSpy.mockClear();
-        editButton.focus();
         await userEvent.keyboard(' ');
         expect(openModalSpy).toHaveBeenCalledTimes(1);
     });
@@ -259,13 +257,14 @@ describe('ChannelHeaderPurpose', () => {
         expect(openModalSpy).not.toHaveBeenCalled();
     });
 
-    test('should show the pencil when the edit control is focused', () => {
+    test('should keep the pencil in the tab order so keyboard users can reach it', async () => {
         renderComponent();
 
-        const editButton = screen.getByRole('button', {name: 'Edit'});
-        fireEvent.focus(editButton);
+        await userEvent.tab();
 
+        const editButton = screen.getByRole('button', {name: 'Edit'});
         expect(editButton).toHaveFocus();
+        expect(editButton).not.toHaveAttribute('tabindex', '-1');
         expect(screen.getByTestId('channelHeaderPurpose')).toContainElement(editButton);
     });
 });
