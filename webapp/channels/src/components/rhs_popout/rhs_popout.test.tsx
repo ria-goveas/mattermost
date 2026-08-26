@@ -11,8 +11,8 @@ import {selectTeam} from 'mattermost-redux/actions/teams';
 import {useTeamByName} from 'components/common/hooks/use_team';
 
 import {renderWithContext, screen, waitFor} from 'tests/react_testing_utils';
-import {TestHelper} from 'utils/test_helper';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
+import {TestHelper} from 'utils/test_helper';
 
 import RhsPopout from './rhs_popout';
 
