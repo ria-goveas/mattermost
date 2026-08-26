@@ -3,7 +3,8 @@
 
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {CompatRoute, useLocation, useParams} from 'react-router-dom-v5-compat';
+import {useLocation, useParams} from 'react-router-dom';
+import {CompatRoute} from 'react-router-dom-v5-compat';
 
 import {fetchChannelsAndMembers, getChannelMembers, selectChannel} from 'mattermost-redux/actions/channels';
 import {selectTeam} from 'mattermost-redux/actions/teams';

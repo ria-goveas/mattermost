@@ -85,6 +85,7 @@ describe('RhsPopout', () => {
         renderPopout('/_popout/rhs/team1/search?q=test');
 
         await waitFor(() => {
+            expect(jest.mocked(useTeamByName)).toHaveBeenCalledWith('team1');
             expect(jest.mocked(selectTeam)).toHaveBeenCalledWith(team1.id);
             expect(jest.mocked(fetchChannelsAndMembers)).toHaveBeenCalledWith(team1.id);
         });
