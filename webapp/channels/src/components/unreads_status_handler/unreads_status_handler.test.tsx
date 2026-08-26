@@ -1,6 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {createMemoryHistory} from 'history';
 import React from 'react';
 import type {ComponentProps} from 'react';
 
@@ -8,7 +9,10 @@ import {isChrome, isFirefox} from '@mattermost/shared/utils/user_agent';
 import type {ChannelType} from '@mattermost/types/channels';
 import type {TeamType} from '@mattermost/types/teams';
 
-import UnreadsStatusHandler, {UnreadsStatusHandlerClass} from 'components/unreads_status_handler/unreads_status_handler';
+import UnreadsStatusHandlerWithRoute, {
+    UnreadsStatusHandlerClass,
+    UnreadsStatusHandlerWithIntl as UnreadsStatusHandler,
+} from 'components/unreads_status_handler/unreads_status_handler';
 
 import {renderWithContext} from 'tests/react_testing_utils';
 import {Constants} from 'utils/constants';
@@ -47,6 +51,35 @@ describe('components/UnreadsStatusHandler', () => {
         inDrafts: false,
         inScheduledPosts: false,
     };
+
+    test.each([
+        ['threads', 'Threads - Test team display name Test site'],
+        ['drafts', 'Drafts - Test team display name Test site'],
+        ['scheduled_posts', 'Scheduled - Test team display name Test site'],
+    ])('derives the %s section from the route', (section, expectedTitle) => {
+        const history = createMemoryHistory({initialEntries: [`/test-team/${section}`]});
+        const routeProps = {
+            unreadStatus: true,
+            siteName: defaultProps.siteName,
+            currentChannel: undefined,
+            currentTeam: defaultProps.currentTeam,
+            currentTeammate: null,
+        };
+        const {rerender} = renderWithContext(
+            <UnreadsStatusHandlerWithRoute {...routeProps}/>,
+            {},
+            {history},
+        );
+
+        rerender(
+            <UnreadsStatusHandlerWithRoute
+                {...routeProps}
+                unreadStatus={false}
+            />,
+        );
+
+        expect(document.title).toBe(expectedTitle);
+    });
 
     test('set correctly the title when needed', () => {
         // Render with slightly different prop to trigger componentDidUpdate on first rerender

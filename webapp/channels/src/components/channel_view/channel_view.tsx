@@ -3,7 +3,7 @@
 
 import React, {lazy} from 'react';
 import {FormattedMessage} from 'react-intl';
-import type {RouteComponentProps} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 
 import {Button} from '@mattermost/shared/components/button';
 
@@ -25,9 +25,14 @@ const ChannelBookmarks = makeAsyncComponent('ChannelBookmarks', lazy(() => impor
 const AdvancedCreatePost = makeAsyncComponent('AdvancedCreatePost', lazy(() => import('components/advanced_create_post')));
 const ChannelBanner = makeAsyncComponent('ChannelBanner', lazy(() => import('components/channel_banner/channel_banner')));
 
-export type Props = PropsFromRedux & RouteComponentProps<{
+type RouteParams = {
     postid?: string;
-}>;
+};
+
+export type Props = PropsFromRedux & {
+    pathname: string;
+    postId?: string;
+};
 
 type State = {
     channelId: string;
@@ -37,7 +42,7 @@ type State = {
     waitForLoader: boolean;
 };
 
-export default class ChannelView extends React.PureComponent<Props, State> {
+export class ChannelView extends React.PureComponent<Props, State> {
     public static createDeferredPostView = () => {
         return deferComponentRender(
             PostView,
@@ -53,10 +58,10 @@ export default class ChannelView extends React.PureComponent<Props, State> {
 
     static getDerivedStateFromProps(props: Props, state: State) {
         let updatedState = {};
-        const focusedPostId = props.match.params.postid;
+        const focusedPostId = props.postId;
 
-        if (props.match.url !== state.url && props.channelId !== state.channelId) {
-            updatedState = {deferredPostView: ChannelView.createDeferredPostView(), url: props.match.url, focusedPostId};
+        if (props.pathname !== state.url && props.channelId !== state.channelId) {
+            updatedState = {deferredPostView: ChannelView.createDeferredPostView(), url: props.pathname, focusedPostId};
         }
 
         if (props.channelId !== state.channelId) {
@@ -80,9 +85,9 @@ export default class ChannelView extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            url: props.match.url,
+            url: props.pathname,
             channelId: props.channelId,
-            focusedPostId: props.match.params.postid,
+            focusedPostId: props.postId,
             deferredPostView: ChannelView.createDeferredPostView(),
             waitForLoader: false,
         };
@@ -237,3 +242,18 @@ export default class ChannelView extends React.PureComponent<Props, State> {
         );
     }
 }
+
+const ChannelViewWithRoute = (props: PropsFromRedux) => {
+    const {pathname} = useLocation();
+    const {postid} = useParams<RouteParams>();
+
+    return (
+        <ChannelView
+            {...props}
+            pathname={pathname}
+            postId={postid}
+        />
+    );
+};
+
+export default ChannelViewWithRoute;

@@ -1,9 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {Location} from 'history';
 import {connect} from 'react-redux';
-import {withRouter, matchPath} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
@@ -32,17 +30,11 @@ const isCurrentChannelMuted = createSelector(
     (membership) => isChannelMuted(membership),
 );
 
-type OwnProps = {
-    location: Location;
-};
-
-const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => ({
+const mapStateToProps = (state: GlobalState) => ({
     user: getCurrentUser(state),
     channel: getCurrentChannel(state),
     isMobileView: getIsMobileView(state),
     isMuted: isCurrentChannelMuted(state),
-    inGlobalThreads: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/threads/:threadIdentifier?'})),
-    inDrafts: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/drafts'})),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -53,4 +45,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     }, dispatch),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MobileChannelHeader));
+export default connect(mapStateToProps, mapDispatchToProps)(MobileChannelHeader);

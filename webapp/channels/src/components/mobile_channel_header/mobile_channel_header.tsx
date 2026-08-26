@@ -4,6 +4,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
+import {useLocation} from 'react-router-dom';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
@@ -33,7 +34,7 @@ type Props = {
     };
 };
 
-export default class MobileChannelHeader extends React.PureComponent<Props> {
+export class MobileChannelHeader extends React.PureComponent<Props> {
     componentDidMount() {
         document.querySelector('.inner-wrap')?.addEventListener('click', this.hideSidebars);
     }
@@ -128,3 +129,20 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
         );
     }
 }
+
+type RouteProps = Omit<Props, 'inGlobalThreads' | 'inDrafts'>;
+
+const MobileChannelHeaderWithRoute = (props: RouteProps) => {
+    const {pathname} = useLocation();
+    const section = pathname.split('/')[2];
+
+    return (
+        <MobileChannelHeader
+            {...props}
+            inGlobalThreads={section === 'threads'}
+            inDrafts={section === 'drafts'}
+        />
+    );
+};
+
+export default MobileChannelHeaderWithRoute;

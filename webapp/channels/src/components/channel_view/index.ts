@@ -3,7 +3,6 @@
 
 import {connect} from 'react-redux';
 import type {ConnectedProps} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 
 import type {Channel} from '@mattermost/types/channels';
 
@@ -66,4 +65,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default withRouter(connector(ChannelView));
+export default connector(ChannelView);
