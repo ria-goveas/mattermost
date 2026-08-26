@@ -2,13 +2,14 @@
 // See LICENSE.txt for license information.
 
 import {waitFor} from '@testing-library/react';
+import {createMemoryHistory} from 'history';
 import React from 'react';
 
 import type {RemoteCluster} from '@mattermost/types/remote_clusters';
 
 import {Client4} from 'mattermost-redux/client';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
 import {TestHelper} from 'utils/test_helper';
 
 import SecureConnections from './secure_connections';
@@ -84,6 +85,20 @@ describe('SecureConnections', () => {
 
         await waitFor(() => {
             expect(screen.getAllByText('Add a connection').length).toBeGreaterThan(0);
+        });
+    });
+
+    it('navigates to the create form from the add menu', async () => {
+        getRemoteClusters.mockResolvedValue([]);
+        const history = createMemoryHistory();
+        renderWithContext(<SecureConnections/>, {}, {history});
+
+        const addButtons = await screen.findAllByText('Add a connection');
+        await userEvent.click(addButtons[0]);
+        await userEvent.click(screen.getByRole('menuitem', {name: 'Create a connection'}));
+
+        await waitFor(() => {
+            expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/create');
         });
     });
 });

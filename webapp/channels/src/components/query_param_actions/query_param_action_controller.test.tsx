@@ -1,9 +1,9 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {createMemoryHistory} from 'history';
 import React from 'react';
 import * as ReactRedux from 'react-redux';
-import {MemoryRouter, Route, useHistory} from 'react-router-dom';
 
 import {openModal} from 'actions/views/modals';
 
@@ -21,27 +21,12 @@ jest.mock('actions/views/modals', () => ({
     openModal: jest.fn(),
 }));
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: jest.fn(),
-}));
-
 describe('QueryParamActionController', () => {
     let mockDispatch: jest.Mock;
-
-    // Define a custom type for mockHistory that includes the replace method
-    interface MockHistory extends jest.Mock<History, [any]> {
-        replace: jest.Mock;
-    }
-    let mockHistory: MockHistory;
 
     beforeEach(() => {
         mockDispatch = jest.fn();
         jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
-        mockHistory = {
-            replace: jest.fn(),
-        } as MockHistory;
-        (useHistory as jest.Mock).mockReturnValue(mockHistory);
     });
 
     afterEach(() => {
@@ -49,14 +34,8 @@ describe('QueryParamActionController', () => {
     });
 
     it('should dispatch openModal for INVITATION modal ID when passed valid open_invitation_modal action', () => {
-        renderWithContext(
-            <MemoryRouter initialEntries={['/?action=open_invitation_modal']}>
-                <Route
-                    path='/'
-                    component={QueryParamActionController}
-                />
-            </MemoryRouter>,
-        );
+        const history = createMemoryHistory({initialEntries: ['/?action=open_invitation_modal']});
+        renderWithContext(<QueryParamActionController/>, {}, {history});
 
         expect(mockDispatch).toHaveBeenCalledWith(
             openModal({
@@ -67,40 +46,21 @@ describe('QueryParamActionController', () => {
     });
 
     it('should not dispatch any action when action query parameter is not present', () => {
-        renderWithContext(
-            <MemoryRouter initialEntries={['/']}>
-                <Route
-                    path='/'
-                    component={QueryParamActionController}
-                />
-            </MemoryRouter>,
-        );
+        renderWithContext(<QueryParamActionController/>);
 
         expect(mockDispatch).not.toHaveBeenCalled();
     });
 
     it('should not dispatch any action when action query parameter is not in list', () => {
-        renderWithContext(
-            <MemoryRouter initialEntries={['/?action=invalid_action']}>
-                <Route
-                    path='/'
-                    component={QueryParamActionController}
-                />
-            </MemoryRouter>,
-        );
+        const history = createMemoryHistory({initialEntries: ['/?action=invalid_action']});
+        renderWithContext(<QueryParamActionController/>, {}, {history});
 
         expect(mockDispatch).not.toHaveBeenCalled();
     });
 
     it('should remove the action query parameter after dispatching the action', () => {
-        renderWithContext(
-            <MemoryRouter initialEntries={['/?action=open_invitation_modal']}>
-                <Route
-                    path='/'
-                    component={QueryParamActionController}
-                />
-            </MemoryRouter>,
-        );
+        const history = createMemoryHistory({initialEntries: ['/?action=open_invitation_modal']});
+        renderWithContext(<QueryParamActionController/>, {}, {history});
 
         expect(mockDispatch).toHaveBeenCalledWith(
             openModal({
@@ -109,8 +69,7 @@ describe('QueryParamActionController', () => {
             }),
         );
 
-        expect(mockHistory.replace).toHaveBeenCalledWith({
-            search: '',
-        });
+        expect(history.location.search).toBe('');
+        expect(history.length).toBe(1);
     });
 });

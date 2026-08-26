@@ -7,7 +7,8 @@ import type {SelectCallback} from 'react-bootstrap';
 import {Tabs, Tab} from 'react-bootstrap';
 import {useIntl, FormattedMessage} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory, useParams, useLocation} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom-v5-compat';
 import styled from 'styled-components';
 
 import {PlusIcon} from '@mattermost/compass-icons/components';
@@ -63,8 +64,8 @@ export default function SecureConnectionDetail(props: Props) {
     const {formatMessage} = useIntl();
     const {connection_id: remoteId} = useParams<Params>();
     const isCreating = remoteId === 'create';
-    const {state: initRemoteCluster, ...location} = useLocation<RemoteCluster | undefined>();
-    const history = useHistory();
+    const {state: initRemoteCluster, pathname, search, hash} = useLocation<RemoteCluster | undefined>();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [remoteCluster, {applyPatch, save, currentRemoteCluster, hasChanges, loading, saving, patch}] = useRemoteClusterEdit(remoteId, initRemoteCluster);
@@ -76,8 +77,8 @@ export default function SecureConnectionDetail(props: Props) {
 
     useEffect(() => {
         // keep history cache up to date
-        history.replace({...location, state: currentRemoteCluster});
-    }, [currentRemoteCluster]);
+        navigate({pathname, search, hash}, {replace: true, state: currentRemoteCluster});
+    }, [currentRemoteCluster, hash, navigate, pathname, search]);
 
     useEffect(() => {
         // block nav when changes are pending
@@ -98,7 +99,8 @@ export default function SecureConnectionDetail(props: Props) {
         }
         const rc = await promptCreate(patch);
         if (rc) {
-            history.replace(getEditLocation(rc));
+            const {pathname, search, hash, state} = getEditLocation(rc);
+            navigate({pathname, search, hash}, {replace: true, state});
         }
     };
 

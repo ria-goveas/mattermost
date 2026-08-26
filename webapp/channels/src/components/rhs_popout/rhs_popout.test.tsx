@@ -1,8 +1,9 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {createMemoryHistory} from 'history';
 import React from 'react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
 import {fetchChannelsAndMembers, getChannelMembers, selectChannel} from 'mattermost-redux/actions/channels';
 import {selectTeam} from 'mattermost-redux/actions/teams';
@@ -10,6 +11,7 @@ import {selectTeam} from 'mattermost-redux/actions/teams';
 import {useTeamByName} from 'components/common/hooks/use_team';
 
 import {renderWithContext, screen, waitFor} from 'tests/react_testing_utils';
+import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 import {TestHelper} from 'utils/test_helper';
 
 import RhsPopout from './rhs_popout';
@@ -70,13 +72,12 @@ describe('RhsPopout', () => {
 
     function renderPopout(path: string, state = baseState) {
         return renderWithContext(
-            <MemoryRouter initialEntries={[path]}>
-                <Route
-                    path='/_popout/rhs/:team'
-                    component={RhsPopout}
-                />
-            </MemoryRouter>,
+            <Route
+                path={`/_popout/rhs/:team(${TEAM_NAME_PATH_PATTERN})`}
+                component={RhsPopout}
+            />,
             state,
+            {history: createMemoryHistory({initialEntries: [path]})},
         );
     }
 

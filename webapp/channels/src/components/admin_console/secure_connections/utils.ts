@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {LocationDescriptor} from 'history';
+import type {LocationDescriptorObject} from 'history';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -230,11 +230,11 @@ export const useTeamOptions = () => {
     return teamsById;
 };
 
-export const getEditLocation = (rc: RemoteCluster): LocationDescriptor<RemoteCluster> => {
+export const getEditLocation = (rc: RemoteCluster): LocationDescriptorObject<RemoteCluster> => {
     return {pathname: `/admin_console/site_config/secure_connections/${rc.remote_id}`, state: rc};
 };
 
-export const getCreateLocation = (): LocationDescriptor<RemoteCluster> => {
+export const getCreateLocation = (): LocationDescriptorObject<RemoteCluster> => {
     return {pathname: '/admin_console/site_config/secure_connections/create'};
 };
 

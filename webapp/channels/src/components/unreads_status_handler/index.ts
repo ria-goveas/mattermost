@@ -2,8 +2,9 @@
 // See LICENSE.txt for license information.
 
 import type {Location} from 'history';
+import React from 'react';
 import {connect} from 'react-redux';
-import {withRouter, matchPath} from 'react-router-dom';
+import {matchPath, useLocation} from 'react-router-dom-v5-compat';
 
 import type {GlobalState} from '@mattermost/types/store';
 
@@ -13,9 +14,9 @@ import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 
 import UnreadsStatusHandler from './unreads_status_handler';
 
-type Props = {location: Location};
+type Props = {pathname: Location['pathname']};
 
-function mapStateToProps(state: GlobalState, {location: {pathname}}: Props) {
+function mapStateToProps(state: GlobalState, {pathname}: Props) {
     const config = getConfig(state);
     const currentChannel = getCurrentChannel(state);
     const currentTeammate = (currentChannel && currentChannel.teammate_id) ? currentChannel : null;
@@ -27,10 +28,22 @@ function mapStateToProps(state: GlobalState, {location: {pathname}}: Props) {
         currentTeammate,
         siteName: config.SiteName,
         unreadStatus: getUnreadStatus(state),
-        inGlobalThreads: matchPath(pathname, {path: '/:team/threads/:threadIdentifier?'}) != null,
-        inDrafts: matchPath(pathname, {path: '/:team/drafts'}) != null,
-        inScheduledPosts: matchPath(pathname, {path: '/:team/scheduled_posts'}) != null,
+        ...getRouteFlags(pathname),
     };
 }
 
-export default withRouter(connect(mapStateToProps)(UnreadsStatusHandler));
+export function getRouteFlags(pathname: string) {
+    return {
+        inGlobalThreads: matchPath('/:team/threads/:threadIdentifier?', pathname) != null,
+        inDrafts: matchPath('/:team/drafts', pathname) != null,
+        inScheduledPosts: matchPath('/:team/scheduled_posts', pathname) != null,
+    };
+}
+
+const ConnectedUnreadsStatusHandler = connect(mapStateToProps)(UnreadsStatusHandler);
+
+export default function UnreadsStatusHandlerWithLocation() {
+    const {pathname} = useLocation();
+
+    return React.createElement(ConnectedUnreadsStatusHandler, {pathname});
+}

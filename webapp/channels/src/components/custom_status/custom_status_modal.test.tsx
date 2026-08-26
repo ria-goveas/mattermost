@@ -1,11 +1,14 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {createMemoryHistory} from 'history';
 import React from 'react';
 
 import type {DeepPartial} from '@mattermost/types/utilities';
 
 import {Preferences} from 'mattermost-redux/constants';
+
+import {closeModal} from 'actions/views/modals';
 
 import mergeObjects from 'packages/mattermost-redux/test/merge_objects';
 import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
@@ -16,6 +19,9 @@ import type {GlobalState} from 'types/store';
 import CustomStatusModal from './custom_status_modal';
 
 jest.mock('images/img_trans.gif', () => 'img_trans.gif');
+jest.mock('actions/views/modals', () => ({
+    closeModal: jest.fn(() => ({type: 'CLOSE_MODAL'})),
+}));
 
 describe('CustomStatusModal', () => {
     const baseProps = {
@@ -138,5 +144,13 @@ describe('CustomStatusModal', () => {
         expect(screen.getByLabelText(':existent:')).toBeInTheDocument();
         expect(screen.queryByText('Not existing')).not.toBeInTheDocument();
         expect(screen.queryByLabelText(':nonexistent:')).not.toBeInTheDocument();
+    });
+
+    test('closes when navigating to the custom emoji page', () => {
+        const history = createMemoryHistory({initialEntries: ['/team/emoji']});
+
+        renderWithContext(<CustomStatusModal {...baseProps}/>, initialState, {history});
+
+        expect(closeModal).toHaveBeenCalled();
     });
 });

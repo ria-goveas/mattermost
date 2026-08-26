@@ -14,12 +14,6 @@ import {TestHelper} from 'utils/test_helper';
 import SecureConnectionDetail from './secure_connection_detail';
 
 const mockPromptCreate = jest.fn();
-const mockHistoryReplace = jest.fn();
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => ({replace: mockHistoryReplace, push: jest.fn()}),
-}));
 
 jest.mock('./chat.svg', () => () => <svg data-testid='chat-svg'/>);
 
@@ -70,13 +64,16 @@ const remoteCluster = TestHelper.getRemoteClusterMock({
 });
 
 function renderAtPath(path: string, state: any = baseState) {
-    return renderWithContext(
+    const history = createMemoryHistory({initialEntries: [path]});
+    const result = renderWithContext(
         <Route path='/admin_console/site_config/secure_connections/:connection_id'>
             <SecureConnectionDetail disabled={false}/>
         </Route>,
         state,
-        {history: createMemoryHistory({initialEntries: [path]})},
+        {history},
     );
+
+    return {...result, history};
 }
 
 describe('SecureConnectionDetail', () => {
@@ -88,7 +85,6 @@ describe('SecureConnectionDetail', () => {
         getSharedChannelRemotes = jest.spyOn(Client4, 'getSharedChannelRemotes').mockResolvedValue([]);
         mockPromptCreate.mockReset();
         mockPromptCreate.mockResolvedValue(undefined);
-        mockHistoryReplace.mockClear();
     });
 
     afterEach(() => {
@@ -178,8 +174,14 @@ describe('SecureConnectionDetail', () => {
         const user = userEvent.setup();
         const created = TestHelper.getRemoteClusterMock({remote_id: 'rc-new', display_name: 'New Org', default_team_id: 'team-1'});
         mockPromptCreate.mockResolvedValueOnce(created);
+        getRemoteCluster.mockImplementation((id: string) => {
+            if (id === 'rc-new') {
+                return Promise.resolve(created);
+            }
+            return Promise.resolve(remoteCluster);
+        });
 
-        renderAtPath('/admin_console/site_config/secure_connections/create');
+        const {history} = renderAtPath('/admin_console/site_config/secure_connections/create');
 
         await user.type(screen.getByTestId('organization-name-input'), 'New Org');
         await user.click(screen.getByTestId('destination-team-input'));
@@ -193,9 +195,8 @@ describe('SecureConnectionDetail', () => {
             expect(mockPromptCreate).toHaveBeenCalledWith({display_name: 'New Org', default_team_id: 'team-1'});
         });
         await waitFor(() => {
-            expect(mockHistoryReplace).toHaveBeenCalledWith(expect.objectContaining({
-                pathname: '/admin_console/site_config/secure_connections/rc-new',
-            }));
+            expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/rc-new');
+            expect(history.location.state).toEqual(created);
         });
     });
 });
