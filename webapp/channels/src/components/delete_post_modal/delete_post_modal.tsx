@@ -239,7 +239,12 @@ const SharedChannelPostDeleteWarning = ({post}: {post: Post}) => {
 const DeletePostModalWithLocation = (props: Props) => {
     const location = useLocation();
 
-    return <DeletePostModal {...props} location={location}/>;
+    return (
+        <DeletePostModal
+            {...props}
+            location={location}
+        />
+    );
 };
 
 export default DeletePostModalWithLocation;
