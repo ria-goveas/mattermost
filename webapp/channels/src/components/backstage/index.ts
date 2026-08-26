@@ -2,7 +2,6 @@
 // See LICENSE.txt for license information.
 
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 
 import {Permissions} from 'mattermost-redux/constants';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
@@ -65,4 +64,4 @@ function mapStateToProps(state: GlobalState) {
     };
 }
 
-export default withRouter(connect(mapStateToProps)(BackstageController));
+export default connect(mapStateToProps)(BackstageController);
