@@ -3,8 +3,7 @@
 
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useLocation, useParams} from 'react-router-dom';
-import {Route, Routes} from 'react-router-dom-v5-compat';
+import {CompatRoute, useLocation, useParams} from 'react-router-dom-v5-compat';
 
 import {fetchChannelsAndMembers, getChannelMembers, selectChannel} from 'mattermost-redux/actions/channels';
 import {selectTeam} from 'mattermost-redux/actions/teams';
@@ -25,7 +24,7 @@ export default function RhsPopout() {
 
     const {team: teamName} = useParams<{team: string}>();
 
-    const team = useTeamByName(teamName);
+    const team = useTeamByName(teamName ?? '');
     const channelIdentifier = new URLSearchParams(location.search).get('channel') ?? '';
     const channel = useSelector((state: GlobalState) => (channelIdentifier ? getChannelByName(state, channelIdentifier) : undefined));
     const teamId = team?.id;
@@ -52,20 +51,17 @@ export default function RhsPopout() {
             <div className='main-wrapper rhs-popout'>
                 <div className='sidebar--right'>
                     <div className='sidebar-right__body'>
-                        <Routes>
-                            <Route
-                                path='/_popout/rhs/:team/search'
-                                element={<RhsSearchPopout/>}
-                            />
-                            <Route
-                                path='/_popout/rhs/:team/plugin/:pluginId'
-                                element={<RhsPluginPopout/>}
-                            />
-                        </Routes>
+                        <CompatRoute
+                            path='/_popout/rhs/:team/search'
+                            component={RhsSearchPopout}
+                        />
+                        <CompatRoute
+                            path='/_popout/rhs/:team/plugin/:pluginId'
+                            component={RhsPluginPopout}
+                        />
                     </div>
                 </div>
             </div>
         </>
     );
 }
-

@@ -12,6 +12,7 @@ import {useTeamByName} from 'components/common/hooks/use_team';
 
 import {renderWithContext, screen, waitFor} from 'tests/react_testing_utils';
 import {TestHelper} from 'utils/test_helper';
+import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
 import RhsPopout from './rhs_popout';
 
@@ -72,7 +73,7 @@ describe('RhsPopout', () => {
     function renderPopout(path: string, state = baseState) {
         return renderWithContext(
             <Route
-                path='/_popout/rhs/:team'
+                path={`/_popout/rhs/:team(${TEAM_NAME_PATH_PATTERN})`}
                 component={RhsPopout}
             />,
             state,
