@@ -4,6 +4,8 @@
 import React from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 
+import type {OutgoingOAuthConnection} from '@mattermost/types/integrations';
+
 import {Permissions} from 'mattermost-redux/constants';
 
 import AddOutgoingOAuthConnection from 'components/integrations/outgoing_oauth_connections/add_outgoing_oauth_connection';
@@ -17,11 +19,11 @@ jest.mock('react-router-dom-v5-compat', () => ({
     useNavigate: () => mockNavigate,
 }));
 
-const mockAddOutgoingOAuthConnection = jest.fn(() => () => Promise.resolve({data: {id: 'new-connection-id'}}));
+const mockAddOutgoingOAuthConnection = jest.fn((_teamId: string, _connection: OutgoingOAuthConnection) => () => Promise.resolve({data: {id: 'new-connection-id'}}));
 
 jest.mock('mattermost-redux/actions/integrations', () => ({
     ...jest.requireActual('mattermost-redux/actions/integrations'),
-    addOutgoingOAuthConnection: mockAddOutgoingOAuthConnection,
+    addOutgoingOAuthConnection: (teamId: string, connection: OutgoingOAuthConnection) => mockAddOutgoingOAuthConnection(teamId, connection),
 }));
 
 describe('components/integrations/AddOutgoingOAuthConnection', () => {
