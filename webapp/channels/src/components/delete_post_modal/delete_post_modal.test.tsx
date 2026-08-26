@@ -3,6 +3,8 @@
 
 import React from 'react';
 
+import {createMemoryHistory} from 'history';
+
 import type {PostType, PostMetadata} from '@mattermost/types/posts';
 
 import DeletePostModal from 'components/delete_post_modal/delete_post_modal';
@@ -42,9 +44,6 @@ describe('components/delete_post_modal', () => {
         onExited: jest.fn(),
         channelName: 'channel_name',
         teamName: 'team_name',
-        location: {
-            pathname: '',
-        },
     };
 
     test('should match snapshot for delete_post_modal with 0 comments', () => {
@@ -135,9 +134,6 @@ describe('components/delete_post_modal', () => {
             actions: {
                 deleteAndRemovePost,
             },
-            location: {
-                pathname: '/teamname/messages/@username',
-            },
         };
         renderWithContext(
             <DeletePostModal {...props}/>,
@@ -167,13 +163,13 @@ describe('components/delete_post_modal', () => {
             actions: {
                 deleteAndRemovePost,
             },
-            location: {
-                pathname: '/teamname/messages/@username/123',
-            },
         };
+        const history = createMemoryHistory({initialEntries: ['/teamname/messages/@username/123']});
 
         renderWithContext(
             <DeletePostModal {...props}/>,
+            {},
+            {history},
         );
 
         // Click delete button
@@ -192,13 +188,13 @@ describe('components/delete_post_modal', () => {
             actions: {
                 deleteAndRemovePost,
             },
-            location: {
-                pathname: '/teamname/channels/channelName/123',
-            },
         };
+        const history = createMemoryHistory({initialEntries: ['/teamname/channels/channelName/123']});
 
         renderWithContext(
             <DeletePostModal {...props}/>,
+            {},
+            {history},
         );
 
         // Click delete button
