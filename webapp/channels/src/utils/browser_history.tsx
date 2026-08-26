@@ -1,8 +1,8 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import {createBrowserHistory} from 'history';
-import type {History} from 'history';
+import {createBrowserHistory, createPath} from 'history';
+import type {History, LocationDescriptorObject} from 'history';
 
 import {isDesktopApp, getDesktopVersion} from '@mattermost/shared/utils/user_agent';
 
@@ -14,9 +14,11 @@ const b = createBrowserHistory({basename: window.basename});
 const isDesktop = isDesktopApp() && isServerVersionGreaterThanOrEqualTo(getDesktopVersion(), '5.0.0');
 const browserHistory = {
     ...b,
-    push: (path: string | {pathname: string}, ...args: string[]) => {
+    push: (path: string | LocationDescriptorObject, ...args: string[]) => {
         if (isDesktop) {
-            DesktopApp.doBrowserHistoryPush(typeof path === 'object' ? path.pathname : path);
+            // Desktop IPC takes a single path string. Compat useNavigate() pushes a
+            // location object, so forwarding only pathname would drop search/hash.
+            DesktopApp.doBrowserHistoryPush(typeof path === 'object' ? createPath(path) : path);
         } else {
             b.push(path, ...args);
         }
