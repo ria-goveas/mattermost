@@ -1,11 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {createMemoryHistory} from 'history';
 import React from 'react';
+import {Route} from 'react-router-dom';
 
 import {renderWithContext, screen} from 'tests/react_testing_utils';
 
-import ChannelView from './channel_view';
+import ChannelViewWithRoute, {ChannelView} from './channel_view';
 import type {Props} from './channel_view';
 
 jest.mock('components/async_load', () => ({
@@ -43,12 +45,7 @@ describe('components/channel_view', () => {
     const baseProps: Props = {
         channelId: 'channelId',
         deactivatedChannel: false,
-        history: {} as Props['history'],
-        location: {} as Props['location'],
-        match: {
-            url: '/team/channel/channelId',
-            params: {},
-        } as Props['match'],
+        pathname: '/team/channels/channelId',
         enableOnboardingFlow: true,
         teamUrl: '/team',
         channelIsArchived: false,
@@ -99,7 +96,8 @@ describe('components/channel_view', () => {
             <ChannelView
                 {...baseProps}
                 channelId='newChannelId'
-                match={{url: '/team/channel/channelId/postId', params: {postid: 'postid'}} as Props['match']}
+                pathname='/team/channels/channelId/postid'
+                postId='postid'
             />,
         );
         expect(screen.getByTestId('deferred-post-view')).toHaveAttribute('data-focused-post-id', 'postid');
@@ -109,10 +107,25 @@ describe('components/channel_view', () => {
             <ChannelView
                 {...baseProps}
                 channelId='newChannelId'
-                match={{url: '/team/channel/channelId/postId1', params: {postid: 'postid1'}} as Props['match']}
+                pathname='/team/channels/channelId/postid1'
+                postId='postid1'
             />,
         );
         expect(screen.getByTestId('deferred-post-view')).toHaveAttribute('data-focused-post-id', 'postid1');
+    });
+
+    it('reads the focused post from the route', () => {
+        const history = createMemoryHistory({initialEntries: ['/team/channels/channel/postid']});
+
+        renderWithContext(
+            <Route path='/:team/channels/:identifier/:postid?'>
+                <ChannelViewWithRoute {...baseProps}/>
+            </Route>,
+            {},
+            {history},
+        );
+
+        expect(screen.getByTestId('deferred-post-view')).toHaveAttribute('data-focused-post-id', 'postid');
     });
 
     it('should call fetchRecentMentions on componentDidUpdate', () => {

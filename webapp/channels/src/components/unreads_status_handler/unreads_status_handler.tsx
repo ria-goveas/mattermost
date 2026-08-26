@@ -4,6 +4,7 @@
 import React from 'react';
 import {injectIntl} from 'react-intl';
 import type {IntlShape} from 'react-intl';
+import {useLocation} from 'react-router-dom';
 
 import * as UserAgent from '@mattermost/shared/utils/user_agent';
 import type {Channel} from '@mattermost/types/channels';
@@ -192,4 +193,22 @@ export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
     }
 }
 
-export default injectIntl(UnreadsStatusHandlerClass);
+export const UnreadsStatusHandlerWithIntl = injectIntl(UnreadsStatusHandlerClass);
+
+type RouteProps = Omit<Props, 'intl' | 'inGlobalThreads' | 'inDrafts' | 'inScheduledPosts'>;
+
+const UnreadsStatusHandler = (props: RouteProps) => {
+    const {pathname} = useLocation();
+    const section = pathname.split('/')[2];
+
+    return (
+        <UnreadsStatusHandlerWithIntl
+            {...props}
+            inGlobalThreads={section === 'threads'}
+            inDrafts={section === 'drafts'}
+            inScheduledPosts={section === 'scheduled_posts'}
+        />
+    );
+};
+
+export default UnreadsStatusHandler;

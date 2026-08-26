@@ -1,6 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {createMemoryHistory} from 'history';
 import React from 'react';
 
 import {renderWithContext, screen} from 'tests/react_testing_utils';
@@ -62,6 +63,8 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
         });
 
         test('renders the component correctly, global threads', () => {
+            const history = createMemoryHistory({initialEntries: ['/team/threads']});
+
             renderWithContext(
                 <div
                     className='inner-wrap'
@@ -70,11 +73,12 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
                     <ChannelHeaderMobile
                         channel={channel}
                         isMobileView={false}
-                        inGlobalThreads={true}
                         user={user}
                         actions={actions}
                     />
                 </div>,
+                {},
+                {history},
             );
 
             const menuItem = screen.getByText('Followed threads');
@@ -82,6 +86,8 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
         });
 
         test('renders the component correctly, in drafts', () => {
+            const history = createMemoryHistory({initialEntries: ['/team/drafts']});
+
             renderWithContext(
                 <div
                     className='inner-wrap'
@@ -90,11 +96,12 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
                     <ChannelHeaderMobile
                         channel={channel}
                         isMobileView={false}
-                        inDrafts={true}
                         user={user}
                         actions={actions}
                     />
                 </div>,
+                {},
+                {history},
             );
 
             const menuItem = screen.getByText('Drafts');
