@@ -8,10 +8,16 @@ import type {DeepPartial} from '@mattermost/types/utilities';
 
 import AddOutgoingWebhook from 'components/integrations/add_outgoing_webhook/add_outgoing_webhook';
 
-import {renderWithContext} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {TestHelper} from 'utils/test_helper';
 
 import type {GlobalState} from 'types/store';
+
+const mockNavigate = jest.fn();
+
+jest.mock('react-router-dom-v5-compat', () => ({
+    useNavigate: () => mockNavigate,
+}));
 
 const initialState: DeepPartial<GlobalState> = {
     entities: {
@@ -45,12 +51,17 @@ const initialState: DeepPartial<GlobalState> = {
 };
 
 describe('components/integrations/AddOutgoingWebhook', () => {
+    const team = TestHelper.getTeamMock({
+        id: 'testteamid',
+        name: 'test',
+    });
+
+    beforeEach(() => {
+        mockNavigate.mockClear();
+    });
+
     test('should match snapshot', () => {
         const emptyFunction = jest.fn();
-        const team = TestHelper.getTeamMock({
-            id: 'testteamid',
-            name: 'test',
-        });
 
         const {container} = renderWithContext(
             <AddOutgoingWebhook
@@ -62,5 +73,29 @@ describe('components/integrations/AddOutgoingWebhook', () => {
             initialState as GlobalState,
         );
         expect(container).toMatchSnapshot();
+    });
+
+    test('should navigate to confirm page after successful save', async () => {
+        const webhookId = 'new-webhook-id';
+        const createOutgoingHook = jest.fn().mockResolvedValue({data: {id: webhookId}});
+
+        renderWithContext(
+            <AddOutgoingWebhook
+                team={team}
+                actions={{createOutgoingHook}}
+                enablePostUsernameOverride={false}
+                enablePostIconOverride={false}
+            />,
+            initialState as GlobalState,
+        );
+
+        await userEvent.type(document.querySelector('#triggerWords') as HTMLTextAreaElement, 'triggerword');
+        await userEvent.type(document.querySelector('#callbackUrls') as HTMLTextAreaElement, 'https://example.com/callback');
+        await userEvent.click(screen.getByText('Save'));
+
+        await waitFor(() => {
+            expect(createOutgoingHook).toHaveBeenCalled();
+            expect(mockNavigate).toHaveBeenCalledWith(`/test/integrations/confirm?type=outgoing_webhooks&id=${webhookId}`);
+        });
     });
 });

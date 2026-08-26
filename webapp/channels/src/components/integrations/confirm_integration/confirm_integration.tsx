@@ -3,7 +3,8 @@
 
 import React, {useEffect} from 'react';
 import {defineMessages, FormattedMessage} from 'react-intl';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom-v5-compat';
 
 import {buttonClassNames} from '@mattermost/shared/components/button';
 import type {Bot} from '@mattermost/types/bots';
@@ -30,7 +31,7 @@ type Props = {
 };
 
 const ConfirmIntegration = ({team, location, commands, oauthApps, incomingHooks, outgoingHooks, bots, outgoingOAuthConnections}: Props): JSX.Element | null => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const type = (new URLSearchParams(location.search)).get('type') || '';
     const id = (new URLSearchParams(location.search)).get('id') || '';
@@ -45,7 +46,7 @@ const ConfirmIntegration = ({team, location, commands, oauthApps, incomingHooks,
 
     const handleKeyPress = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
-            history.push('/' + team.name + '/integrations/' + type);
+            navigate('/' + team.name + '/integrations/' + type);
         }
     };
 
@@ -465,7 +466,7 @@ const ConfirmIntegration = ({team, location, commands, oauthApps, incomingHooks,
             </p>
         );
     } else {
-        history.replace(`/error?type=${ErrorPageTypes.PAGE_NOT_FOUND}`);
+        navigate(`/error?type=${ErrorPageTypes.PAGE_NOT_FOUND}`, {replace: true});
         return null;
     }
 

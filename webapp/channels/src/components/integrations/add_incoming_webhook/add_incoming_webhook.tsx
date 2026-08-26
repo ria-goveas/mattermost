@@ -3,6 +3,7 @@
 
 import React, {memo, useCallback, useState} from 'react';
 import {defineMessages} from 'react-intl';
+import {useNavigate} from 'react-router-dom-v5-compat';
 
 import type {IncomingWebhook} from '@mattermost/types/integrations';
 import type {Team} from '@mattermost/types/teams';
@@ -10,8 +11,6 @@ import type {Team} from '@mattermost/types/teams';
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
 import AbstractIncomingWebhook from 'components/integrations/abstract_incoming_webhook';
-
-import {getHistory} from 'utils/browser_history';
 
 const messages = defineMessages({
     footer: {
@@ -66,6 +65,8 @@ const AddIncomingWebhook = ({
     canBypassChannelLock,
     actions,
 }: Props) => {
+    const navigate = useNavigate();
+
     const [serverError, setServerError] = useState('');
 
     const addIncomingHook = useCallback(async (hook: IncomingWebhook) => {
@@ -73,13 +74,13 @@ const AddIncomingWebhook = ({
 
         const {data, error} = await actions.createIncomingHook(hook);
         if (data) {
-            getHistory().push(`/${team.name}/integrations/confirm?type=incoming_webhooks&id=${data.id}`);
+            navigate(`/${team.name}/integrations/confirm?type=incoming_webhooks&id=${data.id}`);
             return;
         }
         if (error) {
             setServerError(error.message);
         }
-    }, [actions, team.name]);
+    }, [actions, navigate, team.name]);
 
     return (
         <AbstractIncomingWebhook

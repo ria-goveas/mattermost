@@ -8,10 +8,16 @@ import type {DeepPartial} from '@mattermost/types/utilities';
 
 import AddIncomingWebhook from 'components/integrations/add_incoming_webhook/add_incoming_webhook';
 
-import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {TestHelper} from 'utils/test_helper';
 
 import type {GlobalState} from 'types/store';
+
+const mockNavigate = jest.fn();
+
+jest.mock('react-router-dom-v5-compat', () => ({
+    useNavigate: () => mockNavigate,
+}));
 
 const initialState: DeepPartial<GlobalState> = {
     entities: {
@@ -45,7 +51,7 @@ const initialState: DeepPartial<GlobalState> = {
 };
 
 describe('components/integrations/AddIncomingWebhook', () => {
-    const createIncomingHook = jest.fn().mockResolvedValue({data: true});
+    const createIncomingHook = jest.fn().mockResolvedValue({data: {id: 'new-hook-id'}});
     const props = {
         team: TestHelper.getTeamMock({
             id: 'testteamid',
@@ -54,6 +60,21 @@ describe('components/integrations/AddIncomingWebhook', () => {
         enablePostUsernameOverride: true,
         enablePostIconOverride: true,
         actions: {createIncomingHook},
+    };
+
+    beforeEach(() => {
+        mockNavigate.mockClear();
+        createIncomingHook.mockClear();
+    });
+
+    const fillAndSubmitForm = async (hook: ReturnType<typeof TestHelper.getIncomingWebhookMock>) => {
+        await userEvent.selectOptions(screen.getByRole('combobox'), [hook.channel_id]);
+        await userEvent.type(screen.getByRole('textbox', {name: 'Title'}), hook.display_name);
+        await userEvent.type(screen.getByRole('textbox', {name: 'Description'}), hook.description);
+        await userEvent.type(screen.getByRole('textbox', {name: 'Username'}), hook.username);
+        await userEvent.type(screen.getByRole('textbox', {name: 'Profile Picture'}), hook.icon_url);
+
+        await userEvent.click(screen.getByText('Save'));
     };
 
     test('should match snapshot', () => {
@@ -75,16 +96,31 @@ describe('components/integrations/AddIncomingWebhook', () => {
         });
         renderWithContext(<AddIncomingWebhook {...props}/>, initialState as GlobalState);
 
-        await userEvent.selectOptions(screen.getByRole('combobox'), [hook.channel_id]);
-        await userEvent.type(screen.getByRole('textbox', {name: 'Title'}), hook.display_name);
-        await userEvent.type(screen.getByRole('textbox', {name: 'Description'}), hook.description);
-        await userEvent.type(screen.getByRole('textbox', {name: 'Username'}), hook.username);
-        await userEvent.type(screen.getByRole('textbox', {name: 'Profile Picture'}), hook.icon_url);
-
-        await userEvent.click(screen.getByText('Save'));
+        await fillAndSubmitForm(hook);
 
         expect(createIncomingHook).toHaveBeenCalledTimes(1);
         const calledWith = createIncomingHook.mock.calls[0][0];
         expect(calledWith).toEqual(hook);
+    });
+
+    test('should navigate to confirm page after successful save', async () => {
+        const hook = TestHelper.getIncomingWebhookMock({
+            channel_id: 'current_channel_id',
+            display_name: 'display_name',
+            description: 'description',
+            username: 'username',
+            icon_url: 'icon_url',
+            create_at: 0,
+            delete_at: 0,
+            update_at: 0,
+            id: '',
+        });
+        renderWithContext(<AddIncomingWebhook {...props}/>, initialState as GlobalState);
+
+        await fillAndSubmitForm(hook);
+
+        await waitFor(() => {
+            expect(mockNavigate).toHaveBeenCalledWith('/test/integrations/confirm?type=incoming_webhooks&id=new-hook-id');
+        });
     });
 });
