@@ -68,7 +68,12 @@ const CommandsRoutes = ({extraProps}: CommandsRoutesProps) => {
         <Routes>
             <Route
                 index={true}
-                element={<Navigate to='installed' replace={true}/>}
+                element={
+                    <Navigate
+                        to='installed'
+                        replace={true}
+                    />
+                }
             />
             {renderCommandRoute('installed', InstalledCommands, extraProps)}
             {renderCommandRoute('add', AddCommand, extraProps)}

@@ -21,7 +21,7 @@ const mockAddOutgoingOAuthConnection = jest.fn(() => () => Promise.resolve({data
 
 jest.mock('mattermost-redux/actions/integrations', () => ({
     ...jest.requireActual('mattermost-redux/actions/integrations'),
-    addOutgoingOAuthConnection: (...args: unknown[]) => mockAddOutgoingOAuthConnection(...args),
+    addOutgoingOAuthConnection: mockAddOutgoingOAuthConnection,
 }));
 
 describe('components/integrations/AddOutgoingOAuthConnection', () => {

@@ -1,8 +1,8 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
 import {createMemoryHistory} from 'history';
+import React from 'react';
 import {CompatRouter, Route, Routes} from 'react-router-dom-v5-compat';
 
 import {renderWithContext, screen, waitFor} from 'tests/react_testing_utils';
