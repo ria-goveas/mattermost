@@ -97,6 +97,8 @@ describe('SecureConnections', () => {
         await userEvent.click(addButtons[0]);
         await userEvent.click(screen.getByRole('menuitem', {name: 'Create a connection'}));
 
-        expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/create');
+        await waitFor(() => {
+            expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/create');
+        });
     });
 });

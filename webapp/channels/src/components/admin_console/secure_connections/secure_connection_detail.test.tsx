@@ -73,7 +73,7 @@ function renderAtPath(path: string, state: any = baseState) {
         {history},
     );
 
-    return {history, ...result};
+    return {...result, history};
 }
 
 describe('SecureConnectionDetail', () => {
@@ -174,8 +174,14 @@ describe('SecureConnectionDetail', () => {
         const user = userEvent.setup();
         const created = TestHelper.getRemoteClusterMock({remote_id: 'rc-new', display_name: 'New Org', default_team_id: 'team-1'});
         mockPromptCreate.mockResolvedValueOnce(created);
+        getRemoteCluster.mockImplementation((id: string) => {
+            if (id === 'rc-new') {
+                return Promise.resolve(created);
+            }
+            return Promise.resolve(remoteCluster);
+        });
 
-        renderAtPath('/admin_console/site_config/secure_connections/create');
+        const {history} = renderAtPath('/admin_console/site_config/secure_connections/create');
 
         await user.type(screen.getByTestId('organization-name-input'), 'New Org');
         await user.click(screen.getByTestId('destination-team-input'));

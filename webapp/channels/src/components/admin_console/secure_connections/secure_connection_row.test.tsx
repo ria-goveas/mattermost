@@ -134,8 +134,10 @@ describe('SecureConnectionRow', () => {
         await userEvent.click(screen.getByLabelText(/Connection options for/));
         await userEvent.click(screen.getByRole('menuitem', {name: 'Edit'}));
 
-        expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/rc-1');
-        expect(history.location.state).toEqual(confirmedRC);
+        await waitFor(() => {
+            expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/rc-1');
+            expect(history.location.state).toEqual(confirmedRC);
+        });
     });
 
     it('passes the remoteCluster into useRemoteClusterDelete', () => {
