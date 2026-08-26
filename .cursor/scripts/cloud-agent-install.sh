@@ -95,8 +95,8 @@ verify_enterprise_checkout() {
 
   local target
   if ! target="$(find_enterprise_checkout)"; then
-    log "Enterprise checkout not found. Ensure the Cursor multi-repo environment includes github.com/mattermost/enterprise."
-    return 1
+    log "Enterprise checkout not found; continuing without github.com/mattermost/enterprise (team/team OSS demo)."
+    return 0
   fi
 
   log "Enterprise checkout ready at $target."
@@ -122,15 +122,26 @@ hydrate_go_dependencies() {
         fi
       )
     else
-      log "Hydrating Go workspace with server/Makefile default enterprise path."
-      (
-        cd server
-        make setup-go-work
-        go mod download
-        if [ -f public/go.mod ]; then
-          (cd public && go mod download)
-        fi
-      )
+      if target="$(find_enterprise_checkout)"; then
+        log "Hydrating Go workspace with server/Makefile default enterprise path ($target)."
+        (
+          cd server
+          make setup-go-work
+          go mod download
+          if [ -f public/go.mod ]; then
+            (cd public && go mod download)
+          fi
+        )
+      else
+        log "No enterprise checkout; downloading OSS Go modules only."
+        (
+          cd server
+          go mod download
+          if [ -f public/go.mod ]; then
+            (cd public && go mod download)
+          fi
+        )
+      fi
     fi
   fi
 }
