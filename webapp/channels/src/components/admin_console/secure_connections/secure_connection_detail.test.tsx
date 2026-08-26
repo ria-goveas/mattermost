@@ -119,7 +119,7 @@ describe('SecureConnectionDetail', () => {
     });
 
     it('renders an empty org name input in create mode', () => {
-        const {history} = renderAtPath('/admin_console/site_config/secure_connections/create');
+        renderAtPath('/admin_console/site_config/secure_connections/create');
 
         expect(screen.getByTestId('organization-name-input')).toHaveValue('');
     });
