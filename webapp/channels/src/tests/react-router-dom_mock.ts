@@ -20,12 +20,7 @@
 };
 
 jest.mock('react-router-dom', () => {
-    const actual = jest.requireActual('react-router-dom');
-
-    return {
-        ...actual,
-        useHistory: () => (global as any).historyMock,
-    };
+    return jest.requireActual('react-router-dom');
 });
 
 jest.mock('utils/browser_history', () => {

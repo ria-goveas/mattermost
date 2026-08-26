@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 import {waitFor} from '@testing-library/react';
+import {createMemoryHistory} from 'history';
 import React from 'react';
 
 import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
@@ -116,6 +117,25 @@ describe('SecureConnectionRow', () => {
 
         expect(screen.queryByRole('menuitem', {name: 'Generate invitation code'})).not.toBeInTheDocument();
         expect(screen.getByRole('menuitem', {name: 'Edit'})).toBeInTheDocument();
+    });
+
+    it('navigates to the connection edit page', async () => {
+        const history = createMemoryHistory();
+        renderWithContext(
+            <SecureConnectionRow
+                remoteCluster={confirmedRC}
+                onDeleteSuccess={jest.fn()}
+                disabled={false}
+            />,
+            {},
+            {history},
+        );
+
+        await userEvent.click(screen.getByLabelText(/Connection options for/));
+        await userEvent.click(screen.getByRole('menuitem', {name: 'Edit'}));
+
+        expect(history.location.pathname).toBe('/admin_console/site_config/secure_connections/rc-1');
+        expect(history.location.state).toEqual(confirmedRC);
     });
 
     it('passes the remoteCluster into useRemoteClusterDelete', () => {

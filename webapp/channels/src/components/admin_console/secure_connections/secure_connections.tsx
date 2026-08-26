@@ -4,7 +4,7 @@
 import type {ReactNode} from 'react';
 import React from 'react';
 import {useIntl, FormattedMessage, defineMessages} from 'react-intl';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom-v5-compat';
 
 import type {ButtonEmphasis} from '@mattermost/shared/components/button';
 import {buttonClassNames} from '@mattermost/shared/components/button';
@@ -117,17 +117,19 @@ const menuId = 'secure_connections_add_menu';
 
 const AddMenu = ({buttonEmphasis = 'primary', disabled}: {buttonEmphasis?: ButtonEmphasis; disabled: boolean}) => {
     const {formatMessage} = useIntl();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {promptAcceptInvite} = useRemoteClusterAcceptInvite();
 
     const handleCreate = () => {
-        history.push(getCreateLocation());
+        const {pathname, search, hash} = getCreateLocation();
+        navigate({pathname, search, hash});
     };
 
     const handleAccept = async () => {
         const rc = await promptAcceptInvite();
         if (rc) {
-            history.push(getEditLocation(rc));
+            const {pathname, search, hash, state} = getEditLocation(rc);
+            navigate({pathname, search, hash}, {state});
         }
     };
 

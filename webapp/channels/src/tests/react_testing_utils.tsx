@@ -9,6 +9,7 @@ import React from 'react';
 import {IntlProvider} from 'react-intl';
 import {Provider} from 'react-redux';
 import {Router} from 'react-router-dom';
+import {CompatRouter} from 'react-router-dom-v5-compat';
 import type {Reducer} from 'redux';
 
 import type {DeepPartial} from '@mattermost/types/utilities';
@@ -185,16 +186,18 @@ const Providers = ({children, store, history, options}: RenderStateProps) => {
     return (
         <Provider store={store}>
             <Router history={history}>
-                <SharedPackageProvider>
-                    <IntlProvider
-                        locale={options.locale}
-                        messages={options.intlMessages}
-                    >
-                        <WebSocketContext.Provider value={WebSocketClient}>
-                            {children}
-                        </WebSocketContext.Provider>
-                    </IntlProvider>
-                </SharedPackageProvider>
+                <CompatRouter>
+                    <SharedPackageProvider>
+                        <IntlProvider
+                            locale={options.locale}
+                            messages={options.intlMessages}
+                        >
+                            <WebSocketContext.Provider value={WebSocketClient}>
+                                {children}
+                            </WebSocketContext.Provider>
+                        </IntlProvider>
+                    </SharedPackageProvider>
+                </CompatRouter>
             </Router>
         </Provider>
     );

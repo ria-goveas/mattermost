@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom-v5-compat';
 
 import type {AuthChangeResponse} from '@mattermost/types/users';
 
@@ -58,10 +58,10 @@ export default class ClaimController extends React.PureComponent<Props> {
                             src={logoImage}
                         />
                         <div id='claim'>
-                            <Switch>
+                            <Routes>
                                 <Route
                                     path={`${this.props.match.url}/oauth_to_email`}
-                                    render={() => (
+                                    element={(
                                         <OAuthToEmail
                                             currentType={currentType || ''}
                                             email={email || ''}
@@ -72,7 +72,7 @@ export default class ClaimController extends React.PureComponent<Props> {
                                 />
                                 <Route
                                     path={`${this.props.match.url}/email_to_oauth`}
-                                    render={() => (
+                                    element={(
                                         <EmailToOAuth
                                             newType={newType || ''}
                                             email={email || ''}
@@ -82,7 +82,7 @@ export default class ClaimController extends React.PureComponent<Props> {
                                 />
                                 <Route
                                     path={`${this.props.match.url}/ldap_to_email`}
-                                    render={() => (
+                                    element={(
                                         <LDAPToEmail
                                             email={email}
                                             passwordConfig={this.props.passwordConfig}
@@ -92,7 +92,7 @@ export default class ClaimController extends React.PureComponent<Props> {
                                 />
                                 <Route
                                     path={`${this.props.match.url}/email_to_ldap`}
-                                    render={() => (
+                                    element={(
                                         <EmailToLDAP
                                             email={email}
                                             siteName={this.props.siteName}
@@ -100,7 +100,7 @@ export default class ClaimController extends React.PureComponent<Props> {
                                         />
                                     )}
                                 />
-                            </Switch>
+                            </Routes>
                         </div>
                     </div>
                 </div>

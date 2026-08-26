@@ -3,7 +3,8 @@
 
 import React from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom-v5-compat';
 import styled from 'styled-components';
 
 import {DotsHorizontalIcon, CodeTagsIcon, PencilOutlineIcon, TrashCanOutlineIcon} from '@mattermost/compass-icons/components';
@@ -45,7 +46,7 @@ const menuId = 'secure_connection_row_menu';
 
 const RowMenu = ({remoteCluster: rc, onDeleteSuccess, disabled}: Props) => {
     const {formatMessage} = useIntl();
-    const history = useHistory<RemoteCluster>();
+    const navigate = useNavigate();
     const {promptDelete} = useRemoteClusterDelete(rc);
     const {promptCreateInvite} = useRemoteClusterCreateInvite(rc);
 
@@ -54,7 +55,8 @@ const RowMenu = ({remoteCluster: rc, onDeleteSuccess, disabled}: Props) => {
     };
 
     const handleEdit = () => {
-        history.push(getEditLocation(rc));
+        const {pathname, search, hash, state} = getEditLocation(rc);
+        navigate({pathname, search, hash}, {state});
     };
 
     const handleDelete = () => {

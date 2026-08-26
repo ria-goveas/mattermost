@@ -17,16 +17,6 @@ jest.mock('mattermost-redux/actions/agents', () => ({
     getAgents: jest.fn(() => ({type: 'GET_AGENTS'})),
 }));
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => ({
-        push: jest.fn(),
-    }),
-    useRouteMatch: () => ({
-        url: '/team/test',
-    }),
-}));
-
 describe('CreateRecapModal', () => {
     const defaultProps = {
         onExited: jest.fn(),
