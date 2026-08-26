@@ -10,7 +10,14 @@ import type {IDMappedObjects} from '@mattermost/types/utilities';
 import ConfirmIntegration from 'components/integrations/confirm_integration/confirm_integration';
 
 import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {ErrorPageTypes} from 'utils/constants';
 import {TestHelper} from 'utils/test_helper';
+
+const mockNavigate = jest.fn();
+
+jest.mock('react-router-dom-v5-compat', () => ({
+    useNavigate: () => mockNavigate,
+}));
 
 describe('components/integrations/ConfirmIntegration', () => {
     const id = 'r5tpgt4iepf45jt768jz84djic';
@@ -74,6 +81,10 @@ describe('components/integrations/ConfirmIntegration', () => {
         outgoingHooks,
         bots,
     };
+
+    beforeEach(() => {
+        mockNavigate.mockClear();
+    });
 
     test('should match snapshot, oauthApps case', () => {
         props.location.search = getSearchString('oauth2-apps');
@@ -142,6 +153,18 @@ describe('components/integrations/ConfirmIntegration', () => {
         expect(container).toMatchSnapshot();
     });
 
+    test('should navigate to integrations list on Enter key press', () => {
+        props.location.search = getSearchString('commands');
+        renderWithContext(
+            <ConfirmIntegration {...props}/>,
+            initialState,
+        );
+
+        window.dispatchEvent(new KeyboardEvent('keypress', {key: 'Enter'}));
+
+        expect(mockNavigate).toHaveBeenCalledWith('/team_test/integrations/commands');
+    });
+
     test('should match snapshot, outgoingHooks and bad identifier case', () => {
         props.location.search = getSearchString('outgoing_webhooks', 'bad');
         const {container} = renderWithContext(
@@ -149,7 +172,7 @@ describe('components/integrations/ConfirmIntegration', () => {
             initialState,
         );
 
-        // Bad identifier means integration not found, redirects to error page
+        expect(mockNavigate).toHaveBeenCalledWith(`/error?type=${ErrorPageTypes.PAGE_NOT_FOUND}`, {replace: true});
         expect(container).toMatchSnapshot();
     });
 
@@ -160,7 +183,7 @@ describe('components/integrations/ConfirmIntegration', () => {
             initialState,
         );
 
-        // Bad type means redirect to error page
+        expect(mockNavigate).toHaveBeenCalledWith(`/error?type=${ErrorPageTypes.PAGE_NOT_FOUND}`, {replace: true});
         expect(container).toMatchSnapshot();
     });
 });
