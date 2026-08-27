@@ -2,7 +2,6 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
 
 import type {AuthChangeResponse} from '@mattermost/types/users';
 
@@ -13,6 +12,8 @@ import EmailToOAuth from 'components/claim/components/email_to_oauth';
 import LDAPToEmail from 'components/claim/components/ldap_to_email';
 import OAuthToEmail from 'components/claim/components/oauth_to_email';
 import BackButton from 'components/common/back_button';
+
+import {Route, Routes} from 'utils/react_router_v6';
 
 import logoImage from 'images/logo.png';
 
@@ -58,49 +59,49 @@ export default class ClaimController extends React.PureComponent<Props> {
                             src={logoImage}
                         />
                         <div id='claim'>
-                            <Switch>
+                            <Routes>
                                 <Route
                                     path={`${this.props.match.url}/oauth_to_email`}
-                                    render={() => (
+                                    element={
                                         <OAuthToEmail
                                             currentType={currentType || ''}
                                             email={email || ''}
                                             siteName={this.props.siteName}
                                             passwordConfig={this.props.passwordConfig}
                                         />
-                                    )}
+                                    }
                                 />
                                 <Route
                                     path={`${this.props.match.url}/email_to_oauth`}
-                                    render={() => (
+                                    element={
                                         <EmailToOAuth
                                             newType={newType || ''}
                                             email={email || ''}
                                             siteName={this.props.siteName}
                                         />
-                                    )}
+                                    }
                                 />
                                 <Route
                                     path={`${this.props.match.url}/ldap_to_email`}
-                                    render={() => (
+                                    element={
                                         <LDAPToEmail
                                             email={email}
                                             passwordConfig={this.props.passwordConfig}
                                             switchLdapToEmail={this.props.actions.switchLdapToEmail}
                                         />
-                                    )}
+                                    }
                                 />
                                 <Route
                                     path={`${this.props.match.url}/email_to_ldap`}
-                                    render={() => (
+                                    element={
                                         <EmailToLDAP
                                             email={email}
                                             siteName={this.props.siteName}
                                             ldapLoginFieldName={this.props.ldapLoginFieldName}
                                         />
-                                    )}
+                                    }
                                 />
-                            </Switch>
+                            </Routes>
                         </div>
                     </div>
                 </div>

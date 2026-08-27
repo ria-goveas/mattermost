@@ -2,7 +2,6 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {Redirect} from 'react-router-dom';
 
 import {isAndroid, isIos} from '@mattermost/shared/utils/user_agent';
 import type {UserProfile} from '@mattermost/types/users';
@@ -17,6 +16,7 @@ import WebSocketClient from 'client/web_websocket_client';
 import Constants from 'utils/constants';
 import DesktopApp from 'utils/desktop_api';
 import {isKeyPressed} from 'utils/keyboard';
+import {Navigate} from 'utils/react_router_v6';
 import {getBrowserTimezone} from 'utils/timezone';
 import {doesCookieContainsMMUserId} from 'utils/utils';
 
@@ -134,13 +134,23 @@ export default class LoggedIn extends React.PureComponent<Props> {
 
         if (this.props.mfaRequired) {
             if (this.props.location.pathname !== '/mfa/setup') {
-                return <Redirect to={'/mfa/setup'}/>;
+                return (
+                    <Navigate
+                        to={'/mfa/setup'}
+                        replace={true}
+                    />
+                );
             }
         } else if (this.props.location.pathname === '/mfa/confirm') {
             // Nothing to do. Wait for MFA flow to complete before prompting TOS.
         } else if (this.props.showTermsOfService) {
             if (this.props.location.pathname !== '/terms_of_service') {
-                return <Redirect to={'/terms_of_service?redirect_to=' + encodeURIComponent(this.props.location.pathname)}/>;
+                return (
+                    <Navigate
+                        to={'/terms_of_service?redirect_to=' + encodeURIComponent(this.props.location.pathname)}
+                        replace={true}
+                    />
+                );
             }
         }
 

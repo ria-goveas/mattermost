@@ -3,7 +3,6 @@
 
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {Route, Switch} from 'react-router-dom';
 import type {RouteComponentProps} from 'react-router-dom';
 
 import {emitUserLoggedOutEvent} from 'actions/global_actions';
@@ -12,6 +11,8 @@ import BackButton from 'components/common/back_button';
 import LogoutIcon from 'components/widgets/icons/fa_logout_icon';
 
 import logoImage from 'images/logo.png';
+
+import {Route, Routes} from 'utils/react_router_v6';
 
 import Confirm from '../confirm';
 import Setup from '../setup';
@@ -95,22 +96,16 @@ export default class MFAController extends React.PureComponent<Props & RouteComp
                                     src={logoImage}
                                 />
                                 <div id='mfa'>
-                                    <Switch>
+                                    <Routes>
                                         <Route
                                             path={`${this.props.match.url}/setup`}
-                                            render={(props) => (
-                                                <Setup
-                                                    {...props}
-                                                />
-                                            )}
+                                            element={<Setup history={this.props.history}/>}
                                         />
                                         <Route
                                             path={`${this.props.match.url}/confirm`}
-                                            render={() => (
-                                                <Confirm/>
-                                            )}
+                                            element={<Confirm/>}
                                         />
-                                    </Switch>
+                                    </Routes>
                                 </div>
                             </div>
                         </div>

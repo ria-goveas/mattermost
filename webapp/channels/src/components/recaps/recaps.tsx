@@ -4,7 +4,6 @@
 import React, {useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {Redirect} from 'react-router-dom';
 
 import {PlusIcon} from '@mattermost/compass-icons/components';
 import {Button} from '@mattermost/shared/components/button';
@@ -21,6 +20,7 @@ import useGetFeatureFlagValue from 'components/common/hooks/useGetFeatureFlagVal
 import CreateRecapModal from 'components/create_recap_modal';
 
 import {ModalIdentifiers} from 'utils/constants';
+import {Navigate} from 'utils/react_router_v6';
 
 import {LhsItemType, LhsPage} from 'types/store/lhs';
 
@@ -63,7 +63,7 @@ const Recaps = () => {
 
     // Redirect if feature flag is disabled
     if (enableAIRecaps !== 'true') {
-        return <Redirect to='/'/>;
+        return <Navigate to='/' replace={true}/>;
     }
 
     const handleAddRecap = () => {

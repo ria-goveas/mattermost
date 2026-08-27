@@ -2,7 +2,6 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
 
 import type {Command} from '@mattermost/types/integrations';
 import type {Team} from '@mattermost/types/teams';
@@ -16,29 +15,7 @@ import ConfirmIntegration from 'components/integrations/confirm_integration';
 import EditCommand from 'components/integrations/edit_command';
 import InstalledCommands from 'components/integrations/installed_commands';
 
-interface IProps {
-    component: any;
-    extraProps: {
-        loading: boolean;
-        commands: Command[];
-        users?: RelationOneToOne<UserProfile, UserProfile>;
-        team?: Team;
-        user?: UserProfile;
-    };
-    path: string;
-}
-
-const CommandRoute = ({component: Component, extraProps, ...rest}: IProps) => (
-    <Route
-        {...rest}
-        render={(props) => (
-            <Component
-                {...extraProps}
-                {...props}
-            />
-        )}
-    />
-);
+import {Navigate, Route, Routes} from 'utils/react_router_v6';
 
 type Props = {
 
@@ -113,33 +90,51 @@ export default class CommandsContainer extends React.PureComponent<Props, State>
         };
         return (
             <div>
-                <Switch>
+                <Routes>
                     <Route
-                        exact={true}
                         path={`${this.props.match.url}/`}
-                        render={() => (<Redirect to={`${this.props.match.url}/installed`}/>)}
+                        element={
+                            <Navigate
+                                to={`${this.props.match.url}/installed`}
+                                replace={true}
+                            />
+                        }
                     />
-                    <CommandRoute
-                        extraProps={extraProps}
+                    <Route
                         path={`${this.props.match.url}/installed`}
-                        component={InstalledCommands}
+                        element={
+                            <InstalledCommands
+                                {...extraProps}
+                            />
+                        }
                     />
-                    <CommandRoute
-                        extraProps={extraProps}
+                    <Route
                         path={`${this.props.match.url}/add`}
-                        component={AddCommand}
+                        element={
+                            <AddCommand
+                                {...extraProps}
+                            />
+                        }
                     />
-                    <CommandRoute
-                        extraProps={extraProps}
+                    <Route
                         path={`${this.props.match.url}/edit`}
-                        component={EditCommand}
+                        render={(routeProps) => (
+                            <EditCommand
+                                {...extraProps}
+                                {...routeProps}
+                            />
+                        )}
                     />
-                    <CommandRoute
-                        extraProps={extraProps}
+                    <Route
                         path={`${this.props.match.url}/confirm`}
-                        component={ConfirmIntegration}
+                        render={(routeProps) => (
+                            <ConfirmIntegration
+                                {...extraProps}
+                                {...routeProps}
+                            />
+                        )}
                     />
-                </Switch>
+                </Routes>
             </div>
         );
     }
