@@ -5,7 +5,7 @@ import {getName} from 'country-list';
 import React, {useCallback, useEffect, useState} from 'react';
 import {defineMessage, FormattedMessage} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import {buttonClassNames} from '@mattermost/shared/components/button';
 
@@ -28,7 +28,7 @@ type Props = Record<string, never>;
 
 const CompanyInfoEdit: React.FC<Props> = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const companyInfo = useSelector((state: GlobalState) => state.entities.cloud.customer);
 
@@ -115,7 +115,7 @@ const CompanyInfoEdit: React.FC<Props> = () => {
         }
 
         setIsSaving(false);
-        history.push('/admin_console/billing/company_info');
+        navigate('/admin_console/billing/company_info');
     };
 
     const billingAddressDisplay = (

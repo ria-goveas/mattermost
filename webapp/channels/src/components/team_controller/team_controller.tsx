@@ -3,7 +3,8 @@
 
 import React, {lazy, memo, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useHistory, useParams} from 'react-router-dom';
+import {Route, Switch, useParams} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import type {ServerError} from '@mattermost/types/errors';
 import type {Team} from '@mattermost/types/teams';
@@ -46,7 +47,7 @@ type Props = PropsFromRedux & OwnProps;
 
 function TeamController(props: Props) {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {team: teamNameParam} = useParams<Props['match']['params']>();
 
     const [initialChannelsLoaded, setInitialChannelsLoaded] = useState(false);
@@ -159,7 +160,7 @@ function TeamController(props: Props) {
     async function initTeamOrRedirect(team: Team) {
         const {data: joinedTeam, error} = await props.initializeTeam(team) as ActionResult<Team, ServerError>; // Fix in MM-46907;
         if (error) {
-            history.push('/error?type=team_not_found');
+            navigate('/error?type=team_not_found');
             return;
         }
         if (joinedTeam) {
@@ -172,7 +173,7 @@ function TeamController(props: Props) {
 
         const {data: joinedTeam, error} = await props.joinTeam(teamNameParam, joinedOnFirstLoad) as ActionResult<Team, ServerError>; // Fix in MM-46907;
         if (error) {
-            history.push('/error?type=team_not_found');
+            navigate('/error?type=team_not_found');
             return;
         }
         if (joinedTeam) {
@@ -205,7 +206,7 @@ function TeamController(props: Props) {
     }, [teamNameParam, teamsListDependency]);
 
     if (props.mfaRequired) {
-        history.push('/mfa/setup');
+        navigate('/mfa/setup');
         return null;
     }
 

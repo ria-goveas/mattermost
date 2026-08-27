@@ -7,7 +7,8 @@ import React, {useState, useEffect, useRef, useCallback, useMemo} from 'react';
 import type {FormEvent} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {Link, useLocation, useHistory, Route} from 'react-router-dom';
+import {Link, useLocation, Route} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import {isDesktopApp} from '@mattermost/shared/utils/user_agent';
 import type {Team} from '@mattermost/types/teams';
@@ -69,7 +70,7 @@ type LoginProps = {
 const Login = ({onCustomizeHeader}: LoginProps) => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {pathname, search, hash} = useLocation();
 
     const searchParam = useMemo(() => new URLSearchParams(search), [search]);
@@ -226,7 +227,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
                 event.preventDefault();
 
                 setDesktopLoginLink(href);
-                history.push(`/login/desktop${search}`);
+                navigate(`/login/desktop${search}`);
             }
 
             // If the user is running the app in an embedded view, we need send the parent window a message
@@ -270,7 +271,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
                 messagePromise.then((received) => {
                     if (!received) {
                         // If the parent didn't respond, navigate to the href directly
-                        history.push(href);
+                        navigate(href);
                     }
                 });
             }
@@ -481,7 +482,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
 
         if (currentUser) {
             if (redirectTo && redirectTo.match(/^\/([^/]|$)/)) {
-                history.push(redirectTo);
+                navigate(redirectTo);
                 return;
             }
             redirectUserToDefaultTeam();
@@ -510,7 +511,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
                 // This is legacy support for older Desktop Apps and can be removed eventually
                 const newSearchParam = new URLSearchParams(search);
                 newSearchParam.set('extra', Constants.SESSION_EXPIRED);
-                history.replace(`${pathname}?${newSearchParam}`);
+                navigate(`${pathname}?${newSearchParam}`, {replace: true});
             }
         }
     }, []);
@@ -577,7 +578,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
 
         const newQuery = search.replace(/(extra=password_change)&?/i, '');
         if (newQuery !== search) {
-            history.replace(`${pathname}${newQuery}${hash}`);
+            navigate(`${pathname}${newQuery}${hash}`, {replace: true});
         }
 
         // password managers don't always call onInput handlers for form fields so it's possible
@@ -673,7 +674,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
 
         if (loginError && loginError.server_error_id && loginError.server_error_id.length !== 0) {
             if (loginError.server_error_id === 'api.user.login.not_verified.app_error') {
-                history.push('/should_verify_email?&email=' + encodeURIComponent(loginId));
+                navigate('/should_verify_email?&email=' + encodeURIComponent(loginId));
             } else if (loginError.server_error_id === 'store.sql_user.get_for_login.app_error' ||
                 loginError.server_error_id === 'ent.ldap.do_login.user_not_registered.app_error') {
                 setShowMfa(false);
@@ -793,18 +794,18 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
         LocalStorageStore.setWasNotifiedOfLogIn(false);
 
         if (redirectTo && redirectTo.match(/^\/([^/]|$)/)) {
-            history.push(redirectTo);
+            navigate(redirectTo);
         } else if (team) {
-            history.push(`/${team.name}`);
+            navigate(`/${team.name}`);
         } else if (experimentalPrimaryTeamMember?.team_id) {
             // Only set experimental team if user is on that team
-            history.push(`/${ExperimentalPrimaryTeam}`);
+            navigate(`/${ExperimentalPrimaryTeam}`);
         } else if (onboardingFlowEnabled) {
             // need info about whether admin or not,
             // and whether admin has already completed
             // first time onboarding. Instead of fetching and orchestrating that here,
             // let the default root component handle it.
-            history.push('/');
+            navigate('/');
         } else {
             redirectUserToDefaultTeam();
         }
