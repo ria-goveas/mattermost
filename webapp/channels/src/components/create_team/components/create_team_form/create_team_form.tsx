@@ -14,6 +14,7 @@ import {isAnonymousURLEnabled} from 'selectors/config';
 import ExternalLink from 'components/external_link';
 
 import Constants from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 import {cleanUpUrlable} from 'utils/url';
 
 import DisplayNameStep from './display_name_step';
@@ -32,12 +33,10 @@ type Props = {
         checkIfTeamExists: (teamName: string) => Promise<ActionResult<boolean>>;
         createTeam: (team: Team) => Promise<ActionResult<Team>>;
     };
-    history: {
-        push(path: string): void;
-    };
 };
 
-export default function CreateTeamForm({step, state: parentState, updateParent, actions, history}: Props) {
+export default function CreateTeamForm({step, state: parentState, updateParent, actions}: Props) {
+    const navigate = useNavigate();
     const teamURLInput = useRef<HTMLInputElement>(null);
     const UseAnonymousURLs = useSelector(isAnonymousURLEnabled);
 
@@ -84,13 +83,13 @@ export default function CreateTeamForm({step, state: parentState, updateParent, 
         const error = createTeamData.error;
 
         if (data) {
-            history.push('/' + data.name + '/channels/' + Constants.DEFAULT_CHANNEL);
+            navigate('/' + data.name + '/channels/' + Constants.DEFAULT_CHANNEL);
         } else if (error) {
             setNameError(error.message);
         }
 
         stopLoading();
-    }, [actions, history, parentState.team, startLoading, stopLoading, teamDisplayName, teamURL]);
+    }, [actions, navigate, parentState.team, startLoading, stopLoading, teamDisplayName, teamURL]);
 
     const submitDisplayName = useCallback((e: React.MouseEvent) => {
         e.preventDefault();

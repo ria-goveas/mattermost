@@ -10,12 +10,6 @@ import {renderWithContext, screen, waitFor, userEvent} from 'tests/react_testing
 
 import PolicyDetails from './policy_details';
 
-jest.mock('utils/browser_history', () => ({
-    getHistory: () => ({
-        push: jest.fn(),
-    }),
-}));
-
 // Mock TableEditor so tests can control onMaskedStateChange callbacks.
 // jest.mock factory may not reference out-of-scope variables, so React is required inline.
 jest.mock('../editors/table_editor/table_editor', () => {

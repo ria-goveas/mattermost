@@ -4,12 +4,13 @@
 import React, {useState} from 'react';
 import {defineMessage} from 'react-intl';
 import {useDispatch} from 'react-redux';
-import {useHistory} from 'react-router-dom';
 
 import type {OutgoingOAuthConnection} from '@mattermost/types/integrations';
 import type {Team} from '@mattermost/types/teams';
 
 import {addOutgoingOAuthConnection} from 'mattermost-redux/actions/integrations';
+
+import {useNavigate} from 'utils/react_router_v6';
 
 import AbstractOutgoingOAuthConnection from './abstract_outgoing_oauth_connection';
 
@@ -24,7 +25,7 @@ export type Props = {
 const AddOutgoingOAuthConnection = ({team}: Props): JSX.Element => {
     const dispatch = useDispatch();
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [serverError, setServerError] = useState('');
 
@@ -33,7 +34,7 @@ const AddOutgoingOAuthConnection = ({team}: Props): JSX.Element => {
 
         const {data, error} = (await dispatch(addOutgoingOAuthConnection(team.id, connection))) as unknown as {data: OutgoingOAuthConnection; error: Error};
         if (data) {
-            history.push(`/${team.name}/integrations/confirm?type=outgoing-oauth2-connections&id=${data.id}`);
+            navigate(`/${team.name}/integrations/confirm?type=outgoing-oauth2-connections&id=${data.id}`);
             return;
         }
 

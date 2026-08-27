@@ -80,7 +80,7 @@ describe('components/logged_in/LoggedIn', () => {
         renderWithContext(<LoggedIn {...props}>{children}</LoggedIn>);
 
         expect(Redirect).toHaveBeenCalledWith(
-            expect.objectContaining({to: '/mfa/setup'}),
+            expect.objectContaining({to: '/mfa/setup', push: false}),
             {},
         );
     });
@@ -125,7 +125,7 @@ describe('components/logged_in/LoggedIn', () => {
         renderWithContext(<LoggedIn {...props}>{children}</LoggedIn>);
 
         expect(Redirect).toHaveBeenCalledWith(
-            expect.objectContaining({to: '/terms_of_service?redirect_to=%2F'}),
+            expect.objectContaining({to: '/terms_of_service?redirect_to=%2F', push: false}),
             {},
         );
     });

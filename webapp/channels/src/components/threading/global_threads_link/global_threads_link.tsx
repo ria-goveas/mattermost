@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import React, {useCallback, useEffect} from 'react';
 import {defineMessages, useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {Link, useRouteMatch, useLocation, matchPath} from 'react-router-dom';
+import {Link, useLocation, matchPath} from 'react-router-dom';
 
 import {getThreadCounts} from 'mattermost-redux/actions/threads';
 import {isCollapsedThreadsEnabled} from 'mattermost-redux/selectors/entities/preferences';
@@ -18,6 +18,7 @@ import ChannelMentionBadge from 'components/sidebar/sidebar_channel/channel_ment
 
 import {RHSStates} from 'utils/constants';
 import {Mark} from 'utils/performance_telemetry';
+import {useMatch} from 'utils/react_router_v6';
 
 import ThreadsIcon from './threads_icon';
 
@@ -37,7 +38,7 @@ const GlobalThreadsLink = () => {
     const dispatch = useDispatch();
     const isFeatureEnabled = useSelector(isCollapsedThreadsEnabled);
 
-    const {url} = useRouteMatch();
+    const {url} = useMatch() ?? {url: ''};
     const {pathname} = useLocation();
     const inGlobalThreads = matchPath(pathname, {path: '/:team/threads/:threadIdentifier?'}) != null;
     const {currentTeamId, currentUserId} = useThreadRouting();

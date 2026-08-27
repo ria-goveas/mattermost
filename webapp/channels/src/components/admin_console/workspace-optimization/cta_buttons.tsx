@@ -2,9 +2,10 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {useHistory} from 'react-router-dom';
 
 import {Button} from '@mattermost/shared/components/button';
+
+import {useNavigate} from 'utils/react_router_v6';
 
 import './dashboard.scss';
 
@@ -23,13 +24,13 @@ const CtaButtons = ({
     actionText,
     actionButtonCallback,
 }: CtaButtonsProps): JSX.Element => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const getClickHandler = (id: string, link?: string) => () => {
         if (id === 'cta' && typeof actionButtonCallback === 'function') {
             actionButtonCallback();
         } else if (link?.startsWith('/')) {
-            history.push(link);
+            navigate(link);
         } else if (link?.startsWith('http')) {
             window.open(link, '_blank');
         }

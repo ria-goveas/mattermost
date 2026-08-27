@@ -3,7 +3,6 @@
 
 import React from 'react';
 import {FormattedMessage, injectIntl, type IntlShape} from 'react-intl';
-import {Route, Switch, Redirect} from 'react-router-dom';
 import type {RouteComponentProps} from 'react-router-dom';
 
 import type {Channel} from '@mattermost/types/channels';
@@ -14,6 +13,8 @@ import AnnouncementBar from 'components/announcement_bar';
 import BackButton from 'components/common/back_button';
 import SiteNameAndDescription from 'components/common/site_name_and_description';
 import CreateTeamForm from 'components/create_team/components/create_team_form';
+
+import {Navigate, Route, Routes} from 'utils/react_router_v6';
 
 export type Props = {
 
@@ -136,35 +137,41 @@ export class CreateTeam extends React.PureComponent<Props & RouteComponentProps,
                                     </div>
                                 </>
                             ) : (
-                                <Switch>
+                                <Routes>
                                     <Route
                                         path={`${this.props.match.url}/display_name`}
-                                        render={(props) => (
+                                        element={
                                             <CreateTeamForm
                                                 step='display_name'
                                                 state={this.state}
                                                 updateParent={this.updateParent}
-                                                {...props}
                                             />
-                                        )}
+                                        }
                                     />
 
                                     {
                                         !this.props.useAnonymousURLs &&
                                         <Route
                                             path={`${this.props.match.url}/team_url`}
-                                            render={(props) => (
+                                            element={
                                                 <CreateTeamForm
                                                     step='team_url'
                                                     state={this.state}
                                                     updateParent={this.updateParent}
-                                                    {...props}
                                                 />
-                                            )}
+                                            }
                                         />
                                     }
-                                    <Redirect to={`${match.url}/display_name`}/>
-                                </Switch>
+                                    <Route
+                                        path='/*'
+                                        element={
+                                            <Navigate
+                                                to={`${match.url}/display_name`}
+                                                replace={true}
+                                            />
+                                        }
+                                    />
+                                </Routes>
                             )}
                         </div>
                     </div>

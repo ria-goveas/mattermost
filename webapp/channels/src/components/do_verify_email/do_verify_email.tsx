@@ -4,7 +4,7 @@
 import React, {useState, useEffect} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {clearErrors, logError, LogErrorBarMode} from 'mattermost-redux/actions/errors';
 import {verifyUserEmail, getMe} from 'mattermost-redux/actions/users';
@@ -17,6 +17,7 @@ import ColumnLayout from 'components/header_footer_route/content_layouts/column'
 import LoadingScreen from 'components/loading_screen';
 
 import {AnnouncementBarTypes, AnnouncementBarMessages, Constants} from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 
 import './do_verify_email.scss';
 
@@ -29,7 +30,7 @@ const enum VerifyStatus {
 const DoVerifyEmail = () => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {search} = useLocation();
 
     const params = new URLSearchParams(search);
@@ -52,7 +53,7 @@ const DoVerifyEmail = () => {
                 // and whether admin has already completed
                 // first time onboarding. Instead of fetching and orchestrating that here,
                 // let the default root component handle it.
-                history.push('/');
+                navigate('/');
                 return;
             }
             redirectUserToDefaultTeam();
@@ -62,7 +63,7 @@ const DoVerifyEmail = () => {
         const newSearchParam = new URLSearchParams(search);
         newSearchParam.set('extra', Constants.SIGNIN_VERIFIED);
 
-        history.push(`/login?${newSearchParam}`);
+        navigate(`/login?${newSearchParam}`);
     };
 
     const verifyEmail = async () => {
@@ -104,7 +105,7 @@ const DoVerifyEmail = () => {
         handleRedirect();
     };
 
-    const handleReturnButtonOnClick = () => history.replace('/');
+    const handleReturnButtonOnClick = () => navigate('/', {replace: true});
 
     return (
         verifyStatus === VerifyStatus.FAILURE ? (

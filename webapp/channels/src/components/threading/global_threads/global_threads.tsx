@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {Link, useRouteMatch} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import {getThreadCounts, getThreadsForCurrentTeam} from 'mattermost-redux/actions/threads';
 import {getPost} from 'mattermost-redux/selectors/entities/posts';
@@ -33,6 +33,7 @@ import NoResultsIndicator from 'components/no_results_indicator';
 
 import {PreviousViewedTypes, RHSStates} from 'utils/constants';
 import {Mark, Measure, measureAndReport} from 'utils/performance_telemetry';
+import {useMatch} from 'utils/react_router_v6';
 
 import type {GlobalState} from 'types/store/index';
 import {LhsItemType, LhsPage} from 'types/store/lhs';
@@ -49,7 +50,9 @@ const GlobalThreads = () => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
 
-    const {url, params: {threadIdentifier}} = useRouteMatch<{threadIdentifier?: string}>();
+    const match = useMatch<{threadIdentifier?: string}>();
+    const url = match?.url ?? '';
+    const threadIdentifier = match?.params.threadIdentifier;
     const [filter, setFilter] = useGlobalState(ThreadFilter.none, FILTER_STORAGE_KEY);
     const {currentTeamId, currentUserId, clear} = useThreadRouting();
 

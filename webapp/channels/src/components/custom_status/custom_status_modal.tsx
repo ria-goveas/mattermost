@@ -8,7 +8,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import type {MessageDescriptor} from 'react-intl';
 import {FormattedMessage, defineMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRouteMatch} from 'react-router-dom';
 
 import {GenericModal} from '@mattermost/components';
 import type {Emoji} from '@mattermost/types/emojis';
@@ -34,6 +33,7 @@ import EmojiIcon from 'components/widgets/icons/emoji_icon';
 
 import {Constants, ModalIdentifiers} from 'utils/constants';
 import {isKeyPressed} from 'utils/keyboard';
+import {useMatch} from 'utils/react_router_v6';
 import {getCurrentMomentForTimezone} from 'utils/timezone';
 
 import type {GlobalState} from 'types/store';
@@ -126,7 +126,7 @@ const CustomStatusModal: React.FC<Props> = (props: Props) => {
     const isStatusSet = Boolean(emoji || text);
     const firstTimeModalOpened = useSelector(showStatusDropdownPulsatingDot);
     const timezone = useSelector(getCurrentTimezone);
-    const inCustomEmojiPath = useRouteMatch('/:team/emoji');
+    const inCustomEmojiPath = useMatch('/:team/emoji');
 
     const currentTime = getCurrentMomentForTimezone(timezone);
     let initialCustomExpiryTime: Moment = getRoundedTime(currentTime);

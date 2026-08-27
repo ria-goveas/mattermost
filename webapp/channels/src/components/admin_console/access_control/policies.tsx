@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useState, useEffect, useMemo, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
 import {GenericModal} from '@mattermost/components';
@@ -15,7 +15,7 @@ import DataGrid from 'components/admin_console/data_grid/data_grid';
 import * as Menu from 'components/menu';
 import SectionNotice from 'components/section_notice';
 
-import {getHistory} from 'utils/browser_history';
+import {useNavigate} from 'utils/react_router_v6';
 
 import {MASKED_VALUE_TOKEN_LITERAL} from './editors/shared';
 
@@ -53,7 +53,7 @@ export default function PolicyList(props: Props): JSX.Element {
     const [deleteError, setDeleteError] = useState<string | null>(null);
     const intl = useIntl();
 
-    const history = useMemo(() => getHistory(), []);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchPolicies();
@@ -272,7 +272,7 @@ export default function PolicyList(props: Props): JSX.Element {
                                             if (props.onPolicySelected) {
                                                 props.onPolicySelected(policy);
                                             } else {
-                                                history.push(`/admin_console/system_attributes/membership_policies/edit_policy/${policy.id}`);
+                                                navigate(`/admin_console/system_attributes/membership_policies/edit_policy/${policy.id}`);
                                             }
                                         }}
                                         leadingElement={<i className='icon icon-pencil-outline'/>}
@@ -312,7 +312,7 @@ export default function PolicyList(props: Props): JSX.Element {
                     if (props.onPolicySelected) {
                         props.onPolicySelected(policy);
                     } else {
-                        history.push(`/admin_console/system_attributes/membership_policies/edit_policy/${policy.id}`);
+                        navigate(`/admin_console/system_attributes/membership_policies/edit_policy/${policy.id}`);
                     }
                 },
             };
@@ -435,7 +435,7 @@ export default function PolicyList(props: Props): JSX.Element {
                     <Button
                         emphasis='primary'
                         onClick={() => {
-                            history.push('/admin_console/system_attributes/membership_policies/edit_policy');
+                            navigate('/admin_console/system_attributes/membership_policies/edit_policy');
                         }}
                     >
                         <i className='icon icon-plus'/>

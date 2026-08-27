@@ -3,7 +3,7 @@
 
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useLocation, useParams, useRouteMatch} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 
 import {fetchChannelsAndMembers, getChannelMembers, selectChannel} from 'mattermost-redux/actions/channels';
 import {selectTeam} from 'mattermost-redux/actions/teams';
@@ -14,12 +14,14 @@ import RhsPluginPopout from 'components/rhs_plugin_popout';
 import RhsSearchPopout from 'components/rhs_search_popout';
 import UnreadsStatusHandler from 'components/unreads_status_handler';
 
+import {Route, Routes, useMatch} from 'utils/react_router_v6';
+
 import type {GlobalState} from 'types/store';
 
 import './rhs_popout.scss';
 
 export default function RhsPopout() {
-    const match = useRouteMatch();
+    const match = useMatch();
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -53,16 +55,16 @@ export default function RhsPopout() {
             <div className='main-wrapper rhs-popout'>
                 <div className='sidebar--right'>
                     <div className='sidebar-right__body'>
-                        <Switch>
+                        <Routes>
                             <Route
-                                path={`${match.path}/search`}
-                                component={RhsSearchPopout}
+                                path={`${match?.path}/search`}
+                                element={<RhsSearchPopout/>}
                             />
                             <Route
-                                path={`${match.path}/plugin/:pluginId`}
-                                component={RhsPluginPopout}
+                                path={`${match?.path}/plugin/:pluginId`}
+                                element={<RhsPluginPopout/>}
                             />
-                        </Switch>
+                        </Routes>
                     </div>
                 </div>
             </div>

@@ -3,13 +3,14 @@
 
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {openModal} from 'actions/views/modals';
 
 import InvitationModal from 'components/invitation_modal';
 
 import {ModalIdentifiers} from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {ModalData} from 'types/actions';
 
@@ -20,7 +21,7 @@ interface ActionMap {
 function QueryParamActionController() {
     const location = useLocation();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const actionMap: ActionMap = {
         open_invitation_modal: {
@@ -38,9 +39,9 @@ function QueryParamActionController() {
 
             // Delete the action after it's been invoked so that it's not locked for subsequent refreshes
             searchParams.delete('action');
-            history.replace({
+            navigate({
                 search: searchParams.toString(),
-            });
+            }, {replace: true});
         }
     }, [location, actionMap]);
 

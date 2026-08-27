@@ -2,11 +2,13 @@
 // See LICENSE.txt for license information.
 
 import React, {useEffect} from 'react';
-import {Redirect, useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
 import * as GlobalActions from 'actions/global_actions';
+
+import {Navigate, useNavigate} from 'utils/react_router_v6';
 
 export type Props = {
     isElegibleForFirstAdmingOnboarding: boolean;
@@ -20,7 +22,7 @@ export type Props = {
 };
 
 export default function RootRedirect(props: Props) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
@@ -29,7 +31,7 @@ export default function RootRedirect(props: Props) {
                 props.actions.getFirstAdminSetupComplete().then((firstAdminCompletedSignup) => {
                     // root.tsx ensures admin profiles are eventually loaded
                     if (firstAdminCompletedSignup.data === false && props.isFirstAdmin && !props.areThereTeams) {
-                        history.push('/preparing-workspace');
+                        navigate('/preparing-workspace');
                     } else {
                         GlobalActions.redirectUserToDefaultTeam(new URLSearchParams(location.search));
                     }
@@ -46,11 +48,12 @@ export default function RootRedirect(props: Props) {
     }
 
     return (
-        <Redirect
+        <Navigate
             to={{
                 ...props.location,
                 pathname: '/login',
             }}
+            replace={true}
         />
     );
 }

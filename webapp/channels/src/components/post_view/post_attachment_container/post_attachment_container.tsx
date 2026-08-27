@@ -3,7 +3,7 @@
 
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {matchPath, useHistory} from 'react-router-dom';
+import {matchPath} from 'react-router-dom';
 
 import {getPost} from 'mattermost-redux/selectors/entities/posts';
 import {isCollapsedThreadsEnabled} from 'mattermost-redux/selectors/entities/preferences';
@@ -11,6 +11,8 @@ import {isTeamSameWithCurrentTeam} from 'mattermost-redux/selectors/entities/tea
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import {focusPost} from 'components/permalink_view/actions';
+
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {GlobalState} from 'types/store';
 
@@ -49,7 +51,7 @@ const getElementClassName = (element: EventTarget | null): string => {
 
 const PostAttachmentContainer = (props: Props) => {
     const {children, className, link, preventClickAction} = props;
-    const history = useHistory();
+    const navigate = useNavigate();
     const attachmentClassName = `attachment attachment--${className}${preventClickAction ? ' attachment--prevent-click' : ''}`;
 
     const params = getTeamAndPostIdFromLink(link);
@@ -85,10 +87,10 @@ const PostAttachmentContainer = (props: Props) => {
                 return;
             }
             if (!classNames.some((className) => targetClassName.includes(className)) && target.id !== 'image-name-text') {
-                history.push(link);
+                navigate(link);
             }
         }
-    }, [className, crtEnabled, dispatch, history, link, params, post, shouldFocusPostWithoutRedirect, currentUserId]);
+    }, [className, crtEnabled, dispatch, navigate, link, params, post, shouldFocusPostWithoutRedirect, currentUserId]);
     return (
         <div
             className={attachmentClassName}

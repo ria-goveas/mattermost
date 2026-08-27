@@ -4,7 +4,6 @@
 import type {ReactNode} from 'react';
 import React from 'react';
 import {useIntl, FormattedMessage, defineMessages} from 'react-intl';
-import {useHistory} from 'react-router-dom';
 
 import type {ButtonEmphasis} from '@mattermost/shared/components/button';
 import {buttonClassNames} from '@mattermost/shared/components/button';
@@ -19,6 +18,8 @@ import {AdminSection, SectionHeader, SectionHeading, SectionContent, Placeholder
 import {useRemoteClusterAcceptInvite} from './modals/modal_utils';
 import SecureConnectionRow from './secure_connection_row';
 import {getCreateLocation, getEditLocation, useRemoteClusters} from './utils';
+
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {SearchableStrings} from '../types';
 
@@ -117,17 +118,17 @@ const menuId = 'secure_connections_add_menu';
 
 const AddMenu = ({buttonEmphasis = 'primary', disabled}: {buttonEmphasis?: ButtonEmphasis; disabled: boolean}) => {
     const {formatMessage} = useIntl();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {promptAcceptInvite} = useRemoteClusterAcceptInvite();
 
     const handleCreate = () => {
-        history.push(getCreateLocation());
+        navigate(getCreateLocation());
     };
 
     const handleAccept = async () => {
         const rc = await promptAcceptInvite();
         if (rc) {
-            history.push(getEditLocation(rc));
+            navigate(getEditLocation(rc));
         }
     };
 

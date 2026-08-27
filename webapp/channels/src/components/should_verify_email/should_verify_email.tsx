@@ -5,13 +5,15 @@ import classNames from 'classnames';
 import React, {useState, useCallback} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch} from 'react-redux';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {sendVerificationEmail} from 'mattermost-redux/actions/users';
 
 import EmailInboxSVG from 'components/common/svg_images_components/email_inbox_svg';
 import ColumnLayout from 'components/header_footer_route/content_layouts/column';
 import SaveButton from 'components/save_button';
+
+import {useNavigate} from 'utils/react_router_v6';
 
 import './should_verify_email.scss';
 
@@ -24,7 +26,7 @@ const enum ResendStatus {
 const ShouldVerifyEmail = () => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {search} = useLocation();
 
     const params = new URLSearchParams(search);
@@ -34,8 +36,8 @@ const ShouldVerifyEmail = () => {
     const [isWaiting, setIsWaiting] = useState(false);
 
     const handleReturnButtonOnClick = useCallback(() => {
-        history.push('/');
-    }, [history]);
+        navigate('/');
+    }, [navigate]);
 
     const handleResendButtonOnClick = async () => {
         if (email) {

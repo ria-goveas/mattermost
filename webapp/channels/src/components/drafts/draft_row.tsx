@@ -5,7 +5,6 @@ import noop from 'lodash/noop';
 import React, {memo, useCallback, useMemo, useEffect, useState, useRef} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
 
 import type {ServerError} from '@mattermost/types/errors';
 import type {FileInfo} from '@mattermost/types/files';
@@ -39,6 +38,7 @@ import PlaceholderScheduledPostsTitle
 import EditScheduledPost from 'components/edit_scheduled_post';
 
 import Constants, {StoragePrefixes} from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 import {copyToClipboard} from 'utils/utils';
 
 import type {GlobalState} from 'types/store';
@@ -83,7 +83,7 @@ function DraftRow({
 
     const [serverError, setServerError] = useState<(ServerError & {submittedMessage?: string}) | null>(null);
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const getChannelSelector = useMemo(() => makeGetChannel(), []);
@@ -154,8 +154,8 @@ function DraftRow({
             await dispatch(selectPostById(rootId));
             return;
         }
-        history.push(channelUrl);
-    }, [channelUrl, dispatch, history, rootId, rootPostDeleted, isEditing]);
+        navigate(channelUrl);
+    }, [channelUrl, dispatch, navigate, rootId, rootPostDeleted, isEditing]);
 
     const isBeingScheduled = useRef(false);
     const isScheduledPostBeingSent = useRef(false);

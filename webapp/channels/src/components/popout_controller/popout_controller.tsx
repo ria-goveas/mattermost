@@ -3,7 +3,6 @@
 
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch} from 'react-router-dom';
 import type {RouteComponentProps} from 'react-router-dom';
 
 import {getMe} from 'mattermost-redux/actions/users';
@@ -22,6 +21,7 @@ import ThreadPopout from 'components/thread_popout';
 import Pluggable from 'plugins/pluggable';
 import {TEAM_NAME_PATH_PATTERN, ID_PATH_PATTERN, IDENTIFIER_PATH_PATTERN} from 'utils/path';
 import {useBrowserPopout} from 'utils/popouts/use_browser_popout';
+import {Route, Routes} from 'utils/react_router_v6';
 
 import './popout_controller.scss';
 
@@ -51,24 +51,24 @@ const PopoutController: React.FC<RouteComponentProps> = (routeProps) => {
         <LoggedIn {...routeProps}>
             <ModalController/>
             <Pluggable pluggableName='Root'/>
-            <Switch>
+            <Routes>
                 <Route
                     path={`/_popout/thread/:team(${TEAM_NAME_PATH_PATTERN})/:postId(${ID_PATH_PATTERN})`}
-                    component={ThreadPopout}
+                    element={<ThreadPopout/>}
                 />
                 <Route
                     path={`/_popout/channel/:team(${TEAM_NAME_PATH_PATTERN})/:path(channels|messages)/:identifier(${IDENTIFIER_PATH_PATTERN})/:postid(${ID_PATH_PATTERN})?`}
-                    component={ChannelPopout}
+                    element={<ChannelPopout/>}
                 />
                 <Route
-                    path={`/_popout/rhs/:team(${TEAM_NAME_PATH_PATTERN})`}
-                    component={RhsPopout}
+                    path={`/_popout/rhs/:team(${TEAM_NAME_PATH_PATTERN})/*`}
+                    element={<RhsPopout/>}
                 />
                 <Route
                     path='/_popout/help/:page?'
-                    component={HelpPopout}
+                    element={<HelpPopout/>}
                 />
-            </Switch>
+            </Routes>
         </LoggedIn>
     );
 };

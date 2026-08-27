@@ -4,7 +4,6 @@
 import React, {useState, useCallback, useEffect, useRef, useMemo} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import type {RouterProps} from 'react-router-dom';
 
 import type {Team} from '@mattermost/types/teams';
 
@@ -22,6 +21,7 @@ import type {ActionResult} from 'mattermost-redux/types/actions';
 import LogoSvg from 'components/common/svg_images_components/logo_dark_blue_svg';
 
 import Constants from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 import {makeNewTeam} from 'utils/team_utils';
 import {getSiteURL, teamNameToUrl} from 'utils/url';
 import {applyTheme, resetTheme} from 'utils/utils';
@@ -65,16 +65,16 @@ export type Actions = {
     getProfiles: (page: number, perPage: number, options: Record<string, any>) => Promise<ActionResult>;
 };
 
-type Props = RouterProps & {
+type Props = {
     background?: JSX.Element | string;
     actions: Actions;
 };
 
 const PreparingWorkspace = ({
     actions,
-    history,
     background,
 }: Props) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const intl = useIntl();
     const genericSubmitError = intl.formatMessage({
@@ -247,7 +247,7 @@ const PreparingWorkspace = ({
 
         const goToChannels = () => {
             dispatch({type: GeneralTypes.SHOW_LAUNCHING_WORKSPACE, open: true});
-            history.push(`/${team.name}/channels/${Constants.DEFAULT_CHANNEL}`);
+            navigate(`/${team.name}/channels/${Constants.DEFAULT_CHANNEL}`);
         };
 
         const sendFormEnd = Date.now();
@@ -272,9 +272,9 @@ const PreparingWorkspace = ({
 
     useEffect(() => {
         if (shouldRedirect) {
-            history.push('/');
+            navigate('/');
         }
-    }, [shouldRedirect]);
+    }, [shouldRedirect, navigate]);
 
     const getTransitionDirection = (step: WizardStep): AnimationReason => {
         const stepIndex = stepOrder.indexOf(step);

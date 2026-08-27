@@ -30,7 +30,10 @@ if (isDesktop) {
 /**
  * Returns the current history object.
  *
- * If you're calling this from within a React component, consider using the useHistory hook from react-router-dom.
+ * Non-React code (Redux actions, utils) should keep using this helper so the
+ * desktop push override stays in effect. React components should use
+ * useNavigate from utils/react_router_v6 instead of calling getHistory() or
+ * useHistory().
  */
 export function getHistory() {
     return getModule<History>('utils/browser_history') ?? browserHistory;
