@@ -26,8 +26,8 @@ import AdminHeader from 'components/widgets/admin_console/admin_header';
 import TextSetting from 'components/widgets/settings/text_setting';
 
 import {useChannelAccessControlActions} from 'hooks/useChannelAccessControlActions';
-import {getHistory} from 'utils/browser_history';
 import Constants from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 
 import ChannelList from './channel_list';
 
@@ -74,6 +74,7 @@ function PolicyDetails({
     actions,
     accessControlSettings,
 }: PolicyDetailsProps): JSX.Element {
+    const navigate = useNavigate();
     const [policyName, setPolicyName] = useState(policy?.name || '');
     const [expression, setExpression] = useState(getMembershipRule(policy?.rules)?.expression || '');
     const [existingRules, setExistingRules] = useState<AccessControlPolicyRule[]>(policy?.rules || []);
@@ -290,7 +291,7 @@ function PolicyDetails({
             setSaveNeeded(false);
             setShowConfirmationModal(false);
             actions.setNavigationBlocked(false);
-            getHistory().push('/admin_console/system_attributes/membership_policies');
+            navigate('/admin_console/system_attributes/membership_policies');
         } finally {
             setSaving(false);
         }
@@ -329,7 +330,7 @@ function PolicyDetails({
         }
 
         if (success) {
-            getHistory().push('/admin_console/system_attributes/membership_policies');
+            navigate('/admin_console/system_attributes/membership_policies');
         }
     };
 
@@ -466,7 +467,7 @@ function PolicyDetails({
                                     defaultMessage: 'Configure user attributes',
                                 }),
                                 onClick: () => {
-                                    getHistory().push('/admin_console/system_attributes/user_attributes');
+                                    navigate('/admin_console/system_attributes/user_attributes');
                                 },
                             }}
                         />

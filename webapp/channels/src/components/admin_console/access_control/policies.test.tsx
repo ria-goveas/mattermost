@@ -11,13 +11,6 @@ import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing
 
 import PolicyList from './policies';
 
-const mockHistoryPushInternal = jest.fn();
-jest.mock('utils/browser_history', () => ({
-    getHistory: () => ({
-        push: mockHistoryPushInternal,
-    }),
-}));
-
 describe('components/admin_console/access_control/PolicyList', () => {
     const mockSearchPolicies = jest.fn();
     const mockDeletePolicy = jest.fn();
@@ -31,7 +24,7 @@ describe('components/admin_console/access_control/PolicyList', () => {
     beforeEach(() => {
         mockSearchPolicies.mockReset();
         mockDeletePolicy.mockReset();
-        mockHistoryPushInternal.mockReset();
+        (global as any).historyMock.push.mockClear();
     });
 
     test('should match snapshot with no policies', async () => {
@@ -163,7 +156,7 @@ describe('components/admin_console/access_control/PolicyList', () => {
         await userEvent.click(editItem);
 
         await waitFor(() => {
-            expect(mockHistoryPushInternal).toHaveBeenCalledWith('/admin_console/system_attributes/membership_policies/edit_policy/policy1');
+            expect((global as any).historyMock.push).toHaveBeenCalledWith('/admin_console/system_attributes/membership_policies/edit_policy/policy1');
         });
     });
 

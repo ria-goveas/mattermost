@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
 import {Button} from '@mattermost/shared/components/button';
@@ -13,7 +13,7 @@ import type {Row, Column} from 'components/admin_console/data_grid/data_grid';
 import DataGrid from 'components/admin_console/data_grid/data_grid';
 import * as Menu from 'components/menu';
 
-import {getHistory} from 'utils/browser_history';
+import {useNavigate} from 'utils/react_router_v6';
 
 import '../access_control/policies.scss';
 
@@ -62,7 +62,7 @@ export default function PermissionPolicyList(props: Props): JSX.Element {
     const [total, setTotal] = useState(0);
     const intl = useIntl();
 
-    const history = useMemo(() => getHistory(), []);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchPolicies();
@@ -195,7 +195,7 @@ export default function PermissionPolicyList(props: Props): JSX.Element {
                                 <Menu.Item
                                     id={`policy-menu-edit-${policy.id}`}
                                     onClick={() => {
-                                        history.push(`/admin_console/system_attributes/permission_policies/edit_policy/${policy.id}`);
+                                        navigate(`/admin_console/system_attributes/permission_policies/edit_policy/${policy.id}`);
                                     }}
                                     leadingElement={<i className='icon icon-pencil-outline'/>}
                                     labels={
@@ -222,7 +222,7 @@ export default function PermissionPolicyList(props: Props): JSX.Element {
                     ),
                 },
                 onClick: () => {
-                    history.push(`/admin_console/system_attributes/permission_policies/edit_policy/${policy.id}`);
+                    navigate(`/admin_console/system_attributes/permission_policies/edit_policy/${policy.id}`);
                 },
             };
         });
@@ -326,7 +326,7 @@ export default function PermissionPolicyList(props: Props): JSX.Element {
                 <Button
                     emphasis='primary'
                     onClick={() => {
-                        history.push('/admin_console/system_attributes/permission_policies/edit_policy');
+                        navigate('/admin_console/system_attributes/permission_policies/edit_policy');
                     }}
                 >
                     <i className='icon icon-plus'/>
