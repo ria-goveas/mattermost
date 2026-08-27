@@ -4,7 +4,7 @@
 import debounce from 'lodash/debounce';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
@@ -72,7 +72,7 @@ export default function ChannelMembersRHS({
     editing = false,
     actions,
 }: Props) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [list, setList] = useState<ListItem[]>([]);
 
@@ -228,7 +228,7 @@ export default function ChannelMembersRHS({
         await actions.openDirectChannelToUserId(user.id);
 
         // ... and then redirect to it
-        history.push(teamUrl + '/messages/@' + user.username);
+        navigate(teamUrl + '/messages/@' + user.username);
 
         await actions.closeRightHandSide();
     }, [actions.openDirectChannelToUserId, history, teamUrl, actions.closeRightHandSide]);

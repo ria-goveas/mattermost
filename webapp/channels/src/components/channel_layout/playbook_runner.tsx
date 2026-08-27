@@ -3,7 +3,7 @@
 
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRouteMatch} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import type {AnyAction, Dispatch} from 'redux';
 
 import type {Channel} from '@mattermost/types/channels';
@@ -25,11 +25,8 @@ interface MatchParams {
 }
 
 const PlaybookRunner = () => {
-    const match = useRouteMatch<MatchParams>();
     const dispatch = useDispatch();
-
-    const teamName = match.params.team;
-    const playbookId = match.params.playbookId;
+    const {team: teamName, playbookId} = useParams<MatchParams>();
 
     const team = useSelector((state: GlobalState) => getTeamByName(state, teamName));
 

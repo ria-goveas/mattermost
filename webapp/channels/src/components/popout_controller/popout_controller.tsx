@@ -3,8 +3,7 @@
 
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch} from 'react-router-dom';
-import type {RouteComponentProps} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {getMe} from 'mattermost-redux/actions/users';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
@@ -22,12 +21,14 @@ import ThreadPopout from 'components/thread_popout';
 import Pluggable from 'plugins/pluggable';
 import {TEAM_NAME_PATH_PATTERN, ID_PATH_PATTERN, IDENTIFIER_PATH_PATTERN} from 'utils/path';
 import {useBrowserPopout} from 'utils/popouts/use_browser_popout';
+import {CompatRoute, Routes} from 'utils/react_router_compat';
 
 import './popout_controller.scss';
 
-const PopoutController: React.FC<RouteComponentProps> = (routeProps) => {
+const PopoutController = () => {
     const dispatch = useDispatch();
     const currentUserId = useSelector(getCurrentUserId);
+    const location = useLocation();
 
     useBrowserPopout();
     useUserTheme();
@@ -39,7 +40,7 @@ const PopoutController: React.FC<RouteComponentProps> = (routeProps) => {
         return () => {
             document.body.classList.remove('app__body', 'popout');
         };
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         if (currentUserId) {
@@ -48,27 +49,30 @@ const PopoutController: React.FC<RouteComponentProps> = (routeProps) => {
     }, [dispatch, currentUserId]);
 
     return (
-        <LoggedIn {...routeProps}>
+        <LoggedIn
+            match={{url: location.pathname}}
+            location={location}
+        >
             <ModalController/>
             <Pluggable pluggableName='Root'/>
-            <Switch>
-                <Route
+            <Routes>
+                <CompatRoute
                     path={`/_popout/thread/:team(${TEAM_NAME_PATH_PATTERN})/:postId(${ID_PATH_PATTERN})`}
-                    component={ThreadPopout}
+                    element={<ThreadPopout/>}
                 />
-                <Route
+                <CompatRoute
                     path={`/_popout/channel/:team(${TEAM_NAME_PATH_PATTERN})/:path(channels|messages)/:identifier(${IDENTIFIER_PATH_PATTERN})/:postid(${ID_PATH_PATTERN})?`}
-                    component={ChannelPopout}
+                    element={<ChannelPopout/>}
                 />
-                <Route
+                <CompatRoute
                     path={`/_popout/rhs/:team(${TEAM_NAME_PATH_PATTERN})`}
-                    component={RhsPopout}
+                    element={<RhsPopout/>}
                 />
-                <Route
+                <CompatRoute
                     path='/_popout/help/:page?'
-                    component={HelpPopout}
+                    element={<HelpPopout/>}
                 />
-            </Switch>
+            </Routes>
         </LoggedIn>
     );
 };

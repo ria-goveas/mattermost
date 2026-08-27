@@ -4,7 +4,7 @@
 import React, {useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+import {Navigate} from 'utils/react_router_compat';
 
 import {PlusIcon} from '@mattermost/compass-icons/components';
 import {Button} from '@mattermost/shared/components/button';
@@ -63,7 +63,7 @@ const Recaps = () => {
 
     // Redirect if feature flag is disabled
     if (enableAIRecaps !== 'true') {
-        return <Redirect to='/'/>;
+        return <Navigate to='/'/>;
     }
 
     const handleAddRecap = () => {

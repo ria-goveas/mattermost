@@ -6,7 +6,8 @@ import throttle from 'lodash/throttle';
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {useLocation, useHistory, Route} from 'react-router-dom';
+import {useLocation, Route} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import {isDesktopApp} from '@mattermost/shared/utils/user_agent';
 import type {ServerError} from '@mattermost/types/errors';
@@ -66,7 +67,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const intl = useIntl();
     const {formatMessage} = intl;
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {search} = useLocation();
 
     const params = new URLSearchParams(search);
@@ -233,8 +234,8 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     };
 
     const handleHeaderBackButtonOnClick = useCallback(() => {
-        history.goBack();
-    }, [history]);
+        navigate(-1);
+    }, [navigate]);
 
     const handleInvalidInvite = ({
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -256,7 +257,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         const {data: team, error} = await dispatch(addUserToTeamFromInvite(token, inviteId));
 
         if (team) {
-            history.push('/' + team.name + `/channels/${Constants.DEFAULT_CHANNEL}`);
+            navigate('/' + team.name + `/channels/${Constants.DEFAULT_CHANNEL}`);
         } else if (error) {
             handleInvalidInvite(error);
         }
@@ -300,7 +301,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                 event.preventDefault();
 
                 setDesktopLoginLink(href);
-                history.push(`/signup_user_complete/desktop${search}`);
+                navigate(`/signup_user_complete/desktop${search}`);
             }
         };
     };
@@ -323,7 +324,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                     // and whether admin has already completed
                     // first tiem onboarding. Instead of fetching and orchestrating that here,
                     // let the default root component handle it.
-                    history.push('/');
+                    navigate('/');
                 } else {
                     redirectUserToDefaultTeam();
                 }
@@ -453,7 +454,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                     verifyUrl += '&redirect_to=' + redirectTo;
                 }
 
-                history.push(verifyUrl);
+                navigate(verifyUrl);
             } else {
                 setServerError(error.message);
                 setIsWaiting(false);
@@ -475,13 +476,13 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         }
 
         if (redirectTo) {
-            history.push(redirectTo);
+            navigate(redirectTo);
         } else if (onboardingFlowEnabled) {
             // need info about whether admin or not,
             // and whether admin has already completed
             // first tiem onboarding. Instead of fetching and orchestrating that here,
             // let the default root component handle it.
-            history.push('/');
+            navigate('/');
         } else {
             redirectUserToDefaultTeam();
         }
@@ -588,7 +589,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         }
     };
 
-    const handleReturnButtonOnClick = () => history.replace('/');
+    const handleReturnButtonOnClick = () => navigate('/', {replace: true});
 
     const getContent = () => {
         if (!enableSignUpWithEmail && !enableExternalSignup) {

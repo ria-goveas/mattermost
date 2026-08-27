@@ -3,7 +3,8 @@
 
 import React, {useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import {deferNavigation} from 'actions/admin_actions';
 
@@ -25,7 +26,7 @@ export function MenuItemLink({
     ...otherProps
 }: Props) {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {pathname} = useLocation();
 
     const blocked = useSelector((state: GlobalState) => pathname.startsWith('/admin_console') && getNavigationBlocked(state));
@@ -36,12 +37,12 @@ export function MenuItemLink({
         if (blocked) {
             e.preventDefault();
             dispatch(deferNavigation(() => {
-                history.push(to);
+                navigate(to);
             }));
         } else {
-            history.push(to);
+            navigate(to);
         }
-    }, [blocked, onClick, deferNavigation, history.push, to]);
+    }, [blocked, onClick, deferNavigation, navigate, to]);
 
     return (
         <MenuItem

@@ -6,7 +6,8 @@ import crypto from 'crypto';
 import React, {useEffect, useState} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import {isDesktopApp} from '@mattermost/shared/utils/user_agent';
 
@@ -37,7 +38,7 @@ type Props = {
 
 const DesktopAuthToken: React.FC<Props> = ({href, onLogin}: Props) => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {search} = useLocation();
     const query = new URLSearchParams(search);
 
@@ -92,7 +93,7 @@ const DesktopAuthToken: React.FC<Props> = ({href, onLogin}: Props) => {
     useEffect(() => {
         if (currentUser) {
             if (redirectTo && redirectTo.match(/^\/([^/]|$)/)) {
-                history.push(redirectTo);
+                navigate(redirectTo);
                 return;
             }
             redirectUserToDefaultTeam();
@@ -176,7 +177,7 @@ const DesktopAuthToken: React.FC<Props> = ({href, onLogin}: Props) => {
                 values={{
                     a: (chunks: React.ReactNode) => {
                         return (
-                            <a onClick={() => history.push('/')}>
+                            <a onClick={() => navigate('/')}>
                                 {chunks}
                             </a>
                         );
@@ -200,7 +201,7 @@ const DesktopAuthToken: React.FC<Props> = ({href, onLogin}: Props) => {
                 values={{
                     a: (chunks: React.ReactNode) => {
                         return (
-                            <a onClick={() => history.push('/')}>
+                            <a onClick={() => navigate('/')}>
                                 {chunks}
                             </a>
                         );

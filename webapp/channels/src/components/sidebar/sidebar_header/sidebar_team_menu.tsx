@@ -4,7 +4,7 @@
 import React, {useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import {
     LightbulbOutlineIcon,
@@ -347,11 +347,11 @@ function LeaveTeamMenuItem() {
 }
 
 function JoinAnotherTeamMenuItem() {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = useCallback(() => {
-        history.push('/select_team');
-    }, [history]);
+        navigate('/select_team');
+    }, [navigate]);
 
     return (
         <Menu.Item
@@ -377,7 +377,7 @@ interface CreateTeamMenuItemProps {
 }
 
 function CreateTeamMenuItem({isCloud}: CreateTeamMenuItemProps) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const cloudSubscription = useSelector(getCloudSubscription);
     const subscriptionProduct = useSelector(getSubscriptionProduct);
@@ -392,8 +392,8 @@ function CreateTeamMenuItem({isCloud}: CreateTeamMenuItemProps) {
             return;
         }
 
-        history.push('/create_team');
-    }, [history, isTeamsLimitReached]);
+        navigate('/create_team');
+    }, [navigate, isTeamsLimitReached]);
 
     return (
         <Menu.Item

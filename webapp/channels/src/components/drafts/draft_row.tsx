@@ -5,7 +5,7 @@ import noop from 'lodash/noop';
 import React, {memo, useCallback, useMemo, useEffect, useState, useRef} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import type {ServerError} from '@mattermost/types/errors';
 import type {FileInfo} from '@mattermost/types/files';
@@ -83,7 +83,7 @@ function DraftRow({
 
     const [serverError, setServerError] = useState<(ServerError & {submittedMessage?: string}) | null>(null);
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const getChannelSelector = useMemo(() => makeGetChannel(), []);
@@ -154,7 +154,7 @@ function DraftRow({
             await dispatch(selectPostById(rootId));
             return;
         }
-        history.push(channelUrl);
+        navigate(channelUrl);
     }, [channelUrl, dispatch, history, rootId, rootPostDeleted, isEditing]);
 
     const isBeingScheduled = useRef(false);

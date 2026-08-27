@@ -4,7 +4,8 @@
 import type {AnchorHTMLAttributes} from 'react';
 import React, {forwardRef, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 import styled, {css} from 'styled-components';
 
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
@@ -45,7 +46,7 @@ export const useBookmarkLink = (
 ) => {
     const linkRef = useRef<HTMLAnchorElement>(null);
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const fileInfo: FileInfo | undefined = useSelector((state: GlobalState) => (bookmark?.file_id && getFile(state, bookmark.file_id)) || undefined);
 
     // DOM-based open — clicks the rendered DynamicLink (used by bar items)
@@ -81,15 +82,15 @@ export const useBookmarkLink = (
             if (prefixed || openInNewTab) {
                 window.open(prefixed ? url.substring(1) : url, '_blank', 'noopener,noreferrer');
             } else if (url.startsWith(siteURL)) {
-                history.push(url.slice(siteURL.length));
+                navigate(url.slice(siteURL.length));
             } else if (url.startsWith('/')) {
-                history.push(url);
+                navigate(url);
             } else {
                 window.location.href = url;
             }
             onNavigate?.();
         }
-    }, [bookmark, fileInfo, dispatch, history, onNavigate, disableLinks]);
+    }, [bookmark, fileInfo, dispatch, navigate, onNavigate, disableLinks]);
 
     const handleOpenFile = useCallback((e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();

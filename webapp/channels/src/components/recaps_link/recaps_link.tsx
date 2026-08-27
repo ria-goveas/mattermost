@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import React from 'react';
 import {defineMessage, FormattedMessage, useIntl} from 'react-intl';
 import {shallowEqual, useSelector} from 'react-redux';
-import {Link, useLocation, matchPath, useRouteMatch} from 'react-router-dom';
+import {Link, useLocation, matchPath} from 'react-router-dom';
+import {useMatch} from 'utils/react_router_compat';
 
 import {AlertOutlineIcon, CreationOutlineIcon} from '@mattermost/compass-icons/components';
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
@@ -26,7 +27,8 @@ const failedTooltip = defineMessage({
 
 const RecapsLink = () => {
     const {formatMessage} = useIntl();
-    const {url} = useRouteMatch();
+    const match = useMatch('/:team');
+    const url = match?.url ?? '';
     const {pathname} = useLocation();
     const currentTeamId = useSelector(getCurrentTeamId);
     const currentUserId = useSelector(getCurrentUserId);

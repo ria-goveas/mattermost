@@ -4,7 +4,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory, useRouteMatch} from 'react-router-dom';
+import {useMatch, useNavigate} from 'utils/react_router_compat';
 
 import {ChevronLeftIcon, ChevronRightIcon} from '@mattermost/compass-icons/components';
 import {GenericModal} from '@mattermost/components';
@@ -35,8 +35,8 @@ type RecapType = 'selected' | 'all_unreads';
 const CreateRecapModal = ({onExited}: Props) => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-    const history = useHistory();
-    const {url} = useRouteMatch();
+    const navigate = useNavigate();
+    const {url} = useMatch('/:team/recaps') ?? {url: ''};
     const currentUserId = useSelector(getCurrentUserId);
     const myChannels = useSelector(getMyChannels);
     const unreadChannelIds = useSelector(getUnreadChannelIds);
@@ -114,12 +114,12 @@ const CreateRecapModal = ({onExited}: Props) => {
         try {
             await dispatch(createRecap(recapName, selectedChannelIds, selectedBotId));
             onExited();
-            history.push(`${url}/recaps`);
+            navigate(`${url}/recaps`);
         } catch {
             setError(formatMessage({id: 'recaps.modal.error.createFailed', defaultMessage: 'Failed to create recap. Please try again.'}));
             setIsSubmitting(false);
         }
-    }, [selectedChannelIds, currentUserId, selectedBotId, dispatch, onExited, history, url, formatMessage, recapName]);
+    }, [selectedChannelIds, currentUserId, selectedBotId, dispatch, onExited, navigate, url, formatMessage, recapName]);
 
     const canProceed = () => {
         if (currentStep === 1) {

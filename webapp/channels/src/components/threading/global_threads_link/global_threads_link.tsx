@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import React, {useCallback, useEffect} from 'react';
 import {defineMessages, useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {Link, useRouteMatch, useLocation, matchPath} from 'react-router-dom';
+import {Link, useLocation, matchPath} from 'react-router-dom';
+import {useMatch} from 'utils/react_router_compat';
 
 import {getThreadCounts} from 'mattermost-redux/actions/threads';
 import {isCollapsedThreadsEnabled} from 'mattermost-redux/selectors/entities/preferences';
@@ -37,7 +38,8 @@ const GlobalThreadsLink = () => {
     const dispatch = useDispatch();
     const isFeatureEnabled = useSelector(isCollapsedThreadsEnabled);
 
-    const {url} = useRouteMatch();
+    const teamMatch = useMatch('/:team');
+    const url = teamMatch?.url ?? '';
     const {pathname} = useLocation();
     const inGlobalThreads = matchPath(pathname, {path: '/:team/threads/:threadIdentifier?'}) != null;
     const {currentTeamId, currentUserId} = useThreadRouting();

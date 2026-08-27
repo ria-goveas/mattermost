@@ -3,7 +3,7 @@
 
 import React, {useState} from 'react';
 import {defineMessages} from 'react-intl';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import type {OutgoingWebhook} from '@mattermost/types/integrations';
 import type {Team} from '@mattermost/types/teams';
@@ -54,7 +54,7 @@ export type Props = {
 };
 
 const AddOutgoingWebhook = ({team, actions, enablePostUsernameOverride, enablePostIconOverride}: Props): JSX.Element => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [serverError, setServerError] = useState('');
 
@@ -63,7 +63,7 @@ const AddOutgoingWebhook = ({team, actions, enablePostUsernameOverride, enablePo
 
         const {data, error} = await actions.createOutgoingHook(hook);
         if (data) {
-            history.push(`/${team.name}/integrations/confirm?type=outgoing_webhooks&id=${data.id}`);
+            navigate(`/${team.name}/integrations/confirm?type=outgoing_webhooks&id=${data.id}`);
             return;
         }
 

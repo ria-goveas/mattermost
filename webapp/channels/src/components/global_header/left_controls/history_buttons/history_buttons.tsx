@@ -3,7 +3,7 @@
 
 import React, {useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 import styled from 'styled-components';
 
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
@@ -27,7 +27,7 @@ const HistoryButtonsContainer = styled.nav`
 `;
 
 const HistoryButtons = (): JSX.Element => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const intl = useIntl();
 
     const [canGoBack, setCanGoBack] = useState(true);
@@ -42,12 +42,12 @@ const HistoryButtons = (): JSX.Element => {
     );
 
     const goBack = () => {
-        history.goBack();
+        navigate(-1);
         requestButtons();
     };
 
     const goForward = () => {
-        history.goForward();
+        navigate(1);
         requestButtons();
     };
 
