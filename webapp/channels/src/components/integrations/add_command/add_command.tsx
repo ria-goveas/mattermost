@@ -3,12 +3,13 @@
 
 import React, {useState} from 'react';
 import {useIntl} from 'react-intl';
-import {useHistory} from 'react-router-dom';
 
 import type {Command} from '@mattermost/types/integrations';
 import type {Team} from '@mattermost/types/teams';
 
 import type {ActionResult} from 'mattermost-redux/types/actions.js';
+
+import {useNavigate} from 'utils/react_router_v6';
 
 import AbstractCommand from '../abstract_command';
 
@@ -29,7 +30,7 @@ export type Props = {
 };
 
 const AddCommand = ({team, actions}: Props) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const {formatMessage} = useIntl();
     const headerMessage = formatMessage({id: 'integrations.add', defaultMessage: 'Add'});
     const footerMessage = formatMessage({id: 'add_command.save', defaultMessage: 'Save'});
@@ -41,7 +42,7 @@ const AddCommand = ({team, actions}: Props) => {
 
         const {data, error} = await actions.addCommand(command);
         if (data) {
-            history.push(`/${team.name}/integrations/commands/confirm?type=commands&id=${data.id}`);
+            navigate(`/${team.name}/integrations/commands/confirm?type=commands&id=${data.id}`);
             return;
         }
 

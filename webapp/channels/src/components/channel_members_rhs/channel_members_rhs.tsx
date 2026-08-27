@@ -4,7 +4,6 @@
 import debounce from 'lodash/debounce';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {useHistory} from 'react-router-dom';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
@@ -22,6 +21,7 @@ import TagGroup from 'components/widgets/tag/tag_group';
 import {isMembershipPolicyEnforced} from 'utils/channel_utils';
 import Constants, {ModalIdentifiers} from 'utils/constants';
 import {formatAttributeName} from 'utils/format_attribute_name';
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {ModalData} from 'types/actions';
 
@@ -72,7 +72,7 @@ export default function ChannelMembersRHS({
     editing = false,
     actions,
 }: Props) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [list, setList] = useState<ListItem[]>([]);
 
@@ -228,10 +228,10 @@ export default function ChannelMembersRHS({
         await actions.openDirectChannelToUserId(user.id);
 
         // ... and then redirect to it
-        history.push(teamUrl + '/messages/@' + user.username);
+        navigate(teamUrl + '/messages/@' + user.username);
 
         await actions.closeRightHandSide();
-    }, [actions.openDirectChannelToUserId, history, teamUrl, actions.closeRightHandSide]);
+    }, [actions.openDirectChannelToUserId, navigate, teamUrl, actions.closeRightHandSide]);
 
     const loadMore = useCallback(async () => {
         setIsNextPageLoading(true);

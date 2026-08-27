@@ -26,7 +26,6 @@ describe('CreateTeamForm - display_name step', () => {
         updateParent: jest.Mock;
         state: {team: {name: string; display_name: string}; wizard: string};
         actions: {checkIfTeamExists: jest.Mock; createTeam: jest.Mock};
-        history: {push: jest.Mock};
     };
 
     beforeEach(() => {
@@ -42,7 +41,6 @@ describe('CreateTeamForm - display_name step', () => {
                 checkIfTeamExists: jest.fn().mockResolvedValue({data: false}),
                 createTeam: jest.fn().mockResolvedValue({data: {name: 'test-team'}}),
             },
-            history: {push: jest.fn()},
         };
     });
 
@@ -142,7 +140,7 @@ describe('CreateTeamForm - display_name step', () => {
             await userEvent.click(screen.getByRole('button', {name: /create/i}));
 
             await waitFor(() => {
-                expect(defaultProps.history.push).toHaveBeenCalledWith('/my-new-team/channels/town-square');
+                expect((global as any).historyMock.push).toHaveBeenCalledWith('/my-new-team/channels/town-square');
             });
         });
 
@@ -166,7 +164,7 @@ describe('CreateTeamForm - display_name step', () => {
                 expect(screen.getByText('Team creation failed')).toBeInTheDocument();
             });
 
-            expect(defaultProps.history.push).not.toHaveBeenCalled();
+            expect((global as any).historyMock.push).not.toHaveBeenCalled();
         });
 
         test('should show loading state while creating team', async () => {
@@ -197,7 +195,7 @@ describe('CreateTeamForm - display_name step', () => {
             resolveCreateTeam!({data: {name: 'my-new-team'}});
 
             await waitFor(() => {
-                expect(defaultProps.history.push).toHaveBeenCalled();
+                expect((global as any).historyMock.push).toHaveBeenCalled();
             });
         });
 
@@ -232,7 +230,6 @@ describe('CreateTeamForm - team_url step', () => {
             checkIfTeamExists: jest.fn().mockResolvedValue({data: true}),
             createTeam: jest.fn().mockResolvedValue({data: {name: 'test-team'}}),
         },
-        history: {push: jest.fn()},
     };
 
     beforeEach(() => {
@@ -289,8 +286,8 @@ describe('CreateTeamForm - team_url step', () => {
             expect(actions.checkIfTeamExists).toHaveBeenCalledTimes(2);
             expect(actions.createTeam).toHaveBeenCalledTimes(1);
             expect(actions.createTeam).toHaveBeenCalledWith({display_name: 'test-team', name: 'test-team', type: 'O'});
-            expect(props.history.push).toHaveBeenCalledTimes(1);
-            expect(props.history.push).toHaveBeenCalledWith('/test-team/channels/town-square');
+            expect((global as any).historyMock.push).toHaveBeenCalledTimes(1);
+            expect((global as any).historyMock.push).toHaveBeenCalledWith('/test-team/channels/town-square');
         });
     });
 

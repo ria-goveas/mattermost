@@ -4,7 +4,6 @@
 import React, {useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
 
 import {
     LightbulbOutlineIcon,
@@ -43,6 +42,7 @@ import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_i
 import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils';
 import {LicenseSkus, ModalIdentifiers, MattermostFeatures, CloudProducts} from 'utils/constants';
 import {isCloudLicense} from 'utils/license_utils';
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {GlobalState} from 'types/store';
 
@@ -347,11 +347,11 @@ function LeaveTeamMenuItem() {
 }
 
 function JoinAnotherTeamMenuItem() {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = useCallback(() => {
-        history.push('/select_team');
-    }, [history]);
+        navigate('/select_team');
+    }, [navigate]);
 
     return (
         <Menu.Item
@@ -377,7 +377,7 @@ interface CreateTeamMenuItemProps {
 }
 
 function CreateTeamMenuItem({isCloud}: CreateTeamMenuItemProps) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const cloudSubscription = useSelector(getCloudSubscription);
     const subscriptionProduct = useSelector(getSubscriptionProduct);
@@ -392,8 +392,8 @@ function CreateTeamMenuItem({isCloud}: CreateTeamMenuItemProps) {
             return;
         }
 
-        history.push('/create_team');
-    }, [history, isTeamsLimitReached]);
+        navigate('/create_team');
+    }, [navigate, isTeamsLimitReached]);
 
     return (
         <Menu.Item

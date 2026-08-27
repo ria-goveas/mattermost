@@ -4,13 +4,13 @@
 import classNames from 'classnames';
 import React, {useState, useRef, memo, useEffect} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {useHistory} from 'react-router-dom';
 
 import {Button} from '@mattermost/shared/components/button';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
 import Constants from 'utils/constants';
+import {useNavigate} from 'utils/react_router_v6';
 
 export interface Props {
     location: {search: string};
@@ -23,7 +23,7 @@ export interface Props {
 const PasswordResetForm = ({location, siteName, actions}: Props) => {
     const intl = useIntl();
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [error, setError] = useState<React.ReactNode>(null);
 
@@ -50,7 +50,7 @@ const PasswordResetForm = ({location, siteName, actions}: Props) => {
         }
         const {data, error} = await actions.resetUserPassword(token, password);
         if (data) {
-            history.push('/login?extra=' + Constants.PASSWORD_CHANGE);
+            navigate('/login?extra=' + Constants.PASSWORD_CHANGE);
             setError(null);
         } else if (error) {
             setError(error.message);

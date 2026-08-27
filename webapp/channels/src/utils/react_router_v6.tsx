@@ -39,9 +39,15 @@ export function useNavigate(): NavigateFunction {
 
         if (typeof to === 'string') {
             if (options?.replace) {
-                history.replace(to, options.state);
+                if (options.state === undefined) {
+                    history.replace(to);
+                } else {
+                    history.replace(to, options.state);
+                }
+            } else if (options?.state === undefined) {
+                history.push(to);
             } else {
-                history.push(to, options?.state);
+                history.push(to, options.state);
             }
             return;
         }

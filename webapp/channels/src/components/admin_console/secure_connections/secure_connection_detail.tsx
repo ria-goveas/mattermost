@@ -7,7 +7,7 @@ import type {SelectCallback} from 'react-bootstrap';
 import {Tabs, Tab} from 'react-bootstrap';
 import {useIntl, FormattedMessage} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory, useParams, useLocation} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {PlusIcon} from '@mattermost/compass-icons/components';
@@ -25,6 +25,7 @@ import LoadingScreen from 'components/loading_screen';
 import AdminHeader from 'components/widgets/admin_console/admin_header';
 
 import {getChannelIconComponent} from 'utils/channel_utils';
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {GlobalState} from 'types/store';
 
@@ -64,7 +65,7 @@ export default function SecureConnectionDetail(props: Props) {
     const {connection_id: remoteId} = useParams<Params>();
     const isCreating = remoteId === 'create';
     const {state: initRemoteCluster, ...location} = useLocation<RemoteCluster | undefined>();
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [remoteCluster, {applyPatch, save, currentRemoteCluster, hasChanges, loading, saving, patch}] = useRemoteClusterEdit(remoteId, initRemoteCluster);
@@ -76,7 +77,7 @@ export default function SecureConnectionDetail(props: Props) {
 
     useEffect(() => {
         // keep history cache up to date
-        history.replace({...location, state: currentRemoteCluster});
+        navigate({...location, state: currentRemoteCluster}, {replace: true});
     }, [currentRemoteCluster]);
 
     useEffect(() => {
@@ -98,7 +99,7 @@ export default function SecureConnectionDetail(props: Props) {
         }
         const rc = await promptCreate(patch);
         if (rc) {
-            history.replace(getEditLocation(rc));
+            navigate(getEditLocation(rc), {replace: true});
         }
     };
 

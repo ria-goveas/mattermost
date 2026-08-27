@@ -6,7 +6,6 @@ import {useReactTable, getCoreRowModel, getSortedRowModel} from '@tanstack/react
 import React, {useEffect, useMemo, useState} from 'react';
 import {useIntl, FormattedMessage, defineMessages} from 'react-intl';
 import type {MessageDescriptor} from 'react-intl';
-import {useHistory} from 'react-router-dom';
 
 import type {ServerError} from '@mattermost/types/errors';
 import {CursorPaginationDirection} from '@mattermost/types/reports';
@@ -18,6 +17,7 @@ import SharedUserIndicator from 'components/shared_user_indicator';
 import AdminHeader from 'components/widgets/admin_console/admin_header';
 
 import {getDisplayName, imageURLForUser} from 'utils/utils';
+import {useNavigate} from 'utils/react_router_v6';
 
 import type {AdminConsoleUserManagementTableProperties} from 'types/store/views';
 
@@ -63,7 +63,7 @@ export const searchableStrings: Array<string | MessageDescriptor | [MessageDescr
 
 function SystemUsers(props: Props) {
     const {formatMessage} = useIntl();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [userReports, setUserReports] = useState<UserReportWithError[]>([]);
     const [userCount, setUserCount] = useState<number | undefined>();
@@ -153,7 +153,7 @@ function SystemUsers(props: Props) {
         if (userId.length !== 0) {
             const remoteID = userReports.find((userReport) => userReport.id === userId)?.remote_id;
             if (!remoteID) {
-                history.push(`/admin_console/user_management/user/${userId}`);
+                navigate(`/admin_console/user_management/user/${userId}`);
             }
         }
     }

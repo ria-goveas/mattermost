@@ -3,7 +3,7 @@
 
 import React from 'react';
 import * as ReactRedux from 'react-redux';
-import {MemoryRouter, Route, useHistory} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router-dom';
 
 import {openModal} from 'actions/views/modals';
 
@@ -21,27 +21,12 @@ jest.mock('actions/views/modals', () => ({
     openModal: jest.fn(),
 }));
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: jest.fn(),
-}));
-
 describe('QueryParamActionController', () => {
     let mockDispatch: jest.Mock;
-
-    // Define a custom type for mockHistory that includes the replace method
-    interface MockHistory extends jest.Mock<History, [any]> {
-        replace: jest.Mock;
-    }
-    let mockHistory: MockHistory;
 
     beforeEach(() => {
         mockDispatch = jest.fn();
         jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(mockDispatch);
-        mockHistory = {
-            replace: jest.fn(),
-        } as MockHistory;
-        (useHistory as jest.Mock).mockReturnValue(mockHistory);
     });
 
     afterEach(() => {
@@ -109,7 +94,7 @@ describe('QueryParamActionController', () => {
             }),
         );
 
-        expect(mockHistory.replace).toHaveBeenCalledWith({
+        expect((global as any).historyMock.replace).toHaveBeenCalledWith({
             search: '',
         });
     });

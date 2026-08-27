@@ -2,22 +2,10 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {useHistory} from 'react-router-dom';
 
 import TrialBenefitsModalStepMore from 'components/trial_benefits_modal/trial_benefits_modal_step_more';
 
 import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
-
-jest.mock('react-router-dom', () => {
-    const original = jest.requireActual('react-router-dom');
-
-    return {
-        ...original,
-        useHistory: jest.fn().mockReturnValue({
-            push: jest.fn(),
-        }),
-    };
-});
 
 describe('components/trial_benefits_modal/trial_benefits_modal_step_more', () => {
     const props = {
@@ -34,7 +22,6 @@ describe('components/trial_benefits_modal/trial_benefits_modal_step_more', () =>
     });
 
     test('should handle on click', async () => {
-        const mockHistory = useHistory();
         const mockOnClick = jest.fn();
 
         renderWithContext(
@@ -46,7 +33,7 @@ describe('components/trial_benefits_modal/trial_benefits_modal_step_more', () =>
 
         await userEvent.click(screen.getByText('Test Message'));
 
-        expect(mockHistory.push).toHaveBeenCalledWith(props.route);
+        expect((global as any).historyMock.push).toHaveBeenCalledWith(props.route);
         expect(mockOnClick).toHaveBeenCalled();
     });
 });

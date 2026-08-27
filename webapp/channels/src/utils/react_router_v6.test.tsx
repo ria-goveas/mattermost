@@ -23,7 +23,7 @@ describe('utils/react_router_v6', () => {
 
             result.current('/login');
 
-            expect(historyMock.push).toHaveBeenCalledWith('/login', undefined);
+            expect(historyMock.push).toHaveBeenCalledWith('/login');
         });
 
         test('navigates with replace when requested', () => {
@@ -31,7 +31,7 @@ describe('utils/react_router_v6', () => {
 
             result.current('/login', {replace: true});
 
-            expect(historyMock.replace).toHaveBeenCalledWith('/login', undefined);
+            expect(historyMock.replace).toHaveBeenCalledWith('/login');
         });
 
         test('treats numeric deltas as history.go', () => {
