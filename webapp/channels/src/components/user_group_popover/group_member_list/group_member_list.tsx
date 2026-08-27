@@ -4,7 +4,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import {VariableSizeList} from 'react-window';
 import type {ListChildComponentProps} from 'react-window';
@@ -92,7 +92,7 @@ const GroupMemberList = (props: Props) => {
         searchState,
     } = props;
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const {formatMessage} = useIntl();
 
@@ -137,7 +137,7 @@ const GroupMemberList = (props: Props) => {
                 actions.closeRightHandSide();
                 setCurrentDMLoading(undefined);
                 hide?.();
-                history.push(`${teamUrl}/messages/@${user.username}`);
+                navigate(`${teamUrl}/messages/@${user.username}`);
             }
         });
     };

@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import type {AuthChangeResponse} from '@mattermost/types/users';
 
@@ -15,6 +15,7 @@ import OAuthToEmail from 'components/claim/components/oauth_to_email';
 import BackButton from 'components/common/back_button';
 
 import logoImage from 'images/logo.png';
+import {CompatRoute, Routes, useMatch} from 'utils/react_router_compat';
 
 export interface PasswordConfig {
     minimumLength: number;
@@ -24,87 +25,81 @@ export interface PasswordConfig {
     requireSymbol: boolean;
 }
 
-type Location = {
-    search: string;
-};
-
 export type Props = {
-    location: Location;
     siteName?: string;
     ldapLoginFieldName?: string;
     passwordConfig?: PasswordConfig;
-    match: {
-        url: string;
-    };
     actions: {
         switchLdapToEmail: (ldapPassword: string, email: string, emailPassword: string, mfaCode?: string) => Promise<ActionResult<AuthChangeResponse>>;
     };
 };
 
-export default class ClaimController extends React.PureComponent<Props> {
-    render(): JSX.Element {
-        const email = (new URLSearchParams(this.props.location.search)).get('email');
-        const newType = (new URLSearchParams(this.props.location.search)).get('new_type');
-        const currentType = (new URLSearchParams(this.props.location.search)).get('old_type');
+export default function ClaimController(props: Props) {
+    const location = useLocation();
+    const match = useMatch('/claim');
+    const baseUrl = match?.url ?? '/claim';
 
-        return (
-            <div>
-                <BackButton/>
-                <div className='col-sm-12'>
-                    <div className='signup-team__container'>
-                        <img
-                            alt={'signup logo'}
-                            className='signup-team-logo'
-                            src={logoImage}
-                        />
-                        <div id='claim'>
-                            <Switch>
-                                <Route
-                                    path={`${this.props.match.url}/oauth_to_email`}
-                                    render={() => (
-                                        <OAuthToEmail
-                                            currentType={currentType || ''}
-                                            email={email || ''}
-                                            siteName={this.props.siteName}
-                                            passwordConfig={this.props.passwordConfig}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    path={`${this.props.match.url}/email_to_oauth`}
-                                    render={() => (
-                                        <EmailToOAuth
-                                            newType={newType || ''}
-                                            email={email || ''}
-                                            siteName={this.props.siteName}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    path={`${this.props.match.url}/ldap_to_email`}
-                                    render={() => (
-                                        <LDAPToEmail
-                                            email={email}
-                                            passwordConfig={this.props.passwordConfig}
-                                            switchLdapToEmail={this.props.actions.switchLdapToEmail}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    path={`${this.props.match.url}/email_to_ldap`}
-                                    render={() => (
-                                        <EmailToLDAP
-                                            email={email}
-                                            siteName={this.props.siteName}
-                                            ldapLoginFieldName={this.props.ldapLoginFieldName}
-                                        />
-                                    )}
-                                />
-                            </Switch>
-                        </div>
+    const email = (new URLSearchParams(location.search)).get('email');
+    const newType = (new URLSearchParams(location.search)).get('new_type');
+    const currentType = (new URLSearchParams(location.search)).get('old_type');
+
+    return (
+        <div>
+            <BackButton/>
+            <div className='col-sm-12'>
+                <div className='signup-team__container'>
+                    <img
+                        alt={'signup logo'}
+                        className='signup-team-logo'
+                        src={logoImage}
+                    />
+                    <div id='claim'>
+                        <Routes>
+                            <CompatRoute
+                                path={`${baseUrl}/oauth_to_email`}
+                                element={(
+                                    <OAuthToEmail
+                                        currentType={currentType || ''}
+                                        email={email || ''}
+                                        siteName={props.siteName}
+                                        passwordConfig={props.passwordConfig}
+                                    />
+                                )}
+                            />
+                            <CompatRoute
+                                path={`${baseUrl}/email_to_oauth`}
+                                element={(
+                                    <EmailToOAuth
+                                        newType={newType || ''}
+                                        email={email || ''}
+                                        siteName={props.siteName}
+                                    />
+                                )}
+                            />
+                            <CompatRoute
+                                path={`${baseUrl}/ldap_to_email`}
+                                element={(
+                                    <LDAPToEmail
+                                        email={email}
+                                        passwordConfig={props.passwordConfig}
+                                        switchLdapToEmail={props.actions.switchLdapToEmail}
+                                    />
+                                )}
+                            />
+                            <CompatRoute
+                                path={`${baseUrl}/email_to_ldap`}
+                                element={(
+                                    <EmailToLDAP
+                                        email={email}
+                                        siteName={props.siteName}
+                                        ldapLoginFieldName={props.ldapLoginFieldName}
+                                    />
+                                )}
+                            />
+                        </Routes>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }

@@ -8,7 +8,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import type {MessageDescriptor} from 'react-intl';
 import {FormattedMessage, defineMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRouteMatch} from 'react-router-dom';
+import {useMatch} from 'utils/react_router_compat';
 
 import {GenericModal} from '@mattermost/components';
 import type {Emoji} from '@mattermost/types/emojis';
@@ -126,7 +126,7 @@ const CustomStatusModal: React.FC<Props> = (props: Props) => {
     const isStatusSet = Boolean(emoji || text);
     const firstTimeModalOpened = useSelector(showStatusDropdownPulsatingDot);
     const timezone = useSelector(getCurrentTimezone);
-    const inCustomEmojiPath = useRouteMatch('/:team/emoji');
+    const inCustomEmojiPath = useMatch('/:team/emoji');
 
     const currentTime = getCurrentMomentForTimezone(timezone);
     let initialCustomExpiryTime: Moment = getRoundedTime(currentTime);

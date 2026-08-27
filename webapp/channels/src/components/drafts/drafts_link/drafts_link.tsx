@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import React, {memo, useCallback, useEffect, useMemo, useRef} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {NavLink, useRouteMatch} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import {useMatch} from 'utils/react_router_compat';
 
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
 
@@ -60,9 +61,9 @@ function DraftsLink() {
 
     const scheduledPostsHasError = useSelector((state: GlobalState) => hasScheduledPostError(state, teamId));
 
-    const {url} = useRouteMatch();
-    const isDraftUrlMatch = useRouteMatch('/:team/drafts');
-    const isScheduledPostUrlMatch = useRouteMatch('/:team/' + SCHEDULED_POST_URL_SUFFIX);
+    const {url} = useMatch('/:team') || {url: ''};
+    const isDraftUrlMatch = useMatch('/:team/drafts');
+    const isScheduledPostUrlMatch = useMatch('/:team/' + SCHEDULED_POST_URL_SUFFIX);
 
     const urlMatches = Boolean(isDraftUrlMatch || isScheduledPostUrlMatch);
 

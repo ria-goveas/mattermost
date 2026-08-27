@@ -4,7 +4,7 @@
 import React, {useState, useEffect} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation, useNavigate} from 'utils/react_router_compat';
 
 import {clearErrors, logError, LogErrorBarMode} from 'mattermost-redux/actions/errors';
 import {verifyUserEmail, getMe} from 'mattermost-redux/actions/users';
@@ -29,7 +29,7 @@ const enum VerifyStatus {
 const DoVerifyEmail = () => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {search} = useLocation();
 
     const params = new URLSearchParams(search);
@@ -52,7 +52,7 @@ const DoVerifyEmail = () => {
                 // and whether admin has already completed
                 // first time onboarding. Instead of fetching and orchestrating that here,
                 // let the default root component handle it.
-                history.push('/');
+                navigate('/');
                 return;
             }
             redirectUserToDefaultTeam();
@@ -62,7 +62,7 @@ const DoVerifyEmail = () => {
         const newSearchParam = new URLSearchParams(search);
         newSearchParam.set('extra', Constants.SIGNIN_VERIFIED);
 
-        history.push(`/login?${newSearchParam}`);
+        navigate(`/login?${newSearchParam}`);
     };
 
     const verifyEmail = async () => {
@@ -104,7 +104,7 @@ const DoVerifyEmail = () => {
         handleRedirect();
     };
 
-    const handleReturnButtonOnClick = () => history.replace('/');
+    const handleReturnButtonOnClick = () => navigate('/', {replace: true});
 
     return (
         verifyStatus === VerifyStatus.FAILURE ? (

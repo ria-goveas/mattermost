@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React, {useCallback} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import './trial_benefits_modal_step_more.scss';
 
@@ -20,13 +20,13 @@ const TrialBenefitsModalStepMore = (
         onClick,
         styleLink = false,
     }: TrialBenefitsModalStepMoreProps) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const redirect = useCallback(() => {
         if (route.indexOf('http://') === 0 || route.indexOf('https://') === 0) {
             window.open(route);
         } else {
-            history.push(route);
+            navigate(route);
         }
 
         if (onClick) {

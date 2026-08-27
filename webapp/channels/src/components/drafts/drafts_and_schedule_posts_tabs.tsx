@@ -5,7 +5,8 @@ import {Badge} from '@mui/base';
 import React, {useCallback, useMemo} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {useSelector} from 'react-redux';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
+import {useNavigate} from 'utils/react_router_compat';
 
 import type {ScheduledPost} from '@mattermost/types/schedule_post';
 import type {UserProfile, UserStatus} from '@mattermost/types/users';
@@ -39,7 +40,7 @@ type Props = {
 };
 
 export default function DraftsAndSchedulePostsTabs(props: Props) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const isDraftsTab = location.pathname.includes(DRAFT_URL_SUFFIX);
     const isScheduledPostsTab = location.pathname.includes(SCHEDULED_POST_URL_SUFFIX);
@@ -53,11 +54,11 @@ export default function DraftsAndSchedulePostsTabs(props: Props) {
 
     const handleSwitchTabs = useCallback((key: string) => {
         if (key === TAB_KEYS.DRAFTS) {
-            history.push(`/${currentTeamName}/drafts`);
+            navigate(`/${currentTeamName}/drafts`);
         } else if (key === TAB_KEYS.SCHEDULED_POSTS) {
-            history.push(`/${currentTeamName}/scheduled_posts`);
+            navigate(`/${currentTeamName}/scheduled_posts`);
         }
-    }, [history, currentTeamName]);
+    }, [navigate, currentTeamName]);
 
     const scheduledPostsTabHeading = useMemo(() => {
         return (

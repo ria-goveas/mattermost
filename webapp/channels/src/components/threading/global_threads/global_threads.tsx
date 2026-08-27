@@ -6,7 +6,8 @@ import isEmpty from 'lodash/isEmpty';
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {Link, useRouteMatch} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useMatch} from 'utils/react_router_compat';
 
 import {getThreadCounts, getThreadsForCurrentTeam} from 'mattermost-redux/actions/threads';
 import {getPost} from 'mattermost-redux/selectors/entities/posts';
@@ -49,7 +50,9 @@ const GlobalThreads = () => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
 
-    const {url, params: {threadIdentifier}} = useRouteMatch<{threadIdentifier?: string}>();
+    const match = useMatch('/:team/threads/:threadIdentifier?');
+    const url = match?.url ?? '';
+    const threadIdentifier = match?.params?.threadIdentifier;
     const [filter, setFilter] = useGlobalState(ThreadFilter.none, FILTER_STORAGE_KEY);
     const {currentTeamId, currentUserId, clear} = useThreadRouting();
 

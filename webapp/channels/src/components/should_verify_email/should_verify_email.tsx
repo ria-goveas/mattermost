@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import React, {useState, useCallback} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch} from 'react-redux';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation, useNavigate} from 'utils/react_router_compat';
 
 import {sendVerificationEmail} from 'mattermost-redux/actions/users';
 
@@ -24,7 +24,7 @@ const enum ResendStatus {
 const ShouldVerifyEmail = () => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const {search} = useLocation();
 
     const params = new URLSearchParams(search);
@@ -34,8 +34,8 @@ const ShouldVerifyEmail = () => {
     const [isWaiting, setIsWaiting] = useState(false);
 
     const handleReturnButtonOnClick = useCallback(() => {
-        history.push('/');
-    }, [history]);
+        navigate('/');
+    }, [navigate]);
 
     const handleResendButtonOnClick = async () => {
         if (email) {
