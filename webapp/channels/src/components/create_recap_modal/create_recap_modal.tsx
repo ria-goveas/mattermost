@@ -4,7 +4,6 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRouteMatch} from 'react-router-dom';
 
 import {ChevronLeftIcon, ChevronRightIcon} from '@mattermost/compass-icons/components';
 import {GenericModal} from '@mattermost/components';
@@ -20,7 +19,7 @@ import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import {AgentDropdown} from 'components/common/agents';
 import PaginationDots from 'components/common/pagination_dots';
 
-import {useNavigate} from 'utils/react_router_v6';
+import {useNavigate, useMatch} from 'utils/react_router_v6';
 
 import ChannelSelector from './channel_selector';
 import ChannelSummary from './channel_summary';
@@ -38,7 +37,7 @@ const CreateRecapModal = ({onExited}: Props) => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {url} = useRouteMatch();
+    const {url} = useMatch() ?? {url: ''};
     const currentUserId = useSelector(getCurrentUserId);
     const myChannels = useSelector(getMyChannels);
     const unreadChannelIds = useSelector(getUnreadChannelIds);

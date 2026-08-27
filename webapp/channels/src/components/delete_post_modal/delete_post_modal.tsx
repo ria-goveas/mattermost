@@ -4,7 +4,7 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {matchPath} from 'react-router-dom';
+import {matchPath, useLocation} from 'react-router-dom';
 
 import {Button} from '@mattermost/shared/components/button';
 import * as UserAgent from '@mattermost/shared/utils/user_agent';
@@ -36,7 +36,7 @@ type State = {
     show: boolean;
 };
 
-export default class DeletePostModal extends React.PureComponent<Props, State> {
+export class DeletePostModal extends React.PureComponent<Props, State> {
     deletePostBtn: React.RefObject<HTMLButtonElement>;
 
     constructor(props: Props) {
@@ -233,3 +233,13 @@ const SharedChannelPostDeleteWarning = ({post}: {post: Post}) => {
         />
     );
 };
+
+export default function DeletePostModalWithLocation(props: Omit<Props, 'location'> & {location?: Props['location']}) {
+    const locationFromRouter = useLocation();
+    return (
+        <DeletePostModal
+            {...props}
+            location={props.location ?? locationFromRouter}
+        />
+    );
+}

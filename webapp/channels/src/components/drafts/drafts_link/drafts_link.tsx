@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import React, {memo, useCallback, useEffect, useMemo, useRef} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {NavLink, useRouteMatch} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
 
@@ -22,6 +22,7 @@ import {makeGetDraftsCount} from 'selectors/drafts';
 import ChannelMentionBadge from 'components/sidebar/sidebar_channel/channel_mention_badge';
 
 import {SCHEDULED_POST_URL_SUFFIX} from 'utils/constants';
+import {useMatch} from 'utils/react_router_v6';
 
 import type {GlobalState} from 'types/store';
 
@@ -60,9 +61,10 @@ function DraftsLink() {
 
     const scheduledPostsHasError = useSelector((state: GlobalState) => hasScheduledPostError(state, teamId));
 
-    const {url} = useRouteMatch();
-    const isDraftUrlMatch = useRouteMatch('/:team/drafts');
-    const isScheduledPostUrlMatch = useRouteMatch('/:team/' + SCHEDULED_POST_URL_SUFFIX);
+    const match = useMatch();
+    const url = match?.url ?? '';
+    const isDraftUrlMatch = useMatch('/:team/drafts');
+    const isScheduledPostUrlMatch = useMatch('/:team/' + SCHEDULED_POST_URL_SUFFIX);
 
     const urlMatches = Boolean(isDraftUrlMatch || isScheduledPostUrlMatch);
 

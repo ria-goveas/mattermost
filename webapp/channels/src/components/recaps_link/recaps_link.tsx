@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import React from 'react';
 import {defineMessage, FormattedMessage, useIntl} from 'react-intl';
 import {shallowEqual, useSelector} from 'react-redux';
-import {Link, useLocation, matchPath, useRouteMatch} from 'react-router-dom';
+import {Link, useLocation, matchPath} from 'react-router-dom';
 
 import {AlertOutlineIcon, CreationOutlineIcon} from '@mattermost/compass-icons/components';
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
@@ -17,6 +17,8 @@ import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import useGetFeatureFlagValue from 'components/common/hooks/useGetFeatureFlagValue';
 import ChannelMentionBadge from 'components/sidebar/sidebar_channel/channel_mention_badge';
 
+import {useMatch} from 'utils/react_router_v6';
+
 import './recaps_link.scss';
 
 const failedTooltip = defineMessage({
@@ -26,7 +28,7 @@ const failedTooltip = defineMessage({
 
 const RecapsLink = () => {
     const {formatMessage} = useIntl();
-    const {url} = useRouteMatch();
+    const {url} = useMatch() ?? {url: ''};
     const {pathname} = useLocation();
     const currentTeamId = useSelector(getCurrentTeamId);
     const currentUserId = useSelector(getCurrentUserId);
