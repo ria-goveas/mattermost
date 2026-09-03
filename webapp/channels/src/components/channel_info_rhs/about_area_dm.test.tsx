@@ -222,5 +222,4 @@ describe('channel_info_rhs/about_area_dm', () => {
 
         expect(screen.getByText('my bot description')).toBeInTheDocument();
     });
-
 });
