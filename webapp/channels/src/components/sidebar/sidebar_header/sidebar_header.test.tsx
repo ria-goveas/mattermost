@@ -5,7 +5,7 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
@@ -156,7 +156,9 @@ describe('SidebarHeader', () => {
         await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
         await userEvent.click(screen.getByRole('menuitem', {name: /Browse channels/i}));
 
-        expect(props.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(props.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        });
         expect(props.showNewChannelModal).not.toHaveBeenCalled();
     });
 
@@ -171,7 +173,9 @@ describe('SidebarHeader', () => {
         await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
         await userEvent.click(screen.getByRole('menuitem', {name: /Create new channel/i}));
 
-        expect(props.showNewChannelModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(props.showNewChannelModal).toHaveBeenCalledTimes(1);
+        });
         expect(props.showMoreChannelsModal).not.toHaveBeenCalled();
     });
 
