@@ -31,6 +31,7 @@ const ChannelHeaderTitleFavorite = () => {
         if (!channel) {
             return;
         }
+        // Always pass channel.id — favoriteChannel('') / unfavoriteChannel('') is a no-op.
         if (isFavorite) {
             dispatch(unfavoriteChannel(channel.id));
         } else {
