@@ -120,6 +120,12 @@ describe('components/sidebar', () => {
         const channel1 = TestHelper.getChannelMock({id: 'channel1', team_id: currentTeam.id});
         const channel2 = TestHelper.getChannelMock({id: 'channel2', team_id: currentTeam.id});
 
+        beforeAll(async () => {
+            // sidebar_list lazy-loads UnreadChannels with a null Suspense fallback.
+            // Preload the chunk so the UNREADS header is not missing under CI shard load.
+            await import('./unread_channels');
+        });
+
         const baseState: DeepPartial<GlobalState> = {
             entities: {
                 channels: {
@@ -226,9 +232,7 @@ describe('components/sidebar', () => {
                 mergeObjects(baseState, testState),
             );
 
-            await waitFor(() => {
-                expect(screen.queryByText('UNREADS')).toBeInTheDocument();
-            });
+            expect(await screen.findByText('UNREADS')).toBeInTheDocument();
         });
 
         test('should not render unreads category when there are no unread channels', async () => {
@@ -273,9 +277,7 @@ describe('components/sidebar', () => {
                 mergeObjects(baseState, testState),
             );
 
-            await waitFor(() => {
-                expect(screen.queryByText('UNREADS')).toBeInTheDocument();
-            });
+            expect(await screen.findByText('UNREADS')).toBeInTheDocument();
         });
     });
 
