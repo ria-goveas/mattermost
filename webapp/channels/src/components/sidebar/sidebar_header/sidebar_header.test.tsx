@@ -5,13 +5,36 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
 
 import SidebarHeader from './sidebar_header';
 import type {Props} from './sidebar_header';
+
+async function openBrowseOrAddChannelMenu() {
+    await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
+    await screen.findByRole('menuitem', {name: /Browse channels/i});
+}
+
+function freshHandlers(): Pick<Props,
+'handleOpenDirectMessagesModal' |
+'invitePeopleModal' |
+'showCreateCategoryModal' |
+'showCreateUserGroupModal' |
+'showMoreChannelsModal' |
+'showNewChannelModal'
+> {
+    return {
+        handleOpenDirectMessagesModal: jest.fn(),
+        invitePeopleModal: jest.fn(),
+        showCreateCategoryModal: jest.fn(),
+        showCreateUserGroupModal: jest.fn(),
+        showMoreChannelsModal: jest.fn(),
+        showNewChannelModal: jest.fn(),
+    };
+}
 
 describe('SidebarHeader', () => {
     const defaultProps: Props = {
@@ -143,6 +166,94 @@ describe('SidebarHeader', () => {
         renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
 
         expect(screen.getByRole('button', {name: /Browse or create channels/i})).toBeInTheDocument();
+    });
+
+    test('should call showMoreChannelsModal when Browse channels is clicked', async () => {
+        const handlers = freshHandlers();
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                {...handlers}
+            />,
+            initialState,
+        );
+
+        await openBrowseOrAddChannelMenu();
+        await userEvent.click(screen.getByRole('menuitem', {name: /Browse channels/i}));
+
+        // Menu.Item defers onClick until after the close animation.
+        await waitFor(() => {
+            expect(handlers.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        });
+        expect(handlers.showNewChannelModal).not.toHaveBeenCalled();
+        expect(handlers.handleOpenDirectMessagesModal).not.toHaveBeenCalled();
+        expect(handlers.showCreateUserGroupModal).not.toHaveBeenCalled();
+        expect(handlers.showCreateCategoryModal).not.toHaveBeenCalled();
+        expect(handlers.invitePeopleModal).not.toHaveBeenCalled();
+    });
+
+    test('should call showNewChannelModal when Create new channel is clicked', async () => {
+        const handlers = freshHandlers();
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                {...handlers}
+            />,
+            initialState,
+        );
+
+        await openBrowseOrAddChannelMenu();
+        await userEvent.click(screen.getByRole('menuitem', {name: /Create new channel/i}));
+
+        await waitFor(() => {
+            expect(handlers.showNewChannelModal).toHaveBeenCalledTimes(1);
+        });
+        expect(handlers.showMoreChannelsModal).not.toHaveBeenCalled();
+        expect(handlers.handleOpenDirectMessagesModal).not.toHaveBeenCalled();
+        expect(handlers.showCreateUserGroupModal).not.toHaveBeenCalled();
+        expect(handlers.showCreateCategoryModal).not.toHaveBeenCalled();
+        expect(handlers.invitePeopleModal).not.toHaveBeenCalled();
+    });
+
+    test('should leave other + menu items wired to their own handlers', async () => {
+        const handlers = freshHandlers();
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                {...handlers}
+                unreadFilterEnabled={false}
+            />,
+            initialState,
+        );
+
+        await openBrowseOrAddChannelMenu();
+        await userEvent.click(screen.getByRole('menuitem', {name: /Open a direct message/i}));
+        await waitFor(() => {
+            expect(handlers.handleOpenDirectMessagesModal).toHaveBeenCalledTimes(1);
+        });
+        expect(handlers.showMoreChannelsModal).not.toHaveBeenCalled();
+        expect(handlers.showNewChannelModal).not.toHaveBeenCalled();
+
+        await openBrowseOrAddChannelMenu();
+        await userEvent.click(screen.getByRole('menuitem', {name: /Create new user group/i}));
+        await waitFor(() => {
+            expect(handlers.showCreateUserGroupModal).toHaveBeenCalledTimes(1);
+        });
+
+        await openBrowseOrAddChannelMenu();
+        await userEvent.click(screen.getByRole('menuitem', {name: /Create new category/i}));
+        await waitFor(() => {
+            expect(handlers.showCreateCategoryModal).toHaveBeenCalledTimes(1);
+        });
+
+        await openBrowseOrAddChannelMenu();
+        await userEvent.click(screen.getByRole('menuitem', {name: /Invite people/i}));
+        await waitFor(() => {
+            expect(handlers.invitePeopleModal).toHaveBeenCalledTimes(1);
+        });
+
+        expect(handlers.showMoreChannelsModal).not.toHaveBeenCalled();
+        expect(handlers.showNewChannelModal).not.toHaveBeenCalled();
     });
 
     test('should not render anything when team is empty', () => {
