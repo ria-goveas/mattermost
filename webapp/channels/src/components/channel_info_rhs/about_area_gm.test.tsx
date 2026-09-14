@@ -157,5 +157,4 @@ describe('channel_info_rhs/about_area_gm', () => {
 
         expect(screen.getByText('my username')).toBeInTheDocument();
     });
-
 });
