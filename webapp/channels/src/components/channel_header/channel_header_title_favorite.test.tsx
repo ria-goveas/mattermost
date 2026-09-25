@@ -78,6 +78,10 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        // favoriteChannel('') is a silent no-op; the action must receive the current channel id.
+        expect(favoriteChannel).toHaveBeenCalledTimes(1);
+        expect(favoriteChannel).toHaveBeenCalledWith(activeChannel.id);
+        expect(favoriteChannel).not.toHaveBeenCalledWith('');
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'FAVORITE_CHANNEL',
@@ -100,6 +104,9 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: REMOVE_FROM_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(unfavoriteChannel).toHaveBeenCalledTimes(1);
+        expect(unfavoriteChannel).toHaveBeenCalledWith(activeChannel.id);
+        expect(unfavoriteChannel).not.toHaveBeenCalledWith('');
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'UNFAVORITE_CHANNEL',
@@ -220,6 +227,7 @@ describe('ChannelHeaderTitleFavorite Component', () => {
             await userEvent.click(button);
         });
 
+        expect(favoriteChannel).toHaveBeenCalledWith(activeChannel.id);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'FAVORITE_CHANNEL',
             data: activeChannel.id,
