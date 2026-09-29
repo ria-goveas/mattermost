@@ -28,7 +28,7 @@ const ChannelHeaderTitleFavorite = () => {
 
     const toggleFavoriteCallback = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        if (!channel) {
+        if (!channel?.id) {
             return;
         }
         if (isFavorite) {
