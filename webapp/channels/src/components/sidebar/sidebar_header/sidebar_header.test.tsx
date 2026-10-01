@@ -164,8 +164,16 @@ describe('SidebarHeader', () => {
     });
 
     test('should not render anything when team is empty', () => {
-        const state = {...initialState};
-        state.entities.teams.currentTeamId = '';
+        const state = {
+            ...initialState,
+            entities: {
+                ...initialState.entities,
+                teams: {
+                    ...initialState.entities.teams,
+                    currentTeamId: '',
+                },
+            },
+        };
         renderWithContext(<SidebarHeader {...defaultProps}/>, state);
 
         expect(screen.queryByRole('button', {name: team.display_name})).toBeNull();
@@ -178,7 +186,9 @@ describe('SidebarHeader', () => {
         const user = await openBrowseOrAddMenu();
         await user.click(screen.getByRole('menuitem', {name: /browse channels/i}));
 
-        expect(defaultProps.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(defaultProps.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        });
         expect(defaultProps.showNewChannelModal).not.toHaveBeenCalled();
     });
 
@@ -188,7 +198,9 @@ describe('SidebarHeader', () => {
         const user = await openBrowseOrAddMenu();
         await user.click(screen.getByRole('menuitem', {name: /create new channel/i}));
 
-        expect(defaultProps.showNewChannelModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(defaultProps.showNewChannelModal).toHaveBeenCalledTimes(1);
+        });
         expect(defaultProps.showMoreChannelsModal).not.toHaveBeenCalled();
     });
 
@@ -199,19 +211,27 @@ describe('SidebarHeader', () => {
 
         await openBrowseOrAddMenu(user);
         await user.click(screen.getByRole('menuitem', {name: /open a direct message/i}));
-        expect(defaultProps.handleOpenDirectMessagesModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(defaultProps.handleOpenDirectMessagesModal).toHaveBeenCalledTimes(1);
+        });
 
         await openBrowseOrAddMenu(user);
         await user.click(screen.getByRole('menuitem', {name: /create new user group/i}));
-        expect(defaultProps.showCreateUserGroupModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(defaultProps.showCreateUserGroupModal).toHaveBeenCalledTimes(1);
+        });
 
         await openBrowseOrAddMenu(user);
         await user.click(screen.getByRole('menuitem', {name: /create new category/i}));
-        expect(defaultProps.showCreateCategoryModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(defaultProps.showCreateCategoryModal).toHaveBeenCalledTimes(1);
+        });
 
         await openBrowseOrAddMenu(user);
         await user.click(screen.getByRole('menuitem', {name: /invite people/i}));
-        expect(defaultProps.invitePeopleModal).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(defaultProps.invitePeopleModal).toHaveBeenCalledTimes(1);
+        });
 
         expect(defaultProps.showMoreChannelsModal).not.toHaveBeenCalled();
         expect(defaultProps.showNewChannelModal).not.toHaveBeenCalled();
