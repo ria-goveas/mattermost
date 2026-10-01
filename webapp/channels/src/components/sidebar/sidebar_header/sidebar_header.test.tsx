@@ -5,7 +5,7 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor, within} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
@@ -22,10 +22,28 @@ describe('SidebarHeader', () => {
         canCreateChannel: true,
         canJoinPublicChannel: true,
         handleOpenDirectMessagesModal: jest.fn(),
-        unreadFilterEnabled: true,
+        unreadFilterEnabled: false,
         showCreateUserGroupModal: jest.fn(),
         canCreateCustomGroups: true,
     };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    async function openBrowseOrAddMenu(user = userEvent.setup()) {
+        await user.click(screen.getByRole('button', {name: /Browse or create channels/i}));
+        await screen.findByRole('menu');
+
+        const portal = document.getElementById('root-portal');
+        if (portal) {
+            await waitFor(() => {
+                expect(within(portal).queryByRole('tooltip', {hidden: true})).not.toBeInTheDocument();
+            });
+        }
+
+        return user;
+    }
 
     const team = TestHelper.getTeamMock({
         display_name: 'Steadfast',
@@ -152,5 +170,50 @@ describe('SidebarHeader', () => {
 
         expect(screen.queryByRole('button', {name: team.display_name})).toBeNull();
         expect(screen.queryByRole('button', {name: /Add Channel Dropdown/i})).toBeNull();
+    });
+
+    test('should invoke showMoreChannelsModal when Browse channels is clicked', async () => {
+        renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
+
+        const user = await openBrowseOrAddMenu();
+        await user.click(screen.getByRole('menuitem', {name: /browse channels/i}));
+
+        expect(defaultProps.showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        expect(defaultProps.showNewChannelModal).not.toHaveBeenCalled();
+    });
+
+    test('should invoke showNewChannelModal when Create new channel is clicked', async () => {
+        renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
+
+        const user = await openBrowseOrAddMenu();
+        await user.click(screen.getByRole('menuitem', {name: /create new channel/i}));
+
+        expect(defaultProps.showNewChannelModal).toHaveBeenCalledTimes(1);
+        expect(defaultProps.showMoreChannelsModal).not.toHaveBeenCalled();
+    });
+
+    test('should keep other + menu items on their own handlers', async () => {
+        renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
+
+        const user = userEvent.setup();
+
+        await openBrowseOrAddMenu(user);
+        await user.click(screen.getByRole('menuitem', {name: /open a direct message/i}));
+        expect(defaultProps.handleOpenDirectMessagesModal).toHaveBeenCalledTimes(1);
+
+        await openBrowseOrAddMenu(user);
+        await user.click(screen.getByRole('menuitem', {name: /create new user group/i}));
+        expect(defaultProps.showCreateUserGroupModal).toHaveBeenCalledTimes(1);
+
+        await openBrowseOrAddMenu(user);
+        await user.click(screen.getByRole('menuitem', {name: /create new category/i}));
+        expect(defaultProps.showCreateCategoryModal).toHaveBeenCalledTimes(1);
+
+        await openBrowseOrAddMenu(user);
+        await user.click(screen.getByRole('menuitem', {name: /invite people/i}));
+        expect(defaultProps.invitePeopleModal).toHaveBeenCalledTimes(1);
+
+        expect(defaultProps.showMoreChannelsModal).not.toHaveBeenCalled();
+        expect(defaultProps.showNewChannelModal).not.toHaveBeenCalled();
     });
 });

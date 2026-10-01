@@ -39,6 +39,8 @@ const SidebarHeader = (props: Props) => {
                     canCreateChannel={props.canCreateChannel}
                     onCreateNewChannelClick={props.showNewChannelModal}
                     canJoinPublicChannel={props.canJoinPublicChannel}
+
+                    // Browse and create must stay on distinct modals; swapping these is a user-visible bug.
                     onBrowseChannelClick={props.showMoreChannelsModal}
                     onOpenDirectMessageClick={props.handleOpenDirectMessagesModal}
                     canCreateCustomGroups={props.canCreateCustomGroups}
