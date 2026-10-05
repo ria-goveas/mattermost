@@ -5,7 +5,7 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
@@ -143,6 +143,50 @@ describe('SidebarHeader', () => {
         renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
 
         expect(screen.getByRole('button', {name: /Browse or create channels/i})).toBeInTheDocument();
+    });
+
+    test('should open the browse channels modal from the add channels menu', async () => {
+        const showMoreChannelsModal = jest.fn();
+        const showNewChannelModal = jest.fn();
+
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                showMoreChannelsModal={showMoreChannelsModal}
+                showNewChannelModal={showNewChannelModal}
+            />,
+            initialState,
+        );
+
+        await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
+        await userEvent.click(await screen.findByRole('menuitem', {name: 'Browse channels'}));
+
+        await waitFor(() => {
+            expect(showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        });
+        expect(showNewChannelModal).not.toHaveBeenCalled();
+    });
+
+    test('should open the create channel modal from the add channels menu', async () => {
+        const showMoreChannelsModal = jest.fn();
+        const showNewChannelModal = jest.fn();
+
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                showMoreChannelsModal={showMoreChannelsModal}
+                showNewChannelModal={showNewChannelModal}
+            />,
+            initialState,
+        );
+
+        await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
+        await userEvent.click(await screen.findByRole('menuitem', {name: 'Create new channel'}));
+
+        await waitFor(() => {
+            expect(showNewChannelModal).toHaveBeenCalledTimes(1);
+        });
+        expect(showMoreChannelsModal).not.toHaveBeenCalled();
     });
 
     test('should not render anything when team is empty', () => {

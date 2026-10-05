@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
@@ -26,6 +26,15 @@ export type Props = {
 
 const SidebarHeader = (props: Props) => {
     const currentTeam = useSelector(getCurrentTeam);
+    const {showNewChannelModal, showMoreChannelsModal} = props;
+
+    const handleCreateNewChannelClick = useCallback(() => {
+        showNewChannelModal();
+    }, [showNewChannelModal]);
+
+    const handleBrowseChannelClick = useCallback(() => {
+        showMoreChannelsModal();
+    }, [showMoreChannelsModal]);
 
     if (!currentTeam) {
         return null;
@@ -37,9 +46,9 @@ const SidebarHeader = (props: Props) => {
             {(props.canCreateChannel || props.canJoinPublicChannel) && (
                 <SidebarBrowseOrAddChannelMenu
                     canCreateChannel={props.canCreateChannel}
-                    onCreateNewChannelClick={props.showNewChannelModal}
+                    onCreateNewChannelClick={handleCreateNewChannelClick}
                     canJoinPublicChannel={props.canJoinPublicChannel}
-                    onBrowseChannelClick={props.showMoreChannelsModal}
+                    onBrowseChannelClick={handleBrowseChannelClick}
                     onOpenDirectMessageClick={props.handleOpenDirectMessagesModal}
                     canCreateCustomGroups={props.canCreateCustomGroups}
                     onCreateNewUserGroupClick={props.showCreateUserGroupModal}
