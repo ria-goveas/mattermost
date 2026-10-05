@@ -5,7 +5,7 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
@@ -14,18 +14,38 @@ import SidebarHeader from './sidebar_header';
 import type {Props} from './sidebar_header';
 
 describe('SidebarHeader', () => {
-    const defaultProps: Props = {
-        showNewChannelModal: jest.fn(),
-        showMoreChannelsModal: jest.fn(),
-        invitePeopleModal: jest.fn(),
-        showCreateCategoryModal: jest.fn(),
-        canCreateChannel: true,
-        canJoinPublicChannel: true,
-        handleOpenDirectMessagesModal: jest.fn(),
-        unreadFilterEnabled: true,
-        showCreateUserGroupModal: jest.fn(),
-        canCreateCustomGroups: true,
-    };
+    function createProps(overrides: Partial<Props> = {}) {
+        const showNewChannelModal = jest.fn();
+        const showMoreChannelsModal = jest.fn();
+        const invitePeopleModal = jest.fn();
+        const showCreateCategoryModal = jest.fn();
+        const handleOpenDirectMessagesModal = jest.fn();
+        const showCreateUserGroupModal = jest.fn();
+
+        const props: Props = {
+            showNewChannelModal,
+            showMoreChannelsModal,
+            invitePeopleModal,
+            showCreateCategoryModal,
+            canCreateChannel: true,
+            canJoinPublicChannel: true,
+            handleOpenDirectMessagesModal,
+            unreadFilterEnabled: true,
+            showCreateUserGroupModal,
+            canCreateCustomGroups: true,
+            ...overrides,
+        };
+
+        return {
+            props,
+            showNewChannelModal,
+            showMoreChannelsModal,
+            invitePeopleModal,
+            showCreateCategoryModal,
+            handleOpenDirectMessagesModal,
+            showCreateUserGroupModal,
+        };
+    }
 
     const team = TestHelper.getTeamMock({
         display_name: 'Steadfast',
@@ -132,25 +152,103 @@ describe('SidebarHeader', () => {
         },
     };
 
+    const plusMenuButton = {name: /Browse or create channels/i};
+
+    async function clickPlusMenuItem(name: string | RegExp) {
+        await userEvent.click(screen.getByRole('button', plusMenuButton));
+        const item = await screen.findByRole('menuitem', {name});
+        await userEvent.click(item);
+    }
+
     test('should render the team menu button', () => {
-        renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
+        const {props} = createProps();
+        renderWithContext(<SidebarHeader {...props}/>, initialState);
 
         expect(screen.getByText('Steadfast')).toBeInTheDocument();
         expect(screen.getByRole('button', {name: team.display_name})).toBeInTheDocument();
     });
 
     test('should render the \'Browse or create channels\' menu button', () => {
-        renderWithContext(<SidebarHeader {...defaultProps}/>, initialState);
+        const {props} = createProps();
+        renderWithContext(<SidebarHeader {...props}/>, initialState);
 
-        expect(screen.getByRole('button', {name: /Browse or create channels/i})).toBeInTheDocument();
+        expect(screen.getByRole('button', plusMenuButton)).toBeInTheDocument();
     });
 
     test('should not render anything when team is empty', () => {
-        const state = {...initialState};
-        state.entities.teams.currentTeamId = '';
-        renderWithContext(<SidebarHeader {...defaultProps}/>, state);
+        const {props} = createProps();
+        const state = {
+            ...initialState,
+            entities: {
+                ...initialState.entities,
+                teams: {
+                    ...initialState.entities.teams,
+                    currentTeamId: '',
+                },
+            },
+        };
+        renderWithContext(<SidebarHeader {...props}/>, state);
 
         expect(screen.queryByRole('button', {name: team.display_name})).toBeNull();
-        expect(screen.queryByRole('button', {name: /Add Channel Dropdown/i})).toBeNull();
+        expect(screen.queryByRole('button', plusMenuButton)).toBeNull();
+    });
+
+    test('clicking Browse channels opens the browse channels modal', async () => {
+        const {props, showMoreChannelsModal, showNewChannelModal} = createProps();
+        renderWithContext(<SidebarHeader {...props}/>, initialState);
+
+        await clickPlusMenuItem(/^Browse channels$/);
+
+        await waitFor(() => {
+            expect(showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        });
+        expect(showNewChannelModal).not.toHaveBeenCalled();
+    });
+
+    test('clicking Create new channel opens the create channel modal', async () => {
+        const {props, showMoreChannelsModal, showNewChannelModal} = createProps();
+        renderWithContext(<SidebarHeader {...props}/>, initialState);
+
+        await clickPlusMenuItem(/^Create new channel$/);
+
+        await waitFor(() => {
+            expect(showNewChannelModal).toHaveBeenCalledTimes(1);
+        });
+        expect(showMoreChannelsModal).not.toHaveBeenCalled();
+    });
+
+    test.each([
+        {
+            label: 'direct message',
+            itemName: /^Open a direct message$/,
+            handler: 'handleOpenDirectMessagesModal' as const,
+        },
+        {
+            label: 'user group',
+            itemName: /^Create new user group$/,
+            handler: 'showCreateUserGroupModal' as const,
+        },
+        {
+            label: 'category',
+            itemName: /^Create new category$/,
+            handler: 'showCreateCategoryModal' as const,
+            overrides: {unreadFilterEnabled: false},
+        },
+        {
+            label: 'invite',
+            itemName: /Invite people/,
+            handler: 'invitePeopleModal' as const,
+        },
+    ])('$label keeps its own + menu handler', async ({itemName, handler, overrides}) => {
+        const actions = createProps(overrides);
+        renderWithContext(<SidebarHeader {...actions.props}/>, initialState);
+
+        await clickPlusMenuItem(itemName);
+
+        await waitFor(() => {
+            expect(actions[handler]).toHaveBeenCalledTimes(1);
+        });
+        expect(actions.showMoreChannelsModal).not.toHaveBeenCalled();
+        expect(actions.showNewChannelModal).not.toHaveBeenCalled();
     });
 });

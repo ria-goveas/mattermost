@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
@@ -24,8 +24,44 @@ export type Props = {
     canCreateCustomGroups: boolean;
 };
 
-const SidebarHeader = (props: Props) => {
+const SidebarHeader = ({
+    showNewChannelModal,
+    showMoreChannelsModal,
+    showCreateUserGroupModal,
+    invitePeopleModal,
+    showCreateCategoryModal,
+    canCreateChannel,
+    canJoinPublicChannel,
+    handleOpenDirectMessagesModal,
+    unreadFilterEnabled,
+    canCreateCustomGroups,
+}: Props) => {
     const currentTeam = useSelector(getCurrentTeam);
+
+    const onCreateNewChannelClick = useCallback(() => {
+        showNewChannelModal();
+    }, [showNewChannelModal]);
+
+    // Browse channels must open the browse modal, never the create-channel modal.
+    const onBrowseChannelClick = useCallback(() => {
+        showMoreChannelsModal();
+    }, [showMoreChannelsModal]);
+
+    const onOpenDirectMessageClick = useCallback(() => {
+        handleOpenDirectMessagesModal();
+    }, [handleOpenDirectMessagesModal]);
+
+    const onCreateNewUserGroupClick = useCallback(() => {
+        showCreateUserGroupModal();
+    }, [showCreateUserGroupModal]);
+
+    const onCreateNewCategoryClick = useCallback(() => {
+        showCreateCategoryModal();
+    }, [showCreateCategoryModal]);
+
+    const onInvitePeopleClick = useCallback(() => {
+        invitePeopleModal();
+    }, [invitePeopleModal]);
 
     if (!currentTeam) {
         return null;
@@ -34,18 +70,18 @@ const SidebarHeader = (props: Props) => {
     return (
         <div className='sidebarHeaderContainer'>
             <SidebarTeamMenu currentTeam={currentTeam}/>
-            {(props.canCreateChannel || props.canJoinPublicChannel) && (
+            {(canCreateChannel || canJoinPublicChannel) && (
                 <SidebarBrowseOrAddChannelMenu
-                    canCreateChannel={props.canCreateChannel}
-                    onCreateNewChannelClick={props.showNewChannelModal}
-                    canJoinPublicChannel={props.canJoinPublicChannel}
-                    onBrowseChannelClick={props.showMoreChannelsModal}
-                    onOpenDirectMessageClick={props.handleOpenDirectMessagesModal}
-                    canCreateCustomGroups={props.canCreateCustomGroups}
-                    onCreateNewUserGroupClick={props.showCreateUserGroupModal}
-                    unreadFilterEnabled={props.unreadFilterEnabled}
-                    onCreateNewCategoryClick={props.showCreateCategoryModal}
-                    onInvitePeopleClick={props.invitePeopleModal}
+                    canCreateChannel={canCreateChannel}
+                    onCreateNewChannelClick={onCreateNewChannelClick}
+                    canJoinPublicChannel={canJoinPublicChannel}
+                    onBrowseChannelClick={onBrowseChannelClick}
+                    onOpenDirectMessageClick={onOpenDirectMessageClick}
+                    canCreateCustomGroups={canCreateCustomGroups}
+                    onCreateNewUserGroupClick={onCreateNewUserGroupClick}
+                    unreadFilterEnabled={unreadFilterEnabled}
+                    onCreateNewCategoryClick={onCreateNewCategoryClick}
+                    onInvitePeopleClick={onInvitePeopleClick}
                 />
             )}
         </div>
