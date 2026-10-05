@@ -339,4 +339,100 @@ describe('components/ChannelHeader', () => {
         );
         expect(container).toMatchSnapshot();
     });
+
+    test('shows the channel purpose under the channel name', () => {
+        const props = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose: 'Release notes and rollout plans',
+            }),
+        };
+
+        const {container, store} = renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const purpose = container.querySelector('.channel-header__purpose');
+        expect(purpose).not.toBeNull();
+        expect(purpose).toHaveTextContent('Release notes and rollout plans');
+        expect(container.querySelector('.channel-header--has-purpose')).not.toBeNull();
+
+        (purpose as HTMLElement).click();
+        expect(store.getState().views.rhs.rhsState).toBe(RHSStates.CHANNEL_INFO);
+    });
+
+    test('truncates a long channel purpose to a single line', () => {
+        const longPurpose = 'Coordinate release notes, rollout plans, and channel usage. '.repeat(5).slice(0, 250);
+        const props = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose: longPurpose,
+            }),
+        };
+
+        const {container} = renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const purpose = container.querySelector('.channel-header__purpose');
+        expect(purpose).not.toBeNull();
+        expect(purpose).toHaveClass('channel-header__purpose');
+        expect(purpose).not.toHaveClass('channel-header__purpose--expanded');
+        expect(purpose).toHaveTextContent(longPurpose);
+    });
+
+    test('hides the purpose line when the purpose is empty', () => {
+        for (const purpose of ['', '   ']) {
+            const props = {
+                ...populatedProps,
+                channel: TestHelper.getChannelMock({
+                    ...populatedProps.channel,
+                    purpose,
+                }),
+            };
+
+            const {container} = renderWithContext(
+                <ChannelHeader {...props}/>,
+            );
+
+            expect(container.querySelector('.channel-header__purpose')).toBeNull();
+            expect(container.querySelector('.channel-header--has-purpose')).toBeNull();
+        }
+    });
+
+    test('does not show a purpose line for direct and group messages', () => {
+        const dmProps = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                type: Constants.DM_CHANNEL as ChannelType,
+                purpose: 'Direct message purpose',
+            }),
+            dmUser: TestHelper.getUserMock({
+                id: 'user_id',
+                is_bot: false,
+            }),
+        };
+        const {container: dmContainer} = renderWithContext(
+            <ChannelHeader {...dmProps}/>,
+        );
+        expect(dmContainer.querySelector('.channel-header__purpose')).toBeNull();
+        expect(dmContainer.querySelector('.channel-header--has-purpose')).toBeNull();
+
+        const gmProps = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                type: Constants.GM_CHANNEL as ChannelType,
+                purpose: 'Group message purpose',
+            }),
+        };
+        const {container: gmContainer} = renderWithContext(
+            <ChannelHeader {...gmProps}/>,
+        );
+        expect(gmContainer.querySelector('.channel-header__purpose')).toBeNull();
+        expect(gmContainer.querySelector('.channel-header--has-purpose')).toBeNull();
+    });
 });

@@ -13,6 +13,23 @@
     background: functions.v(center-channel-bg);
     font-size: 14px;
 
+    &.channel-header--has-purpose {
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        // Nested under __info so this beats the later height: 24px rule on __title.
+        .channel-header__info {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            .channel-header__title {
+                height: auto;
+                min-height: 24px;
+                align-items: center;
+            }
+        }
+    }
+
     #channelHeaderDropdownButton {
         display: flex;
     }
@@ -302,6 +319,15 @@
 
     .header-dropdown__icon {
         flex: 0 0 auto;
+    }
+
+    .channel-header__heading {
+        display: flex;
+        min-width: 0;
+        max-width: 60%;
+        flex: 0 1 auto;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .channel-header__title {
@@ -786,6 +812,56 @@
             }
         }
     }
+}
+
+.channel-header__purpose {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    background: transparent;
+    color: rgba(var(--center-channel-color-rgb), 0.75);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover,
+    &:focus-visible {
+        color: var(--center-channel-color);
+    }
+
+    &--expanded {
+        overflow: visible;
+        text-overflow: unset;
+        white-space: normal;
+    }
+}
+
+.navbar-brand__channel {
+    display: flex;
+    min-width: 0;
+    max-width: 100%;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 20px;
+}
+
+// Wins over #navbar_wrapper .navbar-default .navbar-brand {height: 50px; overflow: hidden}.
+#navbar_wrapper #navbar.navbar-default .navbar-brand:has(.channel-header__purpose--expanded) {
+    overflow: visible;
+    height: auto;
+    min-height: 50px;
+    line-height: normal;
 }
 
 .channel-header__navbar {

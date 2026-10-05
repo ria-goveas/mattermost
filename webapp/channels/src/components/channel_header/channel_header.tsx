@@ -2,12 +2,15 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React from 'react';
+import React, {useCallback} from 'react';
 import type {MouseEvent, ReactNode, RefObject} from 'react';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import type {WrappedComponentProps} from 'react-intl';
+import {useDispatch} from 'react-redux';
 
 import {WithTooltip} from '@mattermost/shared/components/tooltip';
+
+import {showChannelInfo} from 'actions/views/rhs';
 
 import {getPopoutChannelTitle} from 'components/channel_popout/channel_popout';
 import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
@@ -35,6 +38,31 @@ import HeaderIconWrapper from './components/header_icon_wrapper';
 import type {PropsFromRedux} from './index';
 
 export type Props = WrappedComponentProps & PropsFromRedux;
+
+type ChannelHeaderPurposeProps = {
+    channelId: string;
+    purpose: string;
+};
+
+// Plain text only. Markdown stays in channel info so this line cannot wrap or inject links.
+const ChannelHeaderPurpose = ({channelId, purpose}: ChannelHeaderPurposeProps) => {
+    const dispatch = useDispatch();
+    const openChannelInfo = useCallback(() => {
+        dispatch(showChannelInfo(channelId));
+    }, [channelId, dispatch]);
+
+    return (
+        <WithTooltip title={purpose}>
+            <button
+                type='button'
+                className='channel-header__purpose'
+                onClick={openChannelInfo}
+            >
+                {purpose}
+            </button>
+        </WithTooltip>
+    );
+};
 
 class ChannelHeader extends React.PureComponent<Props> {
     toggleFavoriteRef: RefObject<HTMLButtonElement>;
@@ -248,6 +276,15 @@ class ChannelHeader extends React.PureComponent<Props> {
             }
         }
 
+        const channelPurpose = (!isDirect && !isGroup) ? (channel.purpose ?? '').trim() : '';
+        const channelTitle = (
+            <ChannelHeaderTitle
+                dmUser={dmUser}
+                gmMembers={gmMembers}
+                remoteNames={this.props.remoteNames}
+            />
+        );
+
         const channelFilesIconClass = classNames('channel-header__icon channel-header__icon--left btn btn-icon btn-xs ', {
             'channel-header__icon--active': rhsState === RHSStates.CHANNEL_FILES,
         });
@@ -366,7 +403,9 @@ class ChannelHeader extends React.PureComponent<Props> {
                 role='banner'
                 tabIndex={-1}
                 data-channelid={`${channel.id}`}
-                className='channel-header alt a11y__region'
+                className={classNames('channel-header alt a11y__region', {
+                    'channel-header--has-purpose': channelPurpose.length > 0,
+                })}
                 data-a11y-sort-order='8'
             >
                 <div className='flex-parent'>
@@ -378,11 +417,15 @@ class ChannelHeader extends React.PureComponent<Props> {
                             <div
                                 className='channel-header__title dropdown'
                             >
-                                <ChannelHeaderTitle
-                                    dmUser={dmUser}
-                                    gmMembers={gmMembers}
-                                    remoteNames={this.props.remoteNames}
-                                />
+                                {channelPurpose ? (
+                                    <div className='channel-header__heading'>
+                                        {channelTitle}
+                                        <ChannelHeaderPurpose
+                                            channelId={channel.id}
+                                            purpose={channelPurpose}
+                                        />
+                                    </div>
+                                ) : channelTitle}
                                 <div
                                     className='channel-header__icons'
                                 >
