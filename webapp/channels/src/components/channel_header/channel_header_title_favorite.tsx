@@ -26,15 +26,19 @@ const ChannelHeaderTitleFavorite = () => {
     const isInManagedCategory = useSelector((state: GlobalState) => (channel ? isChannelInManagedCategory(state, channel.id) : false));
     const favIconRef = useRef<HTMLButtonElement>(null);
 
-    const toggleFavoriteCallback = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleToggleFavorite = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        if (!channel) {
+
+        // A channel object can exist with id ''. Dispatching that id does not favorite the channel.
+        const channelId = channel?.id;
+        if (!channelId) {
             return;
         }
+
         if (isFavorite) {
-            dispatch(unfavoriteChannel(channel.id));
+            dispatch(unfavoriteChannel(channelId));
         } else {
-            dispatch(favoriteChannel(channel.id));
+            dispatch(favoriteChannel(channelId));
         }
         requestAnimationFrame(() => {
             if (favIconRef.current) {
@@ -91,7 +95,7 @@ const ChannelHeaderTitleFavorite = () => {
         >
             <button
                 id='toggleFavorite'
-                onClick={toggleFavoriteCallback}
+                onClick={handleToggleFavorite}
                 className={classNames('channel-header__favorites btn btn-icon btn-xs', {active: isFavorite, inactive: !isFavorite})}
                 aria-label={ariaLabel}
                 ref={favIconRef}
