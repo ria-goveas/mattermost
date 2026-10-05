@@ -5,7 +5,7 @@ import React from 'react';
 
 import {Permissions} from 'mattermost-redux/constants';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import {CloudProducts} from 'utils/constants';
 import {FileSizes} from 'utils/file_utils';
 import {TestHelper} from 'utils/test_helper';
@@ -146,11 +146,103 @@ describe('SidebarHeader', () => {
     });
 
     test('should not render anything when team is empty', () => {
-        const state = {...initialState};
-        state.entities.teams.currentTeamId = '';
+        const state = {
+            ...initialState,
+            entities: {
+                ...initialState.entities,
+                teams: {
+                    ...initialState.entities.teams,
+                    currentTeamId: '',
+                },
+            },
+        };
         renderWithContext(<SidebarHeader {...defaultProps}/>, state);
 
         expect(screen.queryByRole('button', {name: team.display_name})).toBeNull();
         expect(screen.queryByRole('button', {name: /Add Channel Dropdown/i})).toBeNull();
+    });
+
+    async function clickPlusMenuItem(name: RegExp) {
+        await userEvent.click(screen.getByRole('button', {name: /Browse or create channels/i}));
+        await userEvent.click(await screen.findByRole('menuitem', {name}));
+    }
+
+    test('clicking Browse channels calls showMoreChannelsModal', async () => {
+        const showMoreChannelsModal = jest.fn();
+        const showNewChannelModal = jest.fn();
+
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                showMoreChannelsModal={showMoreChannelsModal}
+                showNewChannelModal={showNewChannelModal}
+            />,
+            initialState,
+        );
+
+        await clickPlusMenuItem(/^Browse channels$/);
+
+        await waitFor(() => {
+            expect(showMoreChannelsModal).toHaveBeenCalledTimes(1);
+        });
+        expect(showNewChannelModal).not.toHaveBeenCalled();
+    });
+
+    test('clicking Create new channel calls showNewChannelModal', async () => {
+        const showMoreChannelsModal = jest.fn();
+        const showNewChannelModal = jest.fn();
+
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                showMoreChannelsModal={showMoreChannelsModal}
+                showNewChannelModal={showNewChannelModal}
+            />,
+            initialState,
+        );
+
+        await clickPlusMenuItem(/^Create new channel$/);
+
+        await waitFor(() => {
+            expect(showNewChannelModal).toHaveBeenCalledTimes(1);
+        });
+        expect(showMoreChannelsModal).not.toHaveBeenCalled();
+    });
+
+    test.each([
+        ['Open a direct message', 'handleOpenDirectMessagesModal'],
+        ['Create new user group', 'showCreateUserGroupModal'],
+        ['Create new category', 'showCreateCategoryModal'],
+        ['Invite people', 'invitePeopleModal'],
+    ] as const)('clicking %s calls only %s', async (label, handler) => {
+        const handlers = {
+            showNewChannelModal: jest.fn(),
+            showMoreChannelsModal: jest.fn(),
+            handleOpenDirectMessagesModal: jest.fn(),
+            showCreateUserGroupModal: jest.fn(),
+            showCreateCategoryModal: jest.fn(),
+            invitePeopleModal: jest.fn(),
+        };
+
+        renderWithContext(
+            <SidebarHeader
+                {...defaultProps}
+                {...handlers}
+                unreadFilterEnabled={false}
+            />,
+            initialState,
+        );
+
+        await clickPlusMenuItem(new RegExp('^' + label));
+
+        await waitFor(() => {
+            expect(handlers[handler]).toHaveBeenCalledTimes(1);
+        });
+
+        (Object.keys(handlers) as Array<keyof typeof handlers>).forEach((name) => {
+            if (name !== handler) {
+                expect(handlers[name]).not.toHaveBeenCalled();
+            }
+        });
     });
 });
