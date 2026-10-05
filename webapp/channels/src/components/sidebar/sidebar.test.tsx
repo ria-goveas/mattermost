@@ -8,13 +8,22 @@ import type {DeepPartial} from '@mattermost/types/utilities';
 import {Permissions, Preferences} from 'mattermost-redux/constants';
 
 import mergeObjects from 'packages/mattermost-redux/test/merge_objects';
-import {fireEvent, renderWithContext, screen, waitFor} from 'tests/react_testing_utils';
+import {fireEvent, renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
 import Constants, {ModalIdentifiers} from 'utils/constants';
 import {TestHelper} from 'utils/test_helper';
 
 import type {GlobalState} from 'types/store';
 
 import Sidebar from './sidebar';
+
+jest.mock('components/more_direct_channels', () => {
+    const React = require('react');
+
+    return {
+        __esModule: true,
+        default: () => React.createElement('div', null, 'Direct Messages'),
+    };
+});
 
 describe('components/sidebar', () => {
     const currentTeam = TestHelper.getTeamMock({
@@ -117,76 +126,84 @@ describe('components/sidebar', () => {
     describe('unreads category', () => {
         const currentUserId = 'current_user_id';
 
-        const channel1 = TestHelper.getChannelMock({id: 'channel1', team_id: currentTeam.id});
-        const channel2 = TestHelper.getChannelMock({id: 'channel2', team_id: currentTeam.id});
+        // SidebarList loads UnreadChannels with React.lazy. Preload it so the
+        // assertion is not racing the chunk (CI shard load makes that import
+        // slower than waitFor's default timeout, and the fallback is null).
+        beforeAll(() => import('./unread_channels'));
 
-        const baseState: DeepPartial<GlobalState> = {
-            entities: {
-                channels: {
-                    currentChannelId: channel1.id,
-                    channels: {
-                        channel1,
-                        channel2,
-                    },
-                    channelsInTeam: {
-                        [currentTeam.id]: new Set([channel1.id, channel2.id]),
-                    },
-                    messageCounts: {
-                        channel1: {total: 10},
-                        channel2: {total: 10},
-                    },
-                    myMembers: {
-                        channel1: TestHelper.getChannelMembershipMock({channel_id: channel1.id, user_id: currentUserId, msg_count: 10}),
-                        channel2: TestHelper.getChannelMembershipMock({channel_id: channel2.id, user_id: currentUserId, msg_count: 10}),
-                    },
-                },
-                teams: {
-                    currentTeamId: currentTeam.id,
-                    teams: {
-                        [currentTeam.id]: currentTeam,
-                    },
-                    myMembers: {
-                        [currentTeam.id]: {
-                            roles: 'team_user',
-                        },
-                    },
-                },
-                users: {
-                    currentUserId,
-                    profiles: {
-                        [currentUserId]: {
-                            id: currentUserId,
-                            roles: 'system_user system_admin',
-                        },
-                    },
-                },
-                roles: {
-                    roles: {
-                        system_admin: {
-                            permissions: [Permissions.MANAGE_TEAM],
-                        },
-                        system_user: {
-                            permissions: [],
-                        },
-                        team_user: {
-                            permissions: [],
-                        },
-                    },
-                },
-                general: {
-                    config: {},
-                },
-            },
-        };
+        function buildUnreadState(channel2Unread: boolean) {
+            const channel1 = TestHelper.getChannelMock({id: 'channel1', team_id: currentTeam.id});
+            const channel2 = TestHelper.getChannelMock({id: 'channel2', team_id: currentTeam.id});
+            const channel2Count = channel2Unread ? 15 : 10;
 
-        test('should not render unreads category when disabled by user preference', async () => {
-            const testState = {
+            const state: DeepPartial<GlobalState> = {
                 entities: {
                     channels: {
+                        currentChannelId: channel1.id,
+                        channels: {
+                            channel1,
+                            channel2,
+                        },
+                        channelsInTeam: {
+                            [currentTeam.id]: new Set([channel1.id, channel2.id]),
+                        },
                         messageCounts: {
-                            [channel2.id]: {total: 15},
+                            channel1: {total: 10, root: 10},
+                            channel2: {total: channel2Count, root: channel2Count},
+                        },
+                        myMembers: {
+                            channel1: TestHelper.getChannelMembershipMock({channel_id: channel1.id, user_id: currentUserId, msg_count: 10, msg_count_root: 10}),
+                            channel2: TestHelper.getChannelMembershipMock({channel_id: channel2.id, user_id: currentUserId, msg_count: 10, msg_count_root: 10}),
                         },
                     },
+                    teams: {
+                        currentTeamId: currentTeam.id,
+                        teams: {
+                            [currentTeam.id]: currentTeam,
+                        },
+                        myMembers: {
+                            [currentTeam.id]: {
+                                roles: 'team_user',
+                            },
+                        },
+                    },
+                    users: {
+                        currentUserId,
+                        profiles: {
+                            [currentUserId]: {
+                                id: currentUserId,
+                                roles: 'system_user system_admin',
+                            },
+                        },
+                    },
+                    roles: {
+                        roles: {
+                            system_admin: {
+                                permissions: [Permissions.MANAGE_TEAM],
+                            },
+                            system_user: {
+                                permissions: [],
+                            },
+                            team_user: {
+                                permissions: [],
+                            },
+                        },
+                    },
+                    general: {
+                        config: {
+                            CollapsedThreads: 'disabled',
+                        },
+                    },
+                },
+            };
+
+            return {state, channel1, channel2};
+        }
+
+        test('should not render unreads category when disabled by user preference', async () => {
+            const {state} = buildUnreadState(true);
+            const testState = {
+                entities: {
                     preferences: {
                         myPreferences: TestHelper.getPreferencesMock([
                             {category: Preferences.CATEGORY_SIDEBAR_SETTINGS, name: Preferences.SHOW_UNREAD_SECTION, value: 'false'},
@@ -197,7 +214,7 @@ describe('components/sidebar', () => {
 
             renderWithContext(
                 <Sidebar {...baseProps}/>,
-                mergeObjects(baseState, testState),
+                mergeObjects(state, testState),
             );
 
             await waitFor(() => {
@@ -206,13 +223,9 @@ describe('components/sidebar', () => {
         });
 
         test('should render unreads category when there are unread channels', async () => {
+            const {state} = buildUnreadState(true);
             const testState: DeepPartial<GlobalState> = {
                 entities: {
-                    channels: {
-                        messageCounts: {
-                            [channel2.id]: {total: 15},
-                        },
-                    },
                     preferences: {
                         myPreferences: TestHelper.getPreferencesMock([
                             {category: Preferences.CATEGORY_SIDEBAR_SETTINGS, name: Preferences.SHOW_UNREAD_SECTION, value: 'true'},
@@ -223,15 +236,14 @@ describe('components/sidebar', () => {
 
             renderWithContext(
                 <Sidebar {...baseProps}/>,
-                mergeObjects(baseState, testState),
+                mergeObjects(state, testState),
             );
 
-            await waitFor(() => {
-                expect(screen.queryByText('UNREADS')).toBeInTheDocument();
-            });
+            expect(await screen.findByText('UNREADS')).toBeInTheDocument();
         });
 
         test('should not render unreads category when there are no unread channels', async () => {
+            const {state} = buildUnreadState(false);
             const testState: DeepPartial<GlobalState> = {
                 entities: {
                     preferences: {
@@ -244,7 +256,7 @@ describe('components/sidebar', () => {
 
             renderWithContext(
                 <Sidebar {...baseProps}/>,
-                mergeObjects(baseState, testState),
+                mergeObjects(state, testState),
             );
 
             await waitFor(() => {
@@ -253,6 +265,7 @@ describe('components/sidebar', () => {
         });
 
         test('should render unreads category when there are no unread channels but the current channel was previously unread', async () => {
+            const {state, channel1} = buildUnreadState(false);
             const testState: DeepPartial<GlobalState> = {
                 entities: {
                     preferences: {
@@ -263,19 +276,17 @@ describe('components/sidebar', () => {
                 },
                 views: {
                     channel: {
-                        lastUnreadChannel: {id: channel1.id} as any,
+                        lastUnreadChannel: {id: channel1.id},
                     },
                 },
             };
 
             renderWithContext(
                 <Sidebar {...baseProps}/>,
-                mergeObjects(baseState, testState),
+                mergeObjects(state, testState),
             );
 
-            await waitFor(() => {
-                expect(screen.queryByText('UNREADS')).toBeInTheDocument();
-            });
+            expect(await screen.findByText('UNREADS')).toBeInTheDocument();
         });
     });
 
@@ -388,6 +399,99 @@ describe('components/sidebar', () => {
 
             // Should not call openModal
             expect(openModalSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('browse or add channel menu', () => {
+        async function clickPlusMenuItem(name: RegExp) {
+            await userEvent.click(screen.getByRole('button', {name: /browse or create channels/i}));
+            await userEvent.click(await screen.findByRole('menuitem', {name}));
+        }
+
+        function renderSidebar() {
+            const openModal = jest.fn();
+            const props = {
+                ...baseProps,
+                actions: {
+                    ...baseProps.actions,
+                    openModal,
+                },
+            };
+
+            renderWithContext(
+                <Sidebar {...props}/>,
+                initialState,
+            );
+
+            return {openModal};
+        }
+
+        function expectOpenedModal(openModal: jest.Mock, modalId: string, displayName: string) {
+            expect(openModal).toHaveBeenCalledTimes(1);
+            const modalData = openModal.mock.calls[0][0];
+            expect(modalData.modalId).toBe(modalId);
+            expect(modalData.dialogType.displayName).toBe(displayName);
+        }
+
+        test('Browse channels opens the browse channels modal', async () => {
+            const {openModal} = renderSidebar();
+
+            await clickPlusMenuItem(/^Browse channels$/);
+
+            await waitFor(() => {
+                expectOpenedModal(openModal, ModalIdentifiers.MORE_CHANNELS, 'BrowseChannels');
+            });
+        });
+
+        test('Create new channel opens the create channel modal', async () => {
+            const {openModal} = renderSidebar();
+
+            await clickPlusMenuItem(/^Create new channel$/);
+
+            await waitFor(() => {
+                expectOpenedModal(openModal, ModalIdentifiers.NEW_CHANNEL_MODAL, 'NewChannelModal');
+            });
+        });
+
+        test('Open a direct message does not open the channel modals', async () => {
+            const {openModal} = renderSidebar();
+
+            await clickPlusMenuItem(/^Open a direct message$/);
+
+            await waitFor(() => {
+                expect(screen.getByText('Direct Messages')).toBeInTheDocument();
+            });
+            expect(openModal).not.toHaveBeenCalled();
+        });
+
+        test('Create new user group opens the user group modal', async () => {
+            const {openModal} = renderSidebar();
+
+            await clickPlusMenuItem(/^Create new user group$/);
+
+            await waitFor(() => {
+                expectOpenedModal(openModal, ModalIdentifiers.USER_GROUPS_CREATE, 'CreateUserGroupsModal');
+            });
+        });
+
+        test('Create new category opens the category modal', async () => {
+            const {openModal} = renderSidebar();
+
+            await clickPlusMenuItem(/^Create new category$/);
+
+            await waitFor(() => {
+                expectOpenedModal(openModal, ModalIdentifiers.EDIT_CATEGORY, 'EditCategoryModal');
+            });
+        });
+
+        test('Invite people opens the invitation modal', async () => {
+            const {openModal} = renderSidebar();
+
+            await clickPlusMenuItem(/^Invite people/);
+
+            await waitFor(() => {
+                expectOpenedModal(openModal, ModalIdentifiers.INVITATION, 'InvitationModal');
+            });
         });
     });
 });
