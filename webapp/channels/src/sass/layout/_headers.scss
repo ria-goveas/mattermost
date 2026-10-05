@@ -328,6 +328,12 @@
         flex: 0 1 auto;
         flex-direction: column;
         justify-content: center;
+
+        // .channel-header__top is already capped at 60% of its parent. Inside this
+        // heading that parent is itself 60% of the title row, which squeezes the name.
+        .channel-header__top {
+            max-width: 100%;
+        }
     }
 
     .channel-header__title {
@@ -854,6 +860,16 @@
     flex-direction: column;
     justify-content: center;
     line-height: 20px;
+}
+
+// Mobile navbar sits on the sidebar bar, not the center channel background.
+#navbar_wrapper #navbar .channel-header__purpose {
+    color: rgba(var(--sidebar-header-text-color-rgb), 0.75);
+
+    &:hover,
+    &:focus-visible {
+        color: var(--sidebar-header-text-color);
+    }
 }
 
 // Wins over #navbar_wrapper .navbar-default .navbar-brand {height: 50px; overflow: hidden}.
