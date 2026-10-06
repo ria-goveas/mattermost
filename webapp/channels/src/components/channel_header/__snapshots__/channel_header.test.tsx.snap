@@ -207,6 +207,13 @@ exports[`components/ChannelHeader should render active channel files 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -291,6 +298,13 @@ exports[`components/ChannelHeader should render active flagged posts 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -375,6 +389,13 @@ exports[`components/ChannelHeader should render active mentions posts 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -459,6 +480,13 @@ exports[`components/ChannelHeader should render active pinned posts 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -543,6 +571,13 @@ exports[`components/ChannelHeader should render archived view 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -637,6 +672,13 @@ exports[`components/ChannelHeader should render correct menu when muted 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -721,6 +763,13 @@ exports[`components/ChannelHeader should render not active channel files 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -974,6 +1023,13 @@ exports[`components/ChannelHeader should render properly when empty 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -1058,6 +1114,13 @@ exports[`components/ChannelHeader should render properly when populated 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -1142,6 +1205,13 @@ exports[`components/ChannelHeader should render properly when populated with cha
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -1226,6 +1296,13 @@ exports[`components/ChannelHeader should render shared view 1`] = `
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"
@@ -1326,6 +1403,13 @@ exports[`components/ChannelHeader should render the pinned icon with the pinned 
                   class="icon icon-file-text-outline"
                 />
               </button>
+              <span
+                aria-label="Channel purpose: purpose"
+                class="channel-header__purpose channel-header__purpose--truncated"
+                tabindex="0"
+              >
+                purpose
+              </span>
             </div>
             <div
               class="channel-header__status"

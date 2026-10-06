@@ -2,11 +2,14 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import React, {useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
+import {FormattedMessage, useIntl} from 'react-intl';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
+
+import {Constants} from 'utils/constants';
 
 import ChannelInfoButton from './channel_info_button';
 import CollapseLhsButton from './collapse_lhs_button';
@@ -16,6 +19,59 @@ import UnmuteChannelButton from './unmute_channel_button';
 
 import ChannelHeaderMenu from '../channel_header_menu/channel_header_menu';
 import MobileChannelHeaderPlugins from '../channel_header_menu/menu_items/mobile_channel_header_plugins';
+
+type MobileChannelPurposeProps = {
+    channelId: string;
+    purpose: string;
+};
+
+function MobileChannelPurpose({channelId, purpose}: MobileChannelPurposeProps) {
+    const intl = useIntl();
+    const [expanded, setExpanded] = useState(false);
+    const [navbar, setNavbar] = useState<HTMLElement | null>(null);
+
+    useEffect(() => {
+        setNavbar(document.getElementById('navbar'));
+    }, []);
+
+    useEffect(() => {
+        setExpanded(false);
+    }, [channelId]);
+
+    const label = intl.formatMessage({
+        id: 'channel_header.channelPurpose',
+        defaultMessage: 'Channel purpose: {purpose}',
+    }, {purpose});
+
+    return (
+        <>
+            <button
+                type='button'
+                className='navbar-purpose'
+                aria-label={label}
+                aria-expanded={expanded}
+                aria-controls='navbarPurposeCard'
+                onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setExpanded((open) => !open);
+                }}
+            >
+                {purpose}
+            </button>
+            {expanded && navbar && createPortal((
+                <div
+                    id='navbarPurposeCard'
+                    className='navbar-purpose-card'
+                    role='region'
+                    aria-label={label}
+                >
+                    {purpose}
+                </div>
+            ), navbar)}
+        </>
+    );
+}
 
 type Props = {
     channel?: Channel;
@@ -60,6 +116,17 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
     render() {
         const {user, channel, isMuted, inGlobalThreads, inDrafts} = this.props;
 
+        let purpose = '';
+        if (
+            channel &&
+            !inGlobalThreads &&
+            !inDrafts &&
+            channel.type !== Constants.DM_CHANNEL &&
+            channel.type !== Constants.GM_CHANNEL
+        ) {
+            purpose = channel.purpose?.trim() ?? '';
+        }
+
         let heading;
         if (inGlobalThreads) {
             heading = (
@@ -78,9 +145,21 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
         } else if (channel) {
             heading = (
                 <>
-                    <ChannelHeaderMenu
-                        isMobile={true}
-                    />
+                    {purpose ? (
+                        <div className='navbar-brand__channel'>
+                            <ChannelHeaderMenu
+                                isMobile={true}
+                            />
+                            <MobileChannelPurpose
+                                channelId={channel.id}
+                                purpose={purpose}
+                            />
+                        </div>
+                    ) : (
+                        <ChannelHeaderMenu
+                            isMobile={true}
+                        />
+                    )}
 
                     {isMuted && (
                         <UnmuteChannelButton
