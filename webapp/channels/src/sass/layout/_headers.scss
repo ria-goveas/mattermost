@@ -230,6 +230,122 @@
         .channel__wrap & {
             display: none;
         }
+
+        .channel-header__mobile-heading {
+            position: relative;
+            display: flex;
+            overflow: hidden;
+            min-width: 0;
+            height: 50px;
+            flex: 1 1 auto;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 20px;
+
+            .heading {
+                line-height: 20px;
+            }
+
+            &:has(.channel-header__purpose--expanded) {
+                overflow: visible;
+            }
+        }
+    }
+}
+
+// Expanded copy leaves the 50px bar so the centered title stays put.
+// The 16px control is not positioned, so top: 100% is the bottom of that bar.
+#navbar_wrapper .navbar-default .navbar-brand:has(.channel-header__purpose--expanded) {
+    overflow: visible;
+}
+
+.channel-header__purpose {
+    overflow: hidden;
+    min-width: 0;
+    flex: 1 1 0%;
+    align-self: center;
+    padding: 0;
+    border: 0;
+    margin-right: 8px;
+    background: transparent;
+    color: rgba(var(--center-channel-color-rgb), 0.64);
+    cursor: default;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--truncated {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .channel-header__purpose-text {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    &--add {
+        display: inline-flex;
+        min-width: 0;
+        flex: 0 1 auto;
+        align-items: center;
+        cursor: pointer;
+        gap: 4px;
+
+        .icon {
+            flex: 0 0 auto;
+            font-size: 12px;
+        }
+
+        .channel-header__purpose-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: rgba(var(--center-channel-color-rgb), 0.88);
+        }
+    }
+
+    &--mobile {
+        width: 100%;
+        height: 16px;
+        flex: 0 0 16px;
+        margin-right: 0;
+        color: var(--sidebar-header-text-color);
+        cursor: pointer;
+    }
+
+    &--expanded {
+        overflow: visible;
+        height: 16px;
+        text-overflow: unset;
+        white-space: normal;
+
+        .channel-header__purpose-text {
+            position: absolute;
+            z-index: variables.$z-index-channel-header;
+            top: 100%;
+            right: 0;
+            left: 0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background: var(--center-channel-bg);
+            box-shadow: rgba(var(--center-channel-color-rgb), 0.24) 0 4px 12px;
+            color: rgba(var(--center-channel-color-rgb), 0.64);
+            text-overflow: unset;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
     }
 }
 
@@ -271,6 +387,8 @@
 
 .channel-header__info {
     padding: 4px 0;
+    container-name: channel-header;
+    container-type: inline-size;
     white-space: nowrap;
 
     .status-wrapper {
@@ -306,7 +424,9 @@
 
     .channel-header__title {
         display: flex;
+        min-width: 0;
         height: 24px;
+        flex-wrap: nowrap;
 
         .channel-header__favorites {
             flex: 0 0 auto;
@@ -329,11 +449,26 @@
 
     .channel-header__icons {
         display: flex;
+        flex-shrink: 0;
+        flex-wrap: nowrap;
         margin-right: 8px;
         gap: 4px;
 
         .btn-icon {
             margin: 0;
+        }
+    }
+
+    // Purpose takes leftover space (basis 0, so a long purpose does not squeeze the name), then hides.
+    @container channel-header (max-width: 460px) {
+        .channel-header__purpose:not(.channel-header__purpose--mobile) {
+            display: none;
+        }
+    }
+
+    .channel-header__title:has(.channel-header__purpose) {
+        .channel-header__status {
+            flex: 0 1 auto;
         }
     }
 

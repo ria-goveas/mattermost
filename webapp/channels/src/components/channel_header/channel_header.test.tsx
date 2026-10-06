@@ -6,8 +6,10 @@ import React from 'react';
 import type {ChannelType} from '@mattermost/types/channels';
 import type {UserCustomStatus} from '@mattermost/types/users';
 
-import {renderWithContext} from 'tests/react_testing_utils';
-import Constants, {RHSStates} from 'utils/constants';
+import EditChannelPurposeModal from 'components/edit_channel_purpose_modal';
+
+import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
+import Constants, {ModalIdentifiers, RHSStates} from 'utils/constants';
 import {TestHelper} from 'utils/test_helper';
 
 import ChannelHeader from './channel_header';
@@ -22,7 +24,9 @@ describe('components/ChannelHeader', () => {
             updateChannelNotifyProps: jest.fn(),
             showChannelMembers: jest.fn(),
             fetchChannelRemotes: jest.fn(),
+            openModal: jest.fn(),
         },
+        canEditChannelProperties: false,
         team: TestHelper.getTeamMock({id: 'team_id'}),
         channel: TestHelper.getChannelMock({}),
         channelMember: TestHelper.getChannelMembershipMock({}),
@@ -338,5 +342,91 @@ describe('components/ChannelHeader', () => {
             <ChannelHeader {...props}/>,
         );
         expect(container).toMatchSnapshot();
+    });
+
+    test('should render the channel purpose on one truncated line', () => {
+        const purpose = 'Weekly ops sync for site leads';
+        const props = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose,
+            }),
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const purposeEl = screen.getByRole('button', {name: `Channel purpose: ${purpose}`});
+        expect(purposeEl).toHaveClass('channel-header__purpose--truncated');
+        expect(purposeEl).toHaveTextContent(purpose);
+        expect(screen.queryByRole('button', {name: 'Add a channel purpose'})).not.toBeInTheDocument();
+    });
+
+    test('should show add purpose when it is empty and the user can edit', async () => {
+        const props = {
+            ...populatedProps,
+            canEditChannelProperties: true,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose: '',
+            }),
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const addButton = screen.getByRole('button', {name: 'Add a channel purpose'});
+        expect(addButton).toBeInTheDocument();
+        expect(addButton.querySelector('.icon-pencil-outline')).not.toBeNull();
+        expect(screen.queryByRole('button', {name: /Channel purpose:/})).not.toBeInTheDocument();
+
+        await userEvent.click(addButton);
+        expect(props.actions.openModal).toHaveBeenCalledWith({
+            modalId: ModalIdentifiers.EDIT_CHANNEL_PURPOSE,
+            dialogType: EditChannelPurposeModal,
+            dialogProps: {channel: props.channel},
+        });
+    });
+
+    test('should render nothing when the purpose is empty and the user cannot edit', () => {
+        const props = {
+            ...populatedProps,
+            canEditChannelProperties: false,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose: '',
+            }),
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        expect(screen.queryByRole('button', {name: 'Add a channel purpose'})).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', {name: /Channel purpose:/})).not.toBeInTheDocument();
+        expect(document.getElementById('channelHeaderPurpose')).toBeNull();
+        expect(document.getElementById('channelHeaderAddPurpose')).toBeNull();
+    });
+
+    test('should truncate a long channel purpose', () => {
+        const purpose = 'x'.repeat(250);
+        const props = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose,
+            }),
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const purposeEl = screen.getByRole('button', {name: `Channel purpose: ${purpose}`});
+        expect(purposeEl).toHaveClass('channel-header__purpose--truncated');
+        expect(purposeEl).toHaveTextContent(purpose);
     });
 });

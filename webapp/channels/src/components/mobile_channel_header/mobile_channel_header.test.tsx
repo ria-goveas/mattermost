@@ -3,15 +3,22 @@
 
 import React from 'react';
 
-import {renderWithContext, screen} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
 import {TestHelper} from 'utils/test_helper';
 
 import ChannelHeaderMobile from './mobile_channel_header';
 
 describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
-    global.document.querySelector = jest.fn().mockReturnValue({
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+    const querySelector = document.querySelector.bind(document);
+    global.document.querySelector = jest.fn().mockImplementation((selector: string) => {
+        if (selector === '.inner-wrap') {
+            return {
+                addEventListener: jest.fn(),
+                removeEventListener: jest.fn(),
+            };
+        }
+
+        return querySelector(selector);
     });
 
     const user = TestHelper.getUserMock({
@@ -99,6 +106,58 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
 
             const menuItem = screen.getByText('Drafts');
             expect(menuItem).toBeInTheDocument();
+        });
+
+        test('toggles the channel purpose without opening the channel menu', async () => {
+            const purpose = 'Route warehouse exceptions here before posting in general';
+            const channelWithPurpose = TestHelper.getChannelMock({
+                ...channel,
+                purpose,
+            });
+
+            renderWithContext(
+                <ChannelHeaderMobile
+                    channel={channelWithPurpose}
+                    isMobileView={true}
+                    user={user}
+                    actions={actions}
+                />,
+                {
+                    entities: {
+                        channels: {
+                            currentChannelId: channelWithPurpose.id,
+                            channels: {
+                                [channelWithPurpose.id]: channelWithPurpose,
+                            },
+                        },
+                        users: {
+                            currentUserId: user.id,
+                            profiles: {
+                                [user.id]: user,
+                            },
+                        },
+                    },
+                },
+            );
+
+            const purposeButton = screen.getByRole('button', {name: `Channel purpose: ${purpose}`});
+            expect(purposeButton).toHaveClass('channel-header__purpose--truncated');
+            expect(purposeButton).toHaveAttribute('aria-expanded', 'false');
+
+            const menuButton = screen.getByRole('button', {name: `${channelWithPurpose.display_name} channel menu`});
+            expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+            await userEvent.click(purposeButton);
+            expect(purposeButton).toHaveClass('channel-header__purpose--expanded');
+            expect(purposeButton).toHaveAttribute('aria-expanded', 'true');
+            expect(purposeButton).toHaveTextContent(purpose);
+            expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+            expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+
+            await userEvent.click(purposeButton);
+            expect(purposeButton).toHaveClass('channel-header__purpose--truncated');
+            expect(purposeButton).toHaveAttribute('aria-expanded', 'false');
+            expect(menuButton).toHaveAttribute('aria-expanded', 'false');
         });
     });
 });
