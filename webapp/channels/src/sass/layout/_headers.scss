@@ -254,7 +254,7 @@
 }
 
 // Expanded copy is taken out of flow so the 50px bar and the centered title
-// keep the same position. The bar itself stays 50px; only the overlay paints outside it.
+// keep the same position. The card hangs from the bottom of that bar.
 #navbar_wrapper .navbar-default .navbar-brand:has(.channel-header__purpose--expanded) {
     overflow: visible;
 }
@@ -315,7 +315,6 @@
     }
 
     &--mobile {
-        position: relative;
         width: 100%;
         height: 16px;
         flex: 0 0 16px;
@@ -329,13 +328,15 @@
         text-overflow: unset;
         white-space: normal;
 
+        // The 16px control is not positioned, so this anchors to the 50px
+        // .channel-header__mobile-heading and starts at the bottom of the bar.
         .channel-header__purpose-text {
             position: absolute;
-            z-index: 6;
-            top: 0;
+            z-index: variables.$z-index-channel-header;
+            top: 100%;
             right: 0;
             left: 0;
-            padding: 0 0 8px;
+            padding: 8px 12px;
             border-radius: 4px;
             background: var(--center-channel-bg);
             box-shadow: rgba(var(--center-channel-color-rgb), 0.24) 0 4px 12px;
