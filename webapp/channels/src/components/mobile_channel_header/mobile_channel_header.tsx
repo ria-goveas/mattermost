@@ -49,7 +49,9 @@ const MobileChannelPurpose = ({purpose}: MobileChannelPurposeProps) => {
             aria-expanded={expanded}
             onClick={toggleExpanded}
         >
-            {purpose}
+            <span className='channel-header__purpose-text'>
+                {purpose}
+            </span>
         </button>
     );
 };

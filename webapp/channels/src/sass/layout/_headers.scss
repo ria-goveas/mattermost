@@ -253,11 +253,10 @@
     }
 }
 
-// The mobile bar is 50px and absolutely positioned. Let the expanded purpose
-// overlay the channel instead of growing that bar or wrapping the title.
+// Expanded copy is taken out of flow so the 50px bar and the centered title
+// keep the same position. The bar itself stays 50px; only the overlay paints outside it.
 #navbar_wrapper .navbar-default .navbar-brand:has(.channel-header__purpose--expanded) {
     overflow: visible;
-    height: auto;
 }
 
 .channel-header__purpose {
@@ -282,6 +281,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+
+        .channel-header__purpose-text {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
 
     &--add {
@@ -309,27 +315,34 @@
     }
 
     &--mobile {
+        position: relative;
         width: 100%;
-        flex: 0 1 auto;
+        height: 16px;
+        flex: 0 0 16px;
         margin-right: 0;
         cursor: pointer;
     }
 
     &--expanded {
-        position: absolute;
-        z-index: 6;
-        top: 100%;
-        right: 0;
-        left: 0;
         overflow: visible;
-        height: auto;
-        padding: 8px 12px;
-        border-radius: 4px;
-        background: var(--center-channel-bg);
-        box-shadow: rgba(var(--center-channel-color-rgb), 0.24) 0 4px 12px;
+        height: 16px;
         text-overflow: unset;
-        white-space: pre-wrap;
-        word-break: break-word;
+        white-space: normal;
+
+        .channel-header__purpose-text {
+            position: absolute;
+            z-index: 6;
+            top: 0;
+            right: 0;
+            left: 0;
+            padding: 0 0 8px;
+            border-radius: 4px;
+            background: var(--center-channel-bg);
+            box-shadow: rgba(var(--center-channel-color-rgb), 0.24) 0 4px 12px;
+            text-overflow: unset;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
     }
 }
 
