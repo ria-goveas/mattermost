@@ -211,7 +211,20 @@ exports[`components/ChannelHeader should render active channel files 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -295,7 +308,20 @@ exports[`components/ChannelHeader should render active flagged posts 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -379,7 +405,20 @@ exports[`components/ChannelHeader should render active mentions posts 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -463,7 +502,20 @@ exports[`components/ChannelHeader should render active pinned posts 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -547,7 +599,20 @@ exports[`components/ChannelHeader should render archived view 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -641,7 +706,20 @@ exports[`components/ChannelHeader should render correct menu when muted 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -670,6 +748,103 @@ exports[`components/ChannelHeader should render correct menu when muted 1`] = `
 `;
 
 exports[`components/ChannelHeader should render not active channel files 1`] = `
+<div>
+  <div
+    aria-label="channel header region"
+    class="channel-header alt a11y__region"
+    data-a11y-sort-order="8"
+    data-channelid="channel_id"
+    id="channel-header"
+    role="banner"
+    tabindex="-1"
+  >
+    <div
+      class="flex-parent"
+    >
+      <div
+        class="flex-child"
+      >
+        <div
+          class="channel-header__info"
+          id="channelHeaderInfo"
+        >
+          <div
+            class="channel-header__title dropdown"
+          >
+            <div
+              class="channel-header__icons"
+            >
+              <button
+                aria-label="Members"
+                class="member-rhs__trigger channel-header__icon channel-header__icon--wide channel-header__icon--left btn btn-icon btn-xs"
+                id="member_rhs"
+              >
+                <i
+                  aria-hidden="true"
+                  class="icon icon-account-outline channel-header__members"
+                />
+                <span
+                  class="icon__text"
+                  id="channelMemberCountText"
+                >
+                  2
+                </span>
+              </button>
+              <button
+                aria-label="Channel files"
+                class="channel-header__icon channel-header__icon--left btn btn-icon btn-xs "
+                id="channelHeaderFilesButton"
+              >
+                <i
+                  class="icon icon-file-text-outline"
+                />
+              </button>
+            </div>
+            <div
+              class="channel-header__status"
+              id="channelHeaderStatus"
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-label="Open in new window"
+        class="btn btn-icon btn-sm PopoutButton channel-header__icon"
+        type="button"
+      >
+        <i
+          aria-hidden="true"
+          class="icon icon-dock-window"
+        />
+      </button>
+      <button
+        aria-label="View Info"
+        class="channel-header__icon"
+        id="channel-info-btn"
+      >
+        <i
+          class="Icon-esDcos cHAVtG icon-information-outline"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components/ChannelHeader should render nothing when the purpose is empty and the user cannot edit 1`] = `
 <div>
   <div
     aria-label="channel header region"
@@ -978,7 +1153,20 @@ exports[`components/ChannelHeader should render properly when empty 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1062,7 +1250,20 @@ exports[`components/ChannelHeader should render properly when populated 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1146,7 +1347,20 @@ exports[`components/ChannelHeader should render properly when populated with cha
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1230,7 +1444,117 @@ exports[`components/ChannelHeader should render shared view 1`] = `
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-label="Open in new window"
+        class="btn btn-icon btn-sm PopoutButton channel-header__icon"
+        type="button"
+      >
+        <i
+          aria-hidden="true"
+          class="icon icon-dock-window"
+        />
+      </button>
+      <button
+        aria-label="View Info"
+        class="channel-header__icon"
+        id="channel-info-btn"
+      >
+        <i
+          class="Icon-esDcos cHAVtG icon-information-outline"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components/ChannelHeader should render the channel purpose on one truncated line 1`] = `
+<div>
+  <div
+    aria-label="channel header region"
+    class="channel-header alt a11y__region"
+    data-a11y-sort-order="8"
+    data-channelid="channel_id"
+    id="channel-header"
+    role="banner"
+    tabindex="-1"
+  >
+    <div
+      class="flex-parent"
+    >
+      <div
+        class="flex-child"
+      >
+        <div
+          class="channel-header__info"
+          id="channelHeaderInfo"
+        >
+          <div
+            class="channel-header__title dropdown"
+          >
+            <div
+              class="channel-header__icons"
+            >
+              <button
+                aria-label="Members"
+                class="member-rhs__trigger channel-header__icon channel-header__icon--wide channel-header__icon--left btn btn-icon btn-xs"
+                id="member_rhs"
+              >
+                <i
+                  aria-hidden="true"
+                  class="icon icon-account-outline channel-header__members"
+                />
+                <span
+                  class="icon__text"
+                  id="channelMemberCountText"
+                >
+                  2
+                </span>
+              </button>
+              <button
+                aria-label="Channel files"
+                class="channel-header__icon channel-header__icon--left btn btn-icon btn-xs "
+                id="channelHeaderFilesButton"
+              >
+                <i
+                  class="icon icon-file-text-outline"
+                />
+              </button>
+            </div>
+            <div
+              class="channel-header__status"
+              id="channelHeaderStatus"
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: Ship the weekly release"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  Ship the weekly release
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1330,7 +1654,222 @@ exports[`components/ChannelHeader should render the pinned icon with the pinned 
             <div
               class="channel-header__status"
               id="channelHeaderStatus"
-            />
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: purpose"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  purpose
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-label="Open in new window"
+        class="btn btn-icon btn-sm PopoutButton channel-header__icon"
+        type="button"
+      >
+        <i
+          aria-hidden="true"
+          class="icon icon-dock-window"
+        />
+      </button>
+      <button
+        aria-label="View Info"
+        class="channel-header__icon"
+        id="channel-info-btn"
+      >
+        <i
+          class="Icon-esDcos cHAVtG icon-information-outline"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components/ChannelHeader should show add purpose for an editor when the purpose is empty 1`] = `
+<div>
+  <div
+    aria-label="channel header region"
+    class="channel-header alt a11y__region"
+    data-a11y-sort-order="8"
+    data-channelid="channel_id"
+    id="channel-header"
+    role="banner"
+    tabindex="-1"
+  >
+    <div
+      class="flex-parent"
+    >
+      <div
+        class="flex-child"
+      >
+        <div
+          class="channel-header__info"
+          id="channelHeaderInfo"
+        >
+          <div
+            class="channel-header__title dropdown"
+          >
+            <div
+              class="channel-header__icons"
+            >
+              <button
+                aria-label="Members"
+                class="member-rhs__trigger channel-header__icon channel-header__icon--wide channel-header__icon--left btn btn-icon btn-xs"
+                id="member_rhs"
+              >
+                <i
+                  aria-hidden="true"
+                  class="icon icon-account-outline channel-header__members"
+                />
+                <span
+                  class="icon__text"
+                  id="channelMemberCountText"
+                >
+                  2
+                </span>
+              </button>
+              <button
+                aria-label="Channel files"
+                class="channel-header__icon channel-header__icon--left btn btn-icon btn-xs "
+                id="channelHeaderFilesButton"
+              >
+                <i
+                  class="icon icon-file-text-outline"
+                />
+              </button>
+            </div>
+            <div
+              class="channel-header__status"
+              id="channelHeaderStatus"
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <button
+                  aria-label="Add a channel purpose"
+                  class="channel-header__purpose-add"
+                  id="channelHeaderAddPurpose"
+                  type="button"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="icon icon-pencil-outline"
+                  />
+                  <span
+                    class="channel-header__purpose-add-label"
+                  >
+                    Add a channel purpose
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-label="Open in new window"
+        class="btn btn-icon btn-sm PopoutButton channel-header__icon"
+        type="button"
+      >
+        <i
+          aria-hidden="true"
+          class="icon icon-dock-window"
+        />
+      </button>
+      <button
+        aria-label="View Info"
+        class="channel-header__icon"
+        id="channel-info-btn"
+      >
+        <i
+          class="Icon-esDcos cHAVtG icon-information-outline"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components/ChannelHeader should truncate a long channel purpose 1`] = `
+<div>
+  <div
+    aria-label="channel header region"
+    class="channel-header alt a11y__region"
+    data-a11y-sort-order="8"
+    data-channelid="channel_id"
+    id="channel-header"
+    role="banner"
+    tabindex="-1"
+  >
+    <div
+      class="flex-parent"
+    >
+      <div
+        class="flex-child"
+      >
+        <div
+          class="channel-header__info"
+          id="channelHeaderInfo"
+        >
+          <div
+            class="channel-header__title dropdown"
+          >
+            <div
+              class="channel-header__icons"
+            >
+              <button
+                aria-label="Members"
+                class="member-rhs__trigger channel-header__icon channel-header__icon--wide channel-header__icon--left btn btn-icon btn-xs"
+                id="member_rhs"
+              >
+                <i
+                  aria-hidden="true"
+                  class="icon icon-account-outline channel-header__members"
+                />
+                <span
+                  class="icon__text"
+                  id="channelMemberCountText"
+                >
+                  2
+                </span>
+              </button>
+              <button
+                aria-label="Channel files"
+                class="channel-header__icon channel-header__icon--left btn btn-icon btn-xs "
+                id="channelHeaderFilesButton"
+              >
+                <i
+                  class="icon icon-file-text-outline"
+                />
+              </button>
+            </div>
+            <div
+              class="channel-header__status"
+              id="channelHeaderStatus"
+            >
+              <div
+                class="channel-header__purpose"
+              >
+                <span
+                  aria-label="Channel purpose: pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+                  class="channel-header__purpose-text"
+                  id="channelHeaderPurpose"
+                  tabindex="0"
+                >
+                  pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

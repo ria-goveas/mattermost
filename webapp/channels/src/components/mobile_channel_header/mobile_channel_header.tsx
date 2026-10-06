@@ -3,10 +3,13 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import type {MouseEvent} from 'react';
+import {FormattedMessage, useIntl} from 'react-intl';
 
 import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
+
+import {Constants} from 'utils/constants';
 
 import ChannelInfoButton from './channel_info_button';
 import CollapseLhsButton from './collapse_lhs_button';
@@ -33,14 +36,69 @@ type Props = {
     };
 };
 
-export default class MobileChannelHeader extends React.PureComponent<Props> {
+type State = {
+    purposeExpanded: boolean;
+};
+
+type PurposeButtonProps = {
+    purpose: string;
+    expanded: boolean;
+    onToggle: (event: MouseEvent<HTMLButtonElement>) => void;
+};
+
+function MobileChannelPurposeButton({purpose, expanded, onToggle}: PurposeButtonProps) {
+    const {formatMessage} = useIntl();
+    const label = formatMessage(
+        {id: 'channel_header.channelPurpose', defaultMessage: 'Channel purpose: {purpose}'},
+        {purpose},
+    );
+
+    return (
+        <button
+            type='button'
+            id='mobileChannelHeaderPurpose'
+            className='mobile-channel-header__purpose'
+            aria-label={label}
+            aria-expanded={expanded}
+            onClick={onToggle}
+        >
+            {purpose}
+        </button>
+    );
+}
+
+function channelShowsPurpose(channel?: Channel): channel is Channel {
+    return Boolean(
+        channel?.purpose &&
+        channel.type !== Constants.DM_CHANNEL &&
+        channel.type !== Constants.GM_CHANNEL,
+    );
+}
+
+export default class MobileChannelHeader extends React.PureComponent<Props, State> {
+    state: State = {
+        purposeExpanded: false,
+    };
+
     componentDidMount() {
         document.querySelector('.inner-wrap')?.addEventListener('click', this.hideSidebars);
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        if (prevProps.channel?.id !== this.props.channel?.id && this.state.purposeExpanded) {
+            this.setState({purposeExpanded: false});
+        }
     }
 
     componentWillUnmount() {
         document.querySelector('.inner-wrap')?.removeEventListener('click', this.hideSidebars);
     }
+
+    togglePurpose = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState((prevState) => ({purposeExpanded: !prevState.purposeExpanded}));
+    };
 
     hideSidebars = (e: Event) => {
         if (this.props.isMobileView) {
@@ -76,7 +134,7 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
                 />
             );
         } else if (channel) {
-            heading = (
+            const channelHeading = (
                 <>
                     <ChannelHeaderMenu
                         isMobile={true}
@@ -90,6 +148,23 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
                     )}
                 </>
             );
+
+            if (channelShowsPurpose(channel)) {
+                heading = (
+                    <div className='mobile-channel-header__titles'>
+                        <div className='mobile-channel-header__name'>
+                            {channelHeading}
+                        </div>
+                        <MobileChannelPurposeButton
+                            purpose={channel.purpose}
+                            expanded={this.state.purposeExpanded}
+                            onToggle={this.togglePurpose}
+                        />
+                    </div>
+                );
+            } else {
+                heading = channelHeading;
+            }
         }
 
         return (
@@ -123,6 +198,14 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
                             </div>
                         </div>
                     </nav>
+                    {channelShowsPurpose(channel) && this.state.purposeExpanded && (
+                        <div
+                            id='mobileChannelPurposeCard'
+                            className='mobile-channel-header__purpose-card'
+                        >
+                            {channel.purpose}
+                        </div>
+                    )}
                 </div>
             </div>
         );

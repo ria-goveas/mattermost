@@ -10,7 +10,7 @@ import {
     updateChannelNotifyProps,
 } from 'mattermost-redux/actions/channels';
 import {fetchChannelRemotes} from 'mattermost-redux/actions/shared_channels';
-import {General} from 'mattermost-redux/constants';
+import {General, Permissions} from 'mattermost-redux/constants';
 import {
     getCurrentChannel,
     getMyCurrentChannelMembership,
@@ -19,6 +19,7 @@ import {
     isMyChannelAutotranslated,
 } from 'mattermost-redux/selectors/entities/channels';
 import {getConfig, getFeatureFlagValue} from 'mattermost-redux/selectors/entities/general';
+import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getRemoteNamesForChannel} from 'mattermost-redux/selectors/entities/shared_channels';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {
@@ -31,6 +32,7 @@ import {
 } from 'mattermost-redux/selectors/entities/users';
 import {getUserIdFromChannelName} from 'mattermost-redux/utils/channel_utils';
 
+import {openModal} from 'actions/views/modals';
 import {
     showPinnedPosts,
     showChannelFiles,
@@ -77,6 +79,20 @@ function makeMapStateToProps() {
         }
 
         const stats = getCurrentChannelStats(state);
+        const team = getCurrentTeam(state);
+        const isDirectOrGroup = channel?.type === General.DM_CHANNEL || channel?.type === General.GM_CHANNEL;
+        const isPrivate = channel?.type === General.PRIVATE_CHANNEL;
+        const canEditChannelProperties = Boolean(
+            channel &&
+            !isDirectOrGroup &&
+            channel.delete_at === 0 &&
+            haveIChannelPermission(
+                state,
+                team?.id,
+                channel.id,
+                isPrivate ? Permissions.MANAGE_PRIVATE_CHANNEL_PROPERTIES : Permissions.MANAGE_PUBLIC_CHANNEL_PROPERTIES,
+            ),
+        );
 
         let isLastActiveEnabled = false;
         if (dmUser) {
@@ -85,8 +101,9 @@ function makeMapStateToProps() {
         }
 
         return {
-            team: getCurrentTeam(state),
+            team,
             channel,
+            canEditChannelProperties,
             channelMember: getMyCurrentChannelMembership(state),
             memberCount: stats?.member_count || 0,
             currentUser: user,
@@ -119,6 +136,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         updateChannelNotifyProps,
         showChannelMembers,
         fetchChannelRemotes,
+        openModal,
     }, dispatch),
 });
 
