@@ -6,8 +6,10 @@ import React from 'react';
 import type {ChannelType} from '@mattermost/types/channels';
 import type {UserCustomStatus} from '@mattermost/types/users';
 
-import {renderWithContext} from 'tests/react_testing_utils';
-import Constants, {RHSStates} from 'utils/constants';
+import EditChannelPurposeModal from 'components/edit_channel_purpose_modal';
+
+import {act, renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
+import Constants, {ModalIdentifiers, RHSStates} from 'utils/constants';
 import {TestHelper} from 'utils/test_helper';
 
 import ChannelHeader from './channel_header';
@@ -22,7 +24,9 @@ describe('components/ChannelHeader', () => {
             updateChannelNotifyProps: jest.fn(),
             showChannelMembers: jest.fn(),
             fetchChannelRemotes: jest.fn(),
+            openModal: jest.fn(),
         },
+        canEditChannelProperties: false,
         team: TestHelper.getTeamMock({id: 'team_id'}),
         channel: TestHelper.getChannelMock({}),
         channelMember: TestHelper.getChannelMembershipMock({}),
@@ -338,5 +342,119 @@ describe('components/ChannelHeader', () => {
             <ChannelHeader {...props}/>,
         );
         expect(container).toMatchSnapshot();
+    });
+
+    test('should show the channel purpose to the right of files', () => {
+        const purpose = 'Warehouse shipping updates';
+        const props = {
+            ...populatedProps,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose,
+            }),
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const filesButton = document.getElementById('channelHeaderFilesButton');
+        const purposeEl = screen.getByLabelText(`Channel purpose: ${purpose}`);
+        expect(purposeEl).toHaveTextContent(purpose);
+        expect(purposeEl).toHaveClass('channel-header__purpose');
+        expect(filesButton).not.toBeNull();
+        expect(filesButton?.parentElement?.nextElementSibling).toBe(purposeEl);
+    });
+
+    test('should show the full purpose in a tooltip on hover and keyboard focus', async () => {
+        jest.useFakeTimers();
+        try {
+            const purpose = 'P'.repeat(Constants.MAX_CHANNELPURPOSE_LENGTH);
+            const props = {
+                ...populatedProps,
+                channel: TestHelper.getChannelMock({
+                    ...populatedProps.channel,
+                    purpose,
+                }),
+            };
+
+            renderWithContext(
+                <>
+                    <div id='root-portal'/>
+                    <ChannelHeader {...props}/>
+                </>,
+            );
+
+            const purposeEl = screen.getByLabelText(`Channel purpose: ${purpose}`);
+            expect(purposeEl).toHaveClass('channel-header__purpose');
+
+            await userEvent.hover(purposeEl, {advanceTimers: jest.advanceTimersByTime});
+            await waitFor(() => {
+                expect(screen.getByRole('tooltip')).toHaveTextContent(purpose);
+            });
+
+            purposeEl.blur();
+            await userEvent.unhover(purposeEl, {advanceTimers: jest.advanceTimersByTime});
+            await waitFor(() => {
+                expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+            });
+
+            await act(async () => {
+                purposeEl.focus();
+            });
+            await waitFor(() => {
+                expect(screen.getByRole('tooltip')).toHaveTextContent(purpose);
+            });
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+    test('should show an add purpose prompt for editors when the purpose is empty', async () => {
+        const openModal = jest.fn();
+        const props = {
+            ...populatedProps,
+            canEditChannelProperties: true,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose: '',
+            }),
+            actions: {
+                ...populatedProps.actions,
+                openModal,
+            },
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        const addButton = screen.getByRole('button', {name: 'Add a channel purpose'});
+        expect(addButton.querySelector('.icon-pencil-outline')).toBeInTheDocument();
+
+        await userEvent.click(addButton);
+        expect(openModal).toHaveBeenCalledWith({
+            modalId: ModalIdentifiers.EDIT_CHANNEL_PURPOSE,
+            dialogType: EditChannelPurposeModal,
+            dialogProps: {channel: props.channel},
+        });
+    });
+
+    test('should render nothing when the purpose is empty and the user cannot edit', () => {
+        const props = {
+            ...populatedProps,
+            canEditChannelProperties: false,
+            channel: TestHelper.getChannelMock({
+                ...populatedProps.channel,
+                purpose: '',
+            }),
+        };
+
+        renderWithContext(
+            <ChannelHeader {...props}/>,
+        );
+
+        expect(screen.queryByRole('button', {name: 'Add a channel purpose'})).not.toBeInTheDocument();
+        expect(screen.queryByLabelText(/Channel purpose:/)).not.toBeInTheDocument();
     });
 });

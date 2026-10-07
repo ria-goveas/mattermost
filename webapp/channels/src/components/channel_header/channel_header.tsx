@@ -12,6 +12,7 @@ import {WithTooltip} from '@mattermost/shared/components/tooltip';
 import {getPopoutChannelTitle} from 'components/channel_popout/channel_popout';
 import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
 import CustomStatusText from 'components/custom_status/custom_status_text';
+import EditChannelPurposeModal from 'components/edit_channel_purpose_modal';
 import PopoutButton from 'components/popout_button';
 import Timestamp from 'components/timestamp';
 import Tag from 'components/widgets/tag/tag';
@@ -22,6 +23,7 @@ import Pluggable from 'plugins/pluggable';
 import {getChannelRoutePathAndIdentifier} from 'utils/channel_utils';
 import {
     Constants,
+    ModalIdentifiers,
     NotificationLevels,
     RHSStates,
 } from 'utils/constants';
@@ -93,6 +95,19 @@ class ChannelHeader extends React.PureComponent<Props> {
         }
     };
 
+    showEditChannelPurpose = () => {
+        const {channel} = this.props;
+        if (!channel) {
+            return;
+        }
+
+        this.props.actions.openModal({
+            modalId: ModalIdentifiers.EDIT_CHANNEL_PURPOSE,
+            dialogType: EditChannelPurposeModal,
+            dialogProps: {channel},
+        });
+    };
+
     popoutChannelView = () => {
         const {channel, team, dmUser, intl} = this.props;
         if (channel && team) {
@@ -107,6 +122,59 @@ class ChannelHeader extends React.PureComponent<Props> {
         } else if (this.props.channel) {
             this.props.actions.showChannelMembers(this.props.channel.id);
         }
+    };
+
+    renderChannelPurpose = () => {
+        const {channel, canEditChannelProperties} = this.props;
+        if (!channel || channel.type === Constants.DM_CHANNEL || channel.type === Constants.GM_CHANNEL) {
+            return null;
+        }
+
+        const purpose = (channel.purpose || '').trim().slice(0, Constants.MAX_CHANNELPURPOSE_LENGTH);
+        if (!purpose) {
+            if (!canEditChannelProperties) {
+                return null;
+            }
+
+            const addPurposeLabel = this.props.intl.formatMessage({
+                id: 'channel_header.addPurpose',
+                defaultMessage: 'Add a channel purpose',
+            });
+
+            return (
+                <button
+                    type='button'
+                    className='channel-header__purpose channel-header__purpose--add'
+                    onClick={this.showEditChannelPurpose}
+                    aria-label={addPurposeLabel}
+                >
+                    <i
+                        aria-hidden={true}
+                        className='icon icon-pencil-outline'
+                    />
+                    <span className='channel-header__purpose-label'>
+                        {addPurposeLabel}
+                    </span>
+                </button>
+            );
+        }
+
+        const ariaLabel = this.props.intl.formatMessage({
+            id: 'channel_header.channelPurpose',
+            defaultMessage: 'Channel purpose: {purpose}',
+        }, {purpose});
+
+        return (
+            <WithTooltip title={purpose}>
+                <button
+                    type='button'
+                    className='channel-header__purpose'
+                    aria-label={ariaLabel}
+                >
+                    {purpose}
+                </button>
+            </WithTooltip>
+        );
     };
 
     renderCustomStatus = () => {
@@ -405,6 +473,7 @@ class ChannelHeader extends React.PureComponent<Props> {
                                         channelMember={channelMember!}
                                     />
                                 </div>
+                                {this.renderChannelPurpose()}
                                 <div
                                     id='channelHeaderStatus'
                                     className='channel-header__status'
