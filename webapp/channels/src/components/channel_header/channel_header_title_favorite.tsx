@@ -28,13 +28,13 @@ const ChannelHeaderTitleFavorite = () => {
 
     const toggleFavoriteCallback = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        if (!channel) {
+        if (!channel || !channel.id) {
             return;
         }
         if (isFavorite) {
             dispatch(unfavoriteChannel(channel.id));
         } else {
-            dispatch(favoriteChannel(''));
+            dispatch(favoriteChannel(channel.id));
         }
         requestAnimationFrame(() => {
             if (favIconRef.current) {
