@@ -67,7 +67,7 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         isCurrentChannelFavoriteMock.mockReturnValue(false);
         getCurrentChannelMock.mockReturnValue(activeChannel);
 
-        // Mock favoriteChannel
+        (favoriteChannel as jest.Mock).mockClear();
         (favoriteChannel as jest.Mock).mockReturnValue({
             type: 'FAVORITE_CHANNEL',
             data: activeChannel.id,
@@ -78,6 +78,8 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(favoriteChannel).toHaveBeenCalledTimes(1);
+        expect(favoriteChannel).toHaveBeenCalledWith(activeChannel.id);
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'FAVORITE_CHANNEL',
@@ -89,7 +91,7 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         isCurrentChannelFavoriteMock.mockReturnValue(true);
         getCurrentChannelMock.mockReturnValue(activeChannel);
 
-        // Mock unfavoriteChannel
+        (unfavoriteChannel as jest.Mock).mockClear();
         (unfavoriteChannel as jest.Mock).mockReturnValue({
             type: 'UNFAVORITE_CHANNEL',
             data: activeChannel.id,
@@ -100,11 +102,33 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: REMOVE_FROM_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(unfavoriteChannel).toHaveBeenCalledTimes(1);
+        expect(unfavoriteChannel).toHaveBeenCalledWith(activeChannel.id);
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'UNFAVORITE_CHANNEL',
             data: activeChannel.id,
         });
+    });
+
+    it('should not dispatch when the channel id is empty', async () => {
+        isCurrentChannelFavoriteMock.mockReturnValue(false);
+        getCurrentChannelMock.mockReturnValue({
+            ...activeChannel,
+            id: '',
+        });
+
+        (favoriteChannel as jest.Mock).mockClear();
+        (unfavoriteChannel as jest.Mock).mockClear();
+
+        renderComponent();
+
+        const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
+        await userEvent.click(button);
+
+        expect(favoriteChannel).not.toHaveBeenCalled();
+        expect(unfavoriteChannel).not.toHaveBeenCalled();
+        expect(dispatchMock).not.toHaveBeenCalled();
     });
 
     it('should not render anything when channel is null', () => {
