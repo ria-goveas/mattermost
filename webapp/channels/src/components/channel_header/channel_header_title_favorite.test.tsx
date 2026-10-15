@@ -78,11 +78,40 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(favoriteChannel).toHaveBeenCalledTimes(1);
+        expect(favoriteChannel).toHaveBeenCalledWith(activeChannel.id);
+        expect(unfavoriteChannel).not.toHaveBeenCalled();
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'FAVORITE_CHANNEL',
             data: activeChannel.id,
         });
+    });
+
+    it('should not dispatch favoriteChannel when the channel has no id', async () => {
+        isCurrentChannelFavoriteMock.mockReturnValue(false);
+        getCurrentChannelMock.mockReturnValue({...activeChannel, id: ''});
+
+        renderComponent();
+
+        const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
+        await userEvent.click(button);
+
+        expect(favoriteChannel).not.toHaveBeenCalled();
+        expect(dispatchMock).not.toHaveBeenCalled();
+    });
+
+    it('should not dispatch unfavoriteChannel when the channel has no id', async () => {
+        isCurrentChannelFavoriteMock.mockReturnValue(true);
+        getCurrentChannelMock.mockReturnValue({...activeChannel, id: ''});
+
+        renderComponent();
+
+        const button = screen.getByRole('button', {name: REMOVE_FROM_FAVORITES_REGEX});
+        await userEvent.click(button);
+
+        expect(unfavoriteChannel).not.toHaveBeenCalled();
+        expect(dispatchMock).not.toHaveBeenCalled();
     });
 
     it('should dispatch unfavoriteChannel when "Remove from Favorites" button is clicked', async () => {
@@ -100,6 +129,9 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: REMOVE_FROM_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(unfavoriteChannel).toHaveBeenCalledTimes(1);
+        expect(unfavoriteChannel).toHaveBeenCalledWith(activeChannel.id);
+        expect(favoriteChannel).not.toHaveBeenCalled();
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'UNFAVORITE_CHANNEL',
