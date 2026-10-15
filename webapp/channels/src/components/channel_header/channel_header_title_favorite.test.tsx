@@ -78,11 +78,28 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(favoriteChannel).toHaveBeenCalledTimes(1);
+        expect(favoriteChannel).toHaveBeenCalledWith('channel_id');
+        expect(unfavoriteChannel).not.toHaveBeenCalled();
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'FAVORITE_CHANNEL',
             data: activeChannel.id,
         });
+    });
+
+    it('should not dispatch when the channel id is empty', async () => {
+        isCurrentChannelFavoriteMock.mockReturnValue(false);
+        getCurrentChannelMock.mockReturnValue({...activeChannel, id: ''});
+
+        renderComponent();
+
+        const button = screen.getByRole('button', {name: ADD_TO_FAVORITES_REGEX});
+        await userEvent.click(button);
+
+        expect(favoriteChannel).not.toHaveBeenCalled();
+        expect(unfavoriteChannel).not.toHaveBeenCalled();
+        expect(dispatchMock).not.toHaveBeenCalled();
     });
 
     it('should dispatch unfavoriteChannel when "Remove from Favorites" button is clicked', async () => {
@@ -100,6 +117,9 @@ describe('ChannelHeaderTitleFavorite Component', () => {
         const button = screen.getByRole('button', {name: REMOVE_FROM_FAVORITES_REGEX});
         await userEvent.click(button);
 
+        expect(unfavoriteChannel).toHaveBeenCalledTimes(1);
+        expect(unfavoriteChannel).toHaveBeenCalledWith('channel_id');
+        expect(favoriteChannel).not.toHaveBeenCalled();
         expect(dispatchMock).toHaveBeenCalledTimes(1);
         expect(dispatchMock).toHaveBeenCalledWith({
             type: 'UNFAVORITE_CHANNEL',
